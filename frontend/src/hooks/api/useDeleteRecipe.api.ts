@@ -7,8 +7,10 @@ export const useDeleteRecipe = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (uuid: string) =>
-      api.delete<DeleteRecipeReq>("/recipe", { data: { uuid } }),
+    mutationFn: (uuid: string) => {
+      const data: DeleteRecipeReq = { uuid };
+      return api.delete("/recipe", { data });
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [USE_GET_RECIPES_KEY] });
     },

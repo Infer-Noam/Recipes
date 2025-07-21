@@ -10,7 +10,6 @@ import {
   UpdateRecipeRes,
 } from "@shared/http-types/recipe/updateRecipe.http-type";
 import {
-  GetRecipeByIdReq,
   GetRecipeByIdRes,
 } from "@shared/http-types/recipe/getRecipeByUuid.http-type";
 import { GetAllRecipesRes } from "@shared/http-types/recipe/getAllRecipes.http-type";
@@ -73,7 +72,7 @@ router.get("/", async (_: Request, res: Response<GetAllRecipesRes>) => {
 
 router.get(
   "/:uuid",
-  async (req: Request<GetRecipeByIdReq>, res: Response<GetRecipeByIdRes>) => {
+  async (req: Request, res: Response<GetRecipeByIdRes>) => {
     const uuid = req.params.uuid;
 
     const recipe = await service.getRecipeByUuid(uuid);

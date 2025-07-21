@@ -1,4 +1,4 @@
-import { Recipe } from "../../components/recipe/recipe";
+import { RecipeCard } from "../../components/recipeCard/RecipeCard";
 import { Box, Grid } from "@mui/material";
 import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
@@ -29,7 +29,7 @@ const HomePage = () => {
         >
           {recipes.map((recipe) => (
             <Grid key={recipe.uuid}>
-              <Recipe
+              <RecipeCard
                 recipe={recipe}
                 deleteRecipe={() => {
                   deleteRecipe(recipe.uuid);

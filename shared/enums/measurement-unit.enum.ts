@@ -1,4 +1,12 @@
 export enum MeasurementUnit {
-  KG = "Kg",
-  Mg = "Mg",
+  KG = "kg",
+  MG = "mg",
+  G = "g",
+  LB = "lb",
+  OZ = "oz",
+  L = "l",
+  ML = "ml",
+  CUP = "cup",
+  PIECE = "piece",
+  UNIT = "unit",
 }

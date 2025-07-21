@@ -1,106 +1,23 @@
-import { useState, type FC } from "react";
-import {
-  Card,
-  CardHeader,
-  CardMedia,
-  CardContent,
-  CardActions,
-  Avatar,
-  Typography,
-  IconButton,
-  Tooltip,
-} from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
-import Styles from "./recipe.style";
+import { type FC } from "react";
 import { type Recipe as RecipeModel } from "../../../../shared/types/recipe.type";
-import { useNavigate } from "react-router-dom";
-import { RecipeMenu } from "./recipeMenu/recipeMenu";
+import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
+import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
+import { RecipeIngredientsTable } from "./recipeIngredientTable/RecipeIngredientsTable";
 
 type RecipeProps = {
   recipe: RecipeModel;
+  chefs: ChefModel[];
+  ingredients: IngredientModel[];
   deleteRecipe: () => void;
-  chefAvatarSrc: string;
+  save: () => void;
+  close: () => void;
 };
 
-export const Recipe: FC<RecipeProps> = ({
-  recipe: { uuid, name, imageUrl, chef, description, createDate, ingredients },
-  deleteRecipe,
-  chefAvatarSrc,
-}) => {
-  const navigate = useNavigate();
-
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+export const Recipe: FC<RecipeProps> = ({ recipe, ingredients }) => {
   return (
-    <>
-      <Card variant="outlined" sx={Styles.card}>
-        <CardHeader
-          avatar={
-            <Avatar
-              alt={`${chef.firstName} ${chef.lastName}`}
-              src={chefAvatarSrc}
-              sx={Styles.chefAvatar}
-            />
-          }
-          action={
-            <IconButton aria-label="more" onClick={handleClick}>
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title={name}
-          subheader={`By ${chef.firstName}`}
-        />
-        <CardMedia
-          component="img"
-          height="200px"
-          image={imageUrl}
-          alt={`An image of ${name}`}
-        />
-        <CardContent>
-          <Typography variant="body2" sx={Styles.descriptionTypography}>
-            {description}
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-          <Typography variant="body2">
-            {new Date(createDate).toDateString()}
-          </Typography>
-          <Tooltip
-            sx={Styles.tooltip}
-            title={
-              <span>
-                <Typography variant="subtitle1">Ingredients</Typography>
-                {ingredients.map((ri, index) => (
-                  <Typography variant="body2" key={index}>
-                    {`${ri.amount} ${ri.measurementUnit} of ${ri.ingredient.name}`}
-                  </Typography>
-                ))}
-              </span>
-            }
-            arrow
-          >
-            <IconButton aria-label="ingredients">
-              <LocalGroceryStoreIcon />
-            </IconButton>
-          </Tooltip>
-        </CardActions>
-      </Card>
-      <RecipeMenu
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        anchorEl={anchorEl}
-        onDelete={deleteRecipe}
-        onView={() => navigate(`recipe/${uuid}`)}
-      />
-    </>
+    <RecipeIngredientsTable
+      recipeIngredients={recipe.ingredients}
+      ingredientsOptions={ingredients}
+    />
   );
 };
