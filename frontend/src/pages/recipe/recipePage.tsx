@@ -29,7 +29,7 @@ const RecipePage = () => {
         chefs={chefs}
         ingredients={ingredients}
         deleteRecipe={() => deleteRecipe(uuid)}
-        saveRecipe={saveRecipe}
+        save={() => {}}
       />
     );
   }
