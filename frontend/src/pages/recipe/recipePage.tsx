@@ -22,7 +22,7 @@ const RecipePage = () => {
 
   if (isLoading) return <BackdropLoading />;
 
-  if (recipe) {
+  if (recipe && ingredients && chefs) {
     return (
       <Recipe
         recipe={recipe}

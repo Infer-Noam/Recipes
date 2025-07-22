@@ -1,35 +1,11 @@
 import { type FC, useState } from "react";
-import {
-  type RecipeDetails,
-  type Recipe as RecipeModel,
-} from "../../../../shared/types/recipe.type";
+import { type Recipe as RecipeModel } from "../../../../shared/types/recipe.type";
 import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
 import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
-import {
-  Autocomplete,
-  Box,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-  Tooltip,
-  Grid,
-  Button,
-  Alert,
-  AlertTitle,
-  Paper
-} from "@mui/material";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import RecipeStepsList from "./recipeSteps/RecipeStepsList";
-import { useNavigate } from "react-router-dom";
-import type { DraftRecipeIngredient } from "./recipeIngredientTable/draftRecipeIngredient.type";
-import type { SaveRecipeRes } from "@shared/http-types/recipe/saveRecipe.http-type";
-import type { MutateOptions } from "@tanstack/react-query";
-import Styles from "./recipe.style";
-import { useParams } from "react-router-dom";
-import { useGetRecipeByUuid } from "../../hooks/api/useGetRecipeByUuid.api";
-import { RecipeCard } from "../../components/recipeCard/RecipeCard";
 import { RecipeIngredientsTable } from "./recipeIngredientTable/RecipeIngredientsTable";
+import { type RecipeIngredient as RecipeIngredientModel } from "../../../../shared/types/recipeIngredient.type";
+import type { DraftRecipeIngredient } from "./recipeIngredientTable/draftRecipeIngredient.type";
+
 type RecipeProps = {
   recipe: RecipeModel;
   chefs: ChefModel[];
@@ -50,10 +26,34 @@ export const Recipe: FC<RecipeProps> = ({
 
   const chefOptions = chefs.map((c) => c.email);
 
+  const [recipeIngredients, setRecipeIngredients] = useState<
+    DraftRecipeIngredient[]
+  >(recipe.ingredients);
+
+  const setRecipeIngredient = (
+    uuid: string,
+    updatedFields: Partial<RecipeIngredientModel>
+  ) => {
+    setRecipeIngredients((prev) =>
+      prev.map((ri) => (ri.uuid === uuid ? { ...ri, ...updatedFields } : ri))
+    );
+  };
+
+  function uuidv4(): string {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <RecipeIngredientsTable
-      recipeIngredients={recipe.ingredients}
+      recipeIngredients={recipeIngredients}
       ingredientsOptions={ingredients}
+      setRecipeIngredient={setRecipeIngredient}
+      addRecipeIngredient={() =>
+        setRecipeIngredients((prev) => [...prev, { uuid: uuidv4() }])
+      }
+      removeRecipeIngredient={(uuid) =>
+        setRecipeIngredients((prev) => prev.filter((ri) => ri.uuid !== uuid))
+      }
     />
   );
 };
