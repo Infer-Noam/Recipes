@@ -4,7 +4,7 @@ import { RecipeIngredient } from "../recipe/recipe-ingredient/recipeIngredient.e
 
 @Entity()
 export class Ingredient extends AuditEntity {
-  @Column({ type: "varchar", length: 20, unique: true })
+  @Column({ type: "varchar", length: 15, unique: true })
   name: string;
 
   @OneToMany(

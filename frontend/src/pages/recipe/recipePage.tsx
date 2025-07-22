@@ -1,5 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useGetRecipeByUuid } from "../../hooks/api/useGetRecipeByUuid.api";
+import { useGetIngredients } from "../../hooks/api/useGetIngredients.api";
+import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { Box } from "@mui/material";
 import { Recipe } from "../../components/recipe/recipe";
 
@@ -9,14 +11,16 @@ const RecipePage = () => {
   if (!uuid) return null;
 
   const { data: recipe } = useGetRecipeByUuid(uuid);
+  const { data: ingredients } = useGetIngredients();
+  const { data: chefs } = useGetChefs();
 
-  if (recipe) {
+  if (recipe && ingredients && chefs) {
     return (
       <Box>
         <Recipe
           recipe={recipe}
           chefs={[]}
-          ingredients={[]}
+          ingredients={ingredients}
           close={() => {}}
           save={() => {}}
           deleteRecipe={() => {}}

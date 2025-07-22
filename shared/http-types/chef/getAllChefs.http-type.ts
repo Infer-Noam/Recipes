@@ -1,5 +1,5 @@
 import { Chef } from "../../types/chef.type";
 
-export type GetAllChefRes = {
+export type GetAllChefsRes = {
   chefs: Chef[];
 };
