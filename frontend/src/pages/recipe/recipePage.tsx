@@ -19,11 +19,8 @@ const RecipePage = () => {
       <Box>
         <Recipe
           recipe={recipe}
-          chefs={[]}
+          chefs={chefs}
           ingredients={ingredients}
-          close={() => {}}
-          save={() => {}}
-          deleteRecipe={() => {}}
         ></Recipe>
       </Box>
     );

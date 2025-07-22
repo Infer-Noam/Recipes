@@ -1,46 +1,103 @@
 import { type FC, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { type Recipe as RecipeModel } from "../../../../shared/types/recipe.type";
 import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
 import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
 import { RecipeIngredientsTable } from "./recipeIngredientTable/RecipeIngredientsTable";
-import { type RecipeIngredient as RecipeIngredientModel } from "../../../../shared/types/recipeIngredient.type";
 import type { DraftRecipeIngredient } from "./recipeIngredientTable/draftRecipeIngredient.type";
+import {
+  Autocomplete,
+  Box,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
+import Styles from "./recipe.style";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import RecipeStepsList from "./recipeSteps/RecipeStepsList";
 
 type RecipeProps = {
   recipe: RecipeModel;
   chefs: ChefModel[];
   ingredients: IngredientModel[];
-  deleteRecipe: () => void;
-  save: () => void;
-  close: () => void;
 };
 
-export const Recipe: FC<RecipeProps> = ({ recipe, ingredients }) => {
+export const Recipe: FC<RecipeProps> = ({
+  recipe,
+  chefs,
+  ingredients,
+}) => {
+  const [name, setName] = useState(recipe.name);
+  const [chef, setChef] = useState(recipe.chef);
+  const [description, setDescription] = useState(recipe.description);
+  const [imageUrl, setImageUrl] = useState(recipe.imageUrl);
+  const [steps, setSteps] = useState(recipe.steps);
   const [recipeIngredients, setRecipeIngredients] = useState<
     DraftRecipeIngredient[]
   >(recipe.ingredients);
 
-  const setRecipeIngredient = (
-    uuid: string,
-    updatedFields: Partial<RecipeIngredientModel>
-  ) => {
-    setRecipeIngredients((prev) =>
-      prev.map((ri) => (ri.uuid === uuid ? { ...ri, ...updatedFields } : ri))
-    );
-  };
-
   return (
-    <RecipeIngredientsTable
-      recipeIngredients={recipeIngredients}
-      ingredientsOptions={ingredients}
-      setRecipeIngredient={setRecipeIngredient}
-      addRecipeIngredient={() =>
-        setRecipeIngredients((prev) => [...prev, { uuid: uuidv4() }])
-      }
-      removeRecipeIngredient={(uuid) =>
-        setRecipeIngredients((prev) => prev.filter((ri) => ri.uuid !== uuid))
-      }
-    />
+    <Box>
+      <TextField
+        id="outlined-basic"
+        label="Recipe name"
+        variant="outlined"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <TextField
+        multiline
+        id="outlined-basic"
+        label="Short description"
+        variant="outlined"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+
+      <Autocomplete
+        sx={Styles.chefAutocomplete}
+        options={chefs}
+        getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+        value={chefs.find((c) => c.uuid === chef.uuid) || null}
+        onChange={(_, newValue: ChefModel | null) => {
+          if (newValue) {
+            setChef(newValue);
+          }
+        }}
+        renderInput={(params) => <TextField {...params} label="Chef" />}
+        isOptionEqualToValue={(option, value) => option.uuid === value.uuid}
+      />
+
+      <TextField
+        id="outlined-basic"
+        label="Image url"
+        variant="outlined"
+        value={imageUrl}
+        onChange={(e) => setImageUrl(e.target.value)}
+        slotProps={{
+          input: {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={"Open image"}
+                  onClick={() => window.open(imageUrl)}
+                  edge="end"
+                >
+                  <OpenInNewIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
+        }}
+      />
+
+      <RecipeStepsList steps={steps} setSteps={setSteps} />
+
+      <RecipeIngredientsTable
+        recipeIngredients={recipeIngredients}
+        ingredientsOptions={ingredients}
+        setRecipeIngredients={setRecipeIngredients}
+      />
+    </Box>
   );
 };

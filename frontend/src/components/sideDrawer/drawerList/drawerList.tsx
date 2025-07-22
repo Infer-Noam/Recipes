@@ -6,10 +6,10 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { type FC, useState } from "react";
+import { type FC } from "react";
 import { drawerListItems } from "./drawerListItem/drawerListItems.const";
 import Styles from "./drawerList.style";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type DrawerListProps = {
   handleMobileDrawerClose?: () => void;
@@ -18,23 +18,21 @@ type DrawerListProps = {
 export const DrawerList: FC<DrawerListProps> = ({
   handleMobileDrawerClose,
 }) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Box role="presentation">
       <List>
-        {drawerListItems.map(({ name, path, icon: ItemIcon }, index) => (
+        {drawerListItems.map(({ name, path, icon: ItemIcon }) => (
           <ListItem key={name} disablePadding>
             <ListItemButton
               sx={Styles.listItem}
               onClick={() => {
-                setSelectedIndex(index);
                 handleMobileDrawerClose?.();
                 navigate(path);
               }}
-              selected={index === selectedIndex}
+              selected={location.pathname === path}
             >
               <ListItemIcon>
                 <ItemIcon />
