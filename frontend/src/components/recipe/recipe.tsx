@@ -10,6 +10,8 @@ import {
   IconButton,
   InputAdornment,
   TextField,
+  Tooltip,
+  Typography,
 } from "@mui/material";
 import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -58,19 +60,29 @@ export const Recipe: FC<RecipeProps> = ({
         onChange={(e) => setDescription(e.target.value)}
       />
 
-      <Autocomplete
-        sx={Styles.chefAutocomplete}
-        options={chefs}
-        getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
-        value={chefs.find((chef) => chef.uuid === chef.uuid) || null}
-        onChange={(_, newValue: ChefModel | null) => {
-          if (newValue) {
-            setChef(newValue);
-          }
-        }}
-        renderInput={(params) => <TextField {...params} label="Chef" />}
-        isOptionEqualToValue={(option, value) => option.uuid === value.uuid}
-      />
+      <Tooltip
+        arrow
+        placement="right"
+        title={
+          <Box component="span">
+            <Typography>{`Email: ${chef.email}`}</Typography>
+            <Typography>{`Phone number: ${chef.phone}`}</Typography>
+          </Box>
+        }
+      >
+        <Autocomplete
+          options={chefs}
+          getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+          value={chef || null}
+          onChange={(_, newValue: ChefModel | null) => {
+            if (newValue) {
+              setChef(newValue);
+            }
+          }}
+          renderInput={(params) => <TextField {...params} label="Chef" />}
+          isOptionEqualToValue={(option, value) => option.uuid === value.uuid}
+        />
+      </Tooltip>
 
       <TextField
         id="outlined-basic"
