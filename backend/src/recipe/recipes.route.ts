@@ -5,9 +5,7 @@ import {
   SaveRecipeRes,
 } from "@shared/http-types/recipe/saveRecipe.http-type";
 import { DeleteRecipeReq } from "@shared/http-types/recipe/deleteRecipe.http-type";
-import {
-  GetRecipeByIdRes,
-} from "@shared/http-types/recipe/getRecipeByUuid.http-type";
+import { GetRecipeByIdRes } from "@shared/http-types/recipe/getRecipeByUuid.http-type";
 import { GetAllRecipesRes } from "@shared/http-types/recipe/getAllRecipes.http-type";
 
 const router = Router();

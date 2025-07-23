@@ -1,4 +1,9 @@
-import { type Dispatch, type FC, type SetStateAction } from "react";
+import {
+  type ChangeEvent,
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+} from "react";
 import Styles from "./recipeIngredientsTable.style";
 import {
   Table,
@@ -20,6 +25,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionActions,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { type RecipeIngredient as RecipeIngredientModel } from "../../../../../shared/types/recipeIngredient.type";
 import { type Ingredient as IngredientModel } from "../../../../../shared/types/ingredient.type";
@@ -29,16 +36,17 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import { type DraftRecipeIngredient } from "../recipeIngredientTable/draftRecipeIngredient.type";
 import { v4 as uuidv4 } from "uuid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import CustomTableCell from "../../customTableCell/CustomTableCell";
 
 type RecipeIngredientsTableProps = {
   recipeIngredients: DraftRecipeIngredient[];
-  ingredientsOptions: IngredientModel[];
+  ingredients: IngredientModel[];
   setRecipeIngredients: Dispatch<SetStateAction<DraftRecipeIngredient[]>>;
 };
 
 export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
   recipeIngredients,
-  ingredientsOptions,
+  ingredients,
   setRecipeIngredients,
 }) => {
   const setRecipeIngredient = (
@@ -54,16 +62,21 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
     );
   };
 
-  const CustomTableCell = (label: string) => (
-    <TableCell align="center">
-      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-        {label}
-      </Typography>
-    </TableCell>
-  );
+  const onAmountChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    uuid: string
+  ) => {
+    const value = parseInt(e.target.value);
+    if (value >= 0 && value <= 99) {
+      setRecipeIngredient(uuid, { amount: value });
+    }
+  };
+
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Accordion>
+    <Accordion defaultExpanded={!isXs}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography component="span">Ingredients</Typography>
       </AccordionSummary>
@@ -72,9 +85,9 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
           <Table sx={Styles.container} aria-label="simple table">
             <TableHead>
               <TableRow>
-                {CustomTableCell("Ingredient")}
-                {CustomTableCell("Amount")}
-                {CustomTableCell("Measurement unit")}
+                <CustomTableCell label="Ingredient" />
+                <CustomTableCell label="Amount" />
+                <CustomTableCell label="Measurement unit" />
                 <TableCell />
               </TableRow>
             </TableHead>
@@ -88,20 +101,26 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                     <Box sx={Styles.ingredientAutocompleteBox}>
                       <Autocomplete
                         sx={Styles.ingredientAutocomplete}
-                        value={recipeIngredient?.ingredient?.name ?? ""}
+                        value={
+                          ingredients.find(
+                            (i) => i.uuid === recipeIngredient.ingredient?.uuid
+                          )?.name ?? ""
+                        }
                         onChange={(_: any, newValue: string | null) => {
                           if (!newValue) return;
 
-                          const ingredientIndex = ingredientsOptions.findIndex(
-                            (index) => index.name === newValue
+                          const ingredientIndex = ingredients.findIndex(
+                            (ingredient) => ingredient.name === newValue
                           );
                           if (ingredientIndex === -1) return;
 
                           setRecipeIngredient(recipeIngredient.uuid, {
-                            ingredient: ingredientsOptions[ingredientIndex],
+                            ingredient: ingredients[ingredientIndex],
                           });
                         }}
-                        options={ingredientsOptions.map((i) => i.name)}
+                        options={ingredients.map(
+                          (ingredient) => ingredient.name
+                        )}
                         renderInput={(params) => <TextField {...params} />}
                       />
                     </Box>
@@ -110,14 +129,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                     <TextField
                       type="number"
                       value={recipeIngredient?.amount ?? 0}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value);
-                        if (value >= 0 && value <= 99) {
-                          setRecipeIngredient(recipeIngredient.uuid, {
-                            amount: value,
-                          });
-                        }
-                      }}
+                      onChange={(e) => onAmountChange(e, recipeIngredient.uuid)}
                       slotProps={{
                         input: {
                           sx: Styles.amountTextFieldInput,
@@ -176,7 +188,6 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
         >
           Add ingredient
         </Button>
-        ;
       </AccordionActions>
     </Accordion>
   );
