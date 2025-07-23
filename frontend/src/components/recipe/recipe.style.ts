@@ -1,8 +1,5 @@
-import { type SxProps, type Theme } from "@mui/material";
-const box: SxProps = {};
-const chefAutocomplete: SxProps = {
-  //my: 3,
-};
+import { type SxProps } from "@mui/material";
+
 
 const methodList: SxProps = {
   width: "100%",
@@ -10,4 +7,10 @@ const methodList: SxProps = {
   bgcolor: "background.paper",
 };
 
-export default { chefAutocomplete, methodList };
+const nameTextField: SxProps = {};
+
+const gridContainer: SxProps = {
+  justifyContent: "center",
+};
+
+export default { methodList, nameTextField, gridContainer };

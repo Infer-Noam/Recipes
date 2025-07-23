@@ -66,7 +66,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
             </IconButton>
           }
           title={name}
-          subheader={`By ${chef.firstName}`}
+          subheader={`By ${chef.firstName} ${chef.lastName}`}
         />
         <CardMedia
           component="img"

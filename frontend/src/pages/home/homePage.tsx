@@ -9,16 +9,11 @@ const HomePage = () => {
 
   const { mutate: deleteRecipe } = useDeleteRecipe();
 
-  const chefSrcArray = [227920, 240413, 227924, 44252, 33158, 218334].map(
-    (n) => {
-      return `https://www.svgrepo.com/show/${n}/chef.svg`;
-    }
-  );
-
-  const chefSrc = () =>
-    chefSrcArray[Math.floor(Math.random() * chefSrcArray.length)];
-
   if (recipes) {
+    function getRandomChefSrc(): string {
+      throw new Error("Function not implemented.");
+    }
+
     return (
       <Box>
         <Grid
@@ -27,17 +22,23 @@ const HomePage = () => {
           rowSpacing={2.5}
           columnSpacing={3.5}
         >
-          {recipes.map((recipe) => (
-            <Grid key={recipe.uuid}>
-              <RecipeCard
-                recipe={recipe}
-                deleteRecipe={() => {
-                  deleteRecipe(recipe.uuid);
-                }}
-                chefAvatarSrc={chefSrc()}
-              />
-            </Grid>
-          ))}
+          {recipes
+            .sort(
+              (a, b) =>
+                new Date(a.createDate).getTime() -
+                new Date(b.createDate).getTime()
+            )
+            .map((recipe) => (
+              <Grid key={recipe.uuid}>
+                <RecipeCard
+                  recipe={recipe}
+                  deleteRecipe={() => {
+                    deleteRecipe(recipe.uuid);
+                  }}
+                  chefAvatarSrc={getRandomChefSrc()}
+                />
+              </Grid>
+            ))}
         </Grid>
       </Box>
     );

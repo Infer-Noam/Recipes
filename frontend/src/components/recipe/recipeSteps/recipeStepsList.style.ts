@@ -1,5 +1,6 @@
 import { type SxProps } from "@mui/material";
 
-const stepsList: SxProps = {};
-
-export default { stepsList };
+const textField: SxProps = {
+  mr: 5,
+};
+export default { textField };

@@ -11,3 +11,11 @@ export type RecipeIngredient = {
   createDate: Date;
   deleteDate: Date;
 };
+
+export type RecipeIngredientDetails = {
+  uuid?: string;
+  recipe: { uuid: string };
+  ingredient: { uuid: string };
+  amount: number;
+  measurementUnit: MeasurementUnit;
+};

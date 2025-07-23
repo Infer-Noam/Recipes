@@ -1,4 +1,7 @@
-import { type RecipeIngredient } from "./recipeIngredient.type";
+import type {
+  RecipeIngredient,
+  RecipeIngredientDetails,
+} from "./recipeIngredient.type";
 import { type Chef } from "../types/chef.type";
 
 export type Recipe = {
@@ -14,10 +17,11 @@ export type Recipe = {
 };
 
 export type RecipeDetails = {
+  uuid?: string;
   name: string;
   steps: string[];
-  chefUuid: string;
-  ingredients: RecipeIngredient[];
+  chef: { uuid: string };
+  ingredients: RecipeIngredientDetails[];
   description: string;
   imageUrl: string;
 };
