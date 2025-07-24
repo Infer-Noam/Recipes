@@ -95,7 +95,7 @@ export const Recipe: FC<RecipeProps> = ({
         </CardActions>
       </Card>
       <RecipeMenu
-        open={anchorEl !== null}
+        open={Boolean(anchorEl)}
         onClose={handleClose}
         anchorEl={anchorEl}
         onDelete={deleteRecipe}

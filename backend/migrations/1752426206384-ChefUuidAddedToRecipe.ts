@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-const DB_SCHEMA = process.env.DB_SCHEMA;
+const { DB_SCHEMA } = process.env;
 
 export class ChefUuidAddedToRecipe1752426206384 implements MigrationInterface {
   name = "ChefUuidAddedToRecipe1752426206384";

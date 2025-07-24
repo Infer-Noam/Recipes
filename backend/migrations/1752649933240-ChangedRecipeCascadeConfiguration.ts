@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-const DB_SCHEMA = process.env.DB_SCHEMA;
+const { DB_SCHEMA } = process.env;
 
 export class ChangedRecipeCascadeConfiguration1752649933240
   implements MigrationInterface

@@ -7,7 +7,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { type FC, useState } from "react";
-import { drawerListItems } from "../drawerList/drawerListItem/drawerListItems.const";
+import { drawerListItems } from "./drawerListItem/drawerListItems.const";
 import Styles from "./drawerList.style";
 import { useNavigate } from "react-router-dom";
 

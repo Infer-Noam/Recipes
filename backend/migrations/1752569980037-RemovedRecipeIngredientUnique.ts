@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-const DB_SCHEMA = process.env.DB_SCHEMA;
+const { DB_SCHEMA } = process.env;
 
 export class RemovedRecipeIngredientUnique1752569980037
   implements MigrationInterface

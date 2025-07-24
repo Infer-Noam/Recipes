@@ -4,7 +4,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { getColorModeIcon } from "../../theme/colorMode.enum";
 import Styles from "./appHeader.style";
 import { ColorModeContext } from "../../contexts/ColorMode.context";
-import logoSrc from "/logo.svg";
+import logoSrc from "../../assets/logo.svg";
 
 type AppHeaderProps = {
   handleMobileDrawerOpen: () => void;
@@ -14,7 +14,10 @@ const AppHeader: FC<AppHeaderProps> = ({
   handleMobileDrawerOpen,
 }: AppHeaderProps) => {
   const { colorMode, toggleColorMode } = useContext(ColorModeContext);
-  const ColorModeIcon = useMemo(() => getColorModeIcon(colorMode), [colorMode]);
+  const ColorModeIcon = useMemo(
+    () => () => getColorModeIcon(colorMode),
+    [colorMode]
+  );
 
   return (
     <AppBar sx={Styles.appHeader} position="static">
@@ -34,7 +37,7 @@ const AppHeader: FC<AppHeaderProps> = ({
         </Typography>
         <Box sx={Styles.spacer} />
         <IconButton color="inherit" onClick={toggleColorMode}>
-          {ColorModeIcon}
+          <ColorModeIcon />
         </IconButton>
       </Toolbar>
     </AppBar>

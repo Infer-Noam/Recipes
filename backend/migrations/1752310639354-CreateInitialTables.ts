@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-const DB_SCHEMA = process.env.DB_SCHEMA;
+const { DB_SCHEMA } = process.env;
 
 export class CreateInitialTables1752310639354 implements MigrationInterface {
   name = "CreateInitialTables1752310639354";
