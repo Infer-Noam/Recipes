@@ -1,8 +1,9 @@
-import { Box, Typography } from "@mui/material";
 import { useDeleteChef } from "../../hooks/api/useDeleteChef.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { useSaveChef } from "../../hooks/api/useSaveChef.api";
+import ChefTable from "../../components/chefTable/chefTable";
 import type { FC } from "react";
+import CentralErrorAlert from "src/components/centralErrorAlert/CentralErrorAlert";
 
 const ChefPage: FC = () => {
   const { data: chefs } = useGetChefs();
@@ -10,8 +11,12 @@ const ChefPage: FC = () => {
   const { mutateAsync: saveChef } = useSaveChef();
 
   if (chefs) {
-    return <Box>{chefs.map((c) => JSON.stringify(c))}</Box>;
-  } else return null;
+    return (
+      <ChefTable chefs={chefs} deleteChef={deleteChef} saveChef={saveChef} />
+    );
+  }
+
+  return <CentralErrorAlert text="Something went wrong..." />;
 };
 
 export default ChefPage;

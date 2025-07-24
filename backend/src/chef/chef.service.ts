@@ -1,3 +1,4 @@
+import { Recipe } from "src/recipe/recipe.entity";
 import { Chef } from "../chef/chef.entity";
 import { AppDataSource } from "../data-source";
 import { ChefDetails } from "@shared/types/chef.type";
@@ -36,6 +37,7 @@ const deleteChef = async (uuid: string) => {
   if (!exist) return false;
 
   await AppDataSource.transaction(async (transaction) => {
+    await transaction.softDelete(Recipe, { chef: { uuid } });
     await transaction.softDelete(Chef, { uuid });
   });
 
