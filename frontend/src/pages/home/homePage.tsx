@@ -1,8 +1,9 @@
 import { Recipe } from "../../components/recipe/recipe";
 import { Box, Grid } from "@mui/material";
 import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
+import type { FC } from "react";
 
-const HomePage = () => {
+const HomePage: FC = () => {
   const { data: recipes } = useGetRecipes();
 
   if (recipes) {

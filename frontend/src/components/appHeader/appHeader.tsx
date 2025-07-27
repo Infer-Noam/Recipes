@@ -20,13 +20,11 @@ const AppHeader: FC<AppHeaderProps> = ({
   );
 
   return (
-    <AppBar sx={Styles.appHeader} position="static">
+    <AppBar sx={Styles.appHeader}>
       <Toolbar>
         <IconButton
-          color="inherit"
           aria-label="open drawer"
           onClick={handleMobileDrawerOpen}
-          edge="start"
           sx={Styles.menuIconButton}
         >
           <MenuIcon />
@@ -36,7 +34,7 @@ const AppHeader: FC<AppHeaderProps> = ({
           Recipes
         </Typography>
         <Box sx={Styles.spacer} />
-        <IconButton color="inherit" onClick={toggleColorMode}>
+        <IconButton sx={Styles.toggleColorIconButton} onClick={toggleColorMode}>
           <ColorModeIcon />
         </IconButton>
       </Toolbar>
