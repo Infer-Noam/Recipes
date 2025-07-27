@@ -12,11 +12,19 @@ const router = Router();
 router.post(
   "/",
   async (req: Request<null, null, SaveChefReq>, res: Response<SaveChefRes>) => {
-    const result = await service.saveChef(req.body.chefDetails);
-    if (result.chef) {
-      res.status(200).json({ chef: result.chef });
-    } else {
-      res.status(500).json({ error: result.error });
+    try {
+      const chef = await service.saveChef(req.body.chefDetails);
+      if (chef) {
+        res.status(200).json({ message: "Chef saved successfully" });
+      } else {
+        res.status(500).json({ message: "Something went wrong" });
+      }
+    } catch (err) {
+      if (err instanceof Error) {
+        res.status(400).json({ message: err.message });
+      } else {
+        res.status(400).json({ message: "Something went wrong" });
+      }
     }
   }
 );

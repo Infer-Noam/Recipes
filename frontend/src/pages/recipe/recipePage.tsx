@@ -3,7 +3,7 @@ import { useGetRecipeByUuid } from "../../hooks/api/useGetRecipeByUuid.api";
 import { useGetIngredients } from "../../hooks/api/useGetIngredients.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { Box } from "@mui/material";
-import { Recipe } from "../../components/recipe/Recipe";
+import { Recipe } from "../../components/recipe/recipe";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 
@@ -16,7 +16,7 @@ const RecipePage = () => {
   const { data: ingredients } = useGetIngredients();
   const { data: chefs } = useGetChefs();
 
-  const { mutateAsync: saveRecipe } = useSaveRecipe();
+  const { mutateAsync: saveRecipe, error: saveError } = useSaveRecipe();
   const { mutate: deleteRecipe } = useDeleteRecipe();
 
   if (recipe && ingredients && chefs) {
@@ -28,6 +28,7 @@ const RecipePage = () => {
           ingredients={ingredients}
           deleteRecipe={() => deleteRecipe(uuid)}
           saveRecipe={saveRecipe}
+          saveError={saveError}
         ></Recipe>
       </Box>
     );
