@@ -8,22 +8,13 @@ const chefRepository = AppDataSource.getRepository(Chef);
 const saveChef = async (details: ChefDetails) => {
   const { uuid, ...rest } = details;
 
-  try {
-    const chef = await AppDataSource.transaction(async (transaction) => {
-      return await transaction.save(Chef, {
+  return await AppDataSource.transaction(
+    async (transaction) =>
+      await transaction.save(Chef, {
         ...rest,
         ...(uuid !== undefined && { uuid }),
-      });
-    });
-
-    return { chef };
-  } catch (err) {
-    return {
-      error: {
-        message: err instanceof Error ? err.message : "Unknown error occurred",
-      },
-    };
-  }
+      })
+  );
 };
 
 const getAllChefs = async () => {

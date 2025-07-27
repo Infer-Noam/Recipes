@@ -38,6 +38,7 @@ type RecipeProps = {
       | MutateOptions<SaveRecipeRes, Error, RecipeDetails, unknown>
       | undefined
   ) => Promise<SaveRecipeRes>;
+  saveError: Error | null;
 };
 
 export const Recipe: FC<RecipeProps> = ({
@@ -54,6 +55,7 @@ export const Recipe: FC<RecipeProps> = ({
   ingredients,
   deleteRecipe,
   saveRecipe,
+  saveError,
 }) => {
   const navigate = useNavigate();
 
@@ -100,7 +102,7 @@ export const Recipe: FC<RecipeProps> = ({
       const response = await saveRecipe(recipeDetails);
       if (response.recipe) navigate(-1);
       else {
-        setErrorText(response.error?.message);
+        setErrorText(saveError?.message);
       }
     } else {
       setErrorText("Recipe contain invalid ingredient");
