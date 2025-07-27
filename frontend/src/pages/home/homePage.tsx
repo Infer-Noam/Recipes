@@ -7,8 +7,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import Styles from "./homePage.style";
 import { USE_GET_RECIPES_KEY } from "../../hooks/api/useGetRecipes.api";
 import { chefSrcArray } from "../../consts/chefSrcArray.const";
+import type { FC } from "react";
 
-const HomePage = () => {
+const HomePage: FC = () => {
   const { data: recipes } = useGetRecipes();
 
   const queryClient = useQueryClient();
