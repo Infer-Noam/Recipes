@@ -4,8 +4,9 @@ import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import { chefSrcArray } from "../../consts/chefSrcArray.const";
+import type { FC } from "react";
 
-const HomePage = () => {
+const HomePage: FC = () => {
   const { data: recipes } = useGetRecipes();
 
   const { mutate: deleteRecipe } = useDeleteRecipe();
