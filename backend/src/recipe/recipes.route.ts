@@ -19,12 +19,16 @@ router.post(
     try {
       const recipe = await service.saveRecipe(req.body.recipeDetails);
       if (recipe) {
-        res.status(200).json({ recipe });
+        res.status(200).json({ message: "Recipe saved successfully" });
       } else {
-        res.sendStatus(500);
+        res.status(500).json({ message: "Recipe creation failed" });
       }
     } catch (err) {
-      res.sendStatus(400);
+      if (err instanceof Error) {
+        res.status(400).json({ message: err.message });
+      } else {
+        res.status(400).json({ message: "Something went wrong" });
+      }
     }
   }
 );

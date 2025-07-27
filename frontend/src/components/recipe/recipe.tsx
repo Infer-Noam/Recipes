@@ -1,8 +1,5 @@
 import { type FC, useState } from "react";
-import {
-  type RecipeDetails,
-  type Recipe as RecipeModel,
-} from "../../../../shared/types/recipe.type";
+import { type RecipeDetails } from "../../../../shared/types/recipe.type";
 import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
 import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
 import { RecipeIngredientsTable } from "./recipeIngredientTable/recipeIngredientsTable";
@@ -22,13 +19,20 @@ import {
 import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import RecipeStepsList from "./recipeSteps/RecipeStepsList";
-import { useNavigate } from "react-router-dom";
 import type { DraftRecipeIngredient } from "./recipeIngredientTable/draftRecipeIngredient.type";
 import type { SaveRecipeRes } from "@shared/http-types/recipe/saveRecipe.http-type";
 import type { MutateOptions } from "@tanstack/react-query";
+import type { RecipeIngredient } from "@shared/types/recipeIngredient.type";
+import { isAxiosError } from "axios";
 
 type RecipeProps = {
-  recipe: RecipeModel;
+  uuid: string;
+  initialName: string;
+  initialChef: ChefModel | undefined;
+  initialDescription: string;
+  initialImageUrl: string;
+  initialSteps: string[];
+  initialIngredients: RecipeIngredient[];
   chefs: ChefModel[];
   ingredients: IngredientModel[];
   deleteRecipe: () => void;
@@ -38,27 +42,23 @@ type RecipeProps = {
       | MutateOptions<SaveRecipeRes, Error, RecipeDetails, unknown>
       | undefined
   ) => Promise<SaveRecipeRes>;
-  saveError: Error | null;
+  close: () => void;
 };
 
 export const Recipe: FC<RecipeProps> = ({
-  recipe: {
-    uuid,
-    name: initialName,
-    chef: initialChef,
-    description: initialDescription,
-    imageUrl: initialImageUrl,
-    steps: initialSteps,
-    ingredients: initialIngredients,
-  },
+  uuid,
+  initialName,
+  initialChef,
+  initialDescription,
+  initialImageUrl,
+  initialSteps,
+  initialIngredients,
   chefs,
   ingredients,
   deleteRecipe,
   saveRecipe,
-  saveError,
+  close,
 }) => {
-  const navigate = useNavigate();
-
   const [name, setName] = useState(initialName);
   const [chef, setChef] = useState(initialChef);
   const [description, setDescription] = useState(initialDescription);
@@ -67,7 +67,9 @@ export const Recipe: FC<RecipeProps> = ({
   const [recipeIngredients, setRecipeIngredients] =
     useState<DraftRecipeIngredient[]>(initialIngredients);
 
-  const [errorText, setErrorText] = useState<string | undefined>(undefined);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>(
+    undefined
+  );
 
   const isValidRecipeIngredient = (
     ingredient: DraftRecipeIngredient
@@ -79,34 +81,48 @@ export const Recipe: FC<RecipeProps> = ({
   };
 
   const save = async () => {
-    setErrorText(undefined);
+    setErrorMessage(undefined);
+
+    const imageUrlRegex =
+      /https?:\/\/[^\/\s]+\/[^\/\s]+\.(jpg|jpeg|png|gif|bmp)/i;
+
     const areIngredientsValid = recipeIngredients.every(
       isValidRecipeIngredient
     );
-    if (areIngredientsValid) {
-      const recipeDetails: RecipeDetails = {
-        uuid,
-        name,
-        chef,
-        description,
-        imageUrl,
-        steps,
-        ingredients: recipeIngredients.map((ri) => ({
-          uuid: ri.uuid,
-          recipe: { uuid },
-          ingredient: { uuid: ri!.ingredient!.uuid! },
-          amount: ri!.amount!,
-          measurementUnit: ri!.measurementUnit!,
-        })),
-      };
-      const response = await saveRecipe(recipeDetails);
-      if (response.recipe) navigate(-1);
-      else {
-        setErrorText(saveError?.message);
-      }
-    } else {
-      setErrorText("Recipe contain invalid ingredient");
+
+    let errorMessage: string | undefined = undefined;
+
+    if (!areIngredientsValid)
+      errorMessage = "Recipe contain invalid ingredient";
+    if (!chef) errorMessage = "Recipe contain invalid chef";
+    if (!imageUrlRegex.test(imageUrl))
+      errorMessage = "Recipe contain invalid image";
+
+    if (errorMessage) {
+      setErrorMessage(errorMessage);
+      return;
     }
+    const recipeDetails: RecipeDetails = {
+      uuid,
+      name,
+      chef: chef!,
+      description,
+      imageUrl,
+      steps,
+      ingredients: recipeIngredients.map((ri) => ({
+        uuid: ri.uuid,
+        recipe: { uuid },
+        ingredient: { uuid: ri!.ingredient!.uuid! },
+        amount: ri!.amount!,
+        measurementUnit: ri!.measurementUnit!,
+      })),
+    };
+    await saveRecipe(recipeDetails)
+      .then(close)
+      .catch((err) => {
+        if (isAxiosError(err)) setErrorMessage(err.response?.data.message);
+        else setErrorMessage(err?.message);
+      });
   };
 
   return (
@@ -128,8 +144,8 @@ export const Recipe: FC<RecipeProps> = ({
           placement="right"
           title={
             <Box component="span">
-              <Typography>{`Email: ${chef.email}`}</Typography>
-              <Typography>{`Phone number: ${chef.phone}`}</Typography>
+              <Typography>{`Email: ${chef?.email}`}</Typography>
+              <Typography data-testid="phone">{`Phone number: ${chef?.phone}`}</Typography>
             </Box>
           }
         >
@@ -210,18 +226,18 @@ export const Recipe: FC<RecipeProps> = ({
           size="large"
           onClick={() => {
             deleteRecipe();
-            navigate(-1);
+            close();
           }}
         >
           Delete
         </Button>
       </Grid>
 
-      {errorText && (
+      {errorMessage && (
         <Grid size={{ xs: 8, md: 6.5, lg: 4, xl: 6.5 }}>
           <Alert severity="error">
             <AlertTitle>Error</AlertTitle>
-            {errorText}
+            {errorMessage}
           </Alert>
         </Grid>
       )}

@@ -1,54 +1,42 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useGetRecipeByUuid } from "../../hooks/api/useGetRecipeByUuid.api";
 import { useGetIngredients } from "../../hooks/api/useGetIngredients.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { Box } from "@mui/material";
 import { Recipe } from "../../components/recipe/recipe";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
+import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
-const RecipePage = () => {
+const RecipeCreationPage = () => {
   const navigate = useNavigate();
 
-  const { uuid } = useParams();
-
-  if (!uuid) return null;
-
-  const { data: recipe } = useGetRecipeByUuid(uuid);
   const { data: ingredients } = useGetIngredients();
   const { data: chefs } = useGetChefs();
 
   const { mutateAsync: saveRecipe } = useSaveRecipe();
   const { mutate: deleteRecipe } = useDeleteRecipe();
 
-  if (recipe && ingredients && chefs) {
-    const {
-      name,
-      chef,
-      description,
-      imageUrl,
-      steps,
-      ingredients: initialIngredients,
-    } = recipe;
+  const uuid = uuidv4();
+  if (ingredients && chefs) {
     return (
       <Box>
         <Recipe
           chefs={chefs}
+          ingredients={ingredients}
           deleteRecipe={() => deleteRecipe(uuid)}
           saveRecipe={saveRecipe}
           uuid={uuid}
-          initialName={name}
-          initialChef={chef}
-          initialDescription={description}
-          initialImageUrl={imageUrl}
-          initialSteps={steps}
-          initialIngredients={initialIngredients}
-          ingredients={ingredients}
-          close={() => navigate(-1)}
+          initialName={""}
+          initialChef={undefined}
+          initialDescription={""}
+          initialImageUrl={""}
+          initialSteps={[]}
+          initialIngredients={[]}
+          close={() => navigate("/")}
         ></Recipe>
       </Box>
     );
   } else return null;
 };
 
-export default RecipePage;
+export default RecipeCreationPage;
