@@ -3,7 +3,7 @@ import {
   type ThemeOptions,
   type Theme,
 } from "@mui/material/styles";
-import { type ColorMode } from "./colorMode.enum";
+import { ColorMode } from "./colorMode.enum";
 
 declare module "@mui/material/styles" {
   interface Palette {
@@ -29,7 +29,7 @@ export const themeOptions: (colorMode: ColorMode) => ThemeOptions = (
       main: "#ecececff",
     },
     border: {
-      primary: colorMode === "light" ? "#bdbdbd" : "#616161",
+      primary: colorMode === ColorMode.LIGHT ? "#bdbdbd" : "#616161",
     },
   },
 });
