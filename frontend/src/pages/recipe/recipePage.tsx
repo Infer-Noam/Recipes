@@ -8,8 +8,9 @@ import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 import { Box } from "@mui/material";
+import type { FC } from "react";
 
-const RecipePage = () => {
+const RecipePage: FC = () => {
   const { uuid } = useParams();
 
   if (!uuid) return null;
@@ -18,21 +19,35 @@ const RecipePage = () => {
   const { data: ingredients = [] } = useGetIngredients();
   const { data: chefs = [] } = useGetChefs();
 
-  const { mutateAsync: saveRecipe, error: saveError } = useSaveRecipe();
+  const { mutateAsync: saveRecipe } = useSaveRecipe();
   const { mutate: deleteRecipe } = useDeleteRecipe();
 
   if (isLoading) return <BackdropLoading />;
 
   if (recipe) {
+    const {
+      name,
+      chef,
+      description,
+      imageUrl,
+      steps,
+      ingredients: initialIngredients,
+    } = recipe;
+
     return (
       <Box>
         <Recipe
-          recipe={recipe}
           chefs={chefs}
-          ingredients={ingredients}
           deleteRecipe={() => deleteRecipe(uuid)}
           saveRecipe={saveRecipe}
-          saveError={saveError}
+          uuid={uuid}
+          initialName={name}
+          initialChef={chef}
+          initialDescription={description}
+          initialImageUrl={imageUrl}
+          initialSteps={steps}
+          initialIngredients={initialIngredients}
+          ingredients={ingredients}
         ></Recipe>
       </Box>
     );

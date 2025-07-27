@@ -1,8 +1,5 @@
 import { type FC, useState } from "react";
-import {
-  type RecipeDetails,
-  type Recipe as RecipeModel,
-} from "../../../../shared/types/recipe.type";
+import { type RecipeDetails } from "../../../../shared/types/recipe.type";
 import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
 import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
 import { RecipeIngredientsTable } from "./recipeIngredientTable/RecipeIngredientsTable";
@@ -22,11 +19,12 @@ import {
 import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import RecipeStepsList from "./recipeSteps/RecipeStepsList";
-import { useNavigate } from "react-router-dom";
 import type { DraftRecipeIngredient } from "./recipeIngredientTable/draftRecipeIngredient.type";
 import type { SaveRecipeRes } from "@shared/http-types/recipe/saveRecipe.http-type";
 import type { MutateOptions } from "@tanstack/react-query";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import type { RecipeIngredient } from "@shared/types/recipeIngredient.type";
+import { useNavigate } from "react-router-dom";
 
 export type RecipeInputs = {
   name: string;
@@ -38,7 +36,13 @@ export type RecipeInputs = {
 };
 
 type RecipeProps = {
-  recipe: RecipeModel;
+  uuid: string;
+  initialName: string;
+  initialChef: ChefModel | undefined;
+  initialDescription: string;
+  initialImageUrl: string;
+  initialSteps: string[];
+  initialIngredients: RecipeIngredient[];
   chefs: ChefModel[];
   ingredients: IngredientModel[];
   deleteRecipe: () => void;
@@ -48,24 +52,21 @@ type RecipeProps = {
       | MutateOptions<SaveRecipeRes, Error, RecipeDetails, unknown>
       | undefined
   ) => Promise<SaveRecipeRes>;
-  saveError: Error | null;
+  close: () => void;
 };
 
 export const Recipe: FC<RecipeProps> = ({
-  recipe: {
-    uuid,
-    name: initialName,
-    chef: initialChef,
-    description: initialDescription,
-    imageUrl: initialImageUrl,
-    steps: initialSteps,
-    ingredients: initialIngredients,
-  },
+  uuid,
+  initialName,
+  initialChef,
+  initialDescription,
+  initialImageUrl,
+  initialSteps,
+  initialIngredients,
   chefs,
   ingredients,
   deleteRecipe,
   saveRecipe,
-  saveError,
 }) => {
   const navigate = useNavigate();
 
@@ -97,7 +98,6 @@ export const Recipe: FC<RecipeProps> = ({
     steps,
     recipeIngredients,
   }) => {
-
     const recipeDetails: RecipeDetails = {
       uuid,
       name,
@@ -115,12 +115,8 @@ export const Recipe: FC<RecipeProps> = ({
     };
 
     try {
-      const response = await saveRecipe(recipeDetails);
-      if (response.recipe) {
-        navigate(-1);
-      } else {
-        setErrorText(saveError?.message || "Failed to save recipe");
-      }
+      await saveRecipe(recipeDetails);
+      navigate(-1);
     } catch (error) {
       setErrorText(
         error instanceof Error ? error.message : "An error occurred"

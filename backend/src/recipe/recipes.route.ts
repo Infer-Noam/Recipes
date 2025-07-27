@@ -21,11 +21,11 @@ router.post(
     try {
       const recipe = await service.saveRecipe(req.body.recipeDetails);
       if (recipe) {
-        res.status(200).json({ recipe });
+        res.status(200).json({ message: "Recipe saved successfully" });
       } else {
-        res.sendStatus(500);
+        throw new HttpError("Recipe creation failed", 500);
       }
-      next()
+      next();
     } catch (err) {
       next(err);
     }
