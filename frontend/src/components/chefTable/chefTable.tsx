@@ -79,6 +79,11 @@ const ChefTable: FC<ChefTableProps> = ({
                 Add chef
               </Button>
             </TableCell>
+            <TableCell />
+            <TableCell />
+            <TableCell />
+            <TableCell />
+            <TableCell />
           </TableRow>
         </TableBody>
       </Table>

@@ -93,8 +93,9 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           variant="outlined"
         />
       </TableCell>
-      {hasChanged && (
-        <TableCell>
+
+      <TableCell>
+        {hasChanged && (
           <IconButton
             onClick={() =>
               saveChef({
@@ -108,8 +109,8 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           >
             <CheckIcon />
           </IconButton>
-        </TableCell>
-      )}
+        )}
+      </TableCell>
     </TableRow>
   );
 };
