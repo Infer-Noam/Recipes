@@ -97,7 +97,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                   key={recipeIngredient.uuid}
                   sx={Styles.recipeIngredientTableRow}
                 >
-                  <TableCell align="center">
+                  <TableCell sx={Styles.centerAlign}>
                     <Box sx={Styles.ingredientAutocompleteBox}>
                       <Autocomplete
                         sx={Styles.ingredientAutocomplete}
@@ -128,7 +128,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                       />
                     </Box>
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell sx={Styles.centerAlign}>
                     <TextField
                       type="number"
                       value={recipeIngredient?.amount ?? 0}
@@ -145,7 +145,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                       variant="outlined"
                     />
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell sx={Styles.centerAlign}>
                     <Select
                       sx={Styles.measurementUnitSelect}
                       value={recipeIngredient.measurementUnit}
