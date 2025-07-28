@@ -33,7 +33,7 @@ import { v4 as uuidv4 } from "uuid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomTableCell from "../../customTableCell/CustomTableCell";
 import { Controller, type Control } from "react-hook-form";
-import type { RecipeInputs } from "../recipe";
+import type { RecipeInputs } from "../Recipe";
 
 type RecipeIngredientsTableProps = {
   ingredients: IngredientModel[];
