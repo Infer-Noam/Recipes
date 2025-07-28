@@ -70,10 +70,6 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
     initialPhone,
   ]);
 
-  const handleSave = () => {
-    handleSubmit(onSubmit)();
-  };
-
   return (
     <TableRow sx={Styles.chefTableRow}>
       <TableCell sx={Styles.centerAlign}>
@@ -124,7 +120,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
 
       <TableCell>
         {hasChanged && (
-          <IconButton onClick={handleSave}>
+          <IconButton onClick={() => handleSubmit(onSubmit)()}>
             <CheckIcon />
           </IconButton>
         )}

@@ -32,6 +32,8 @@ const centerAlign: SxProps = {
 
 const labelTypography = { fontWeight: "bold" };
 
+const errorTypography = { mt: 1, display: "block" };
+
 export default {
   amountTextFieldInput,
   recipeIngredientTableRow,
@@ -41,4 +43,5 @@ export default {
   container,
   centerAlign,
   labelTypography,
+  errorTypography,
 };
