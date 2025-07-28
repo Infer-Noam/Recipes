@@ -12,13 +12,18 @@ const mutationFn = async (uuid: string) => {
   return response.data;
 };
 
-export const useDeleteChef = () => {
+export const useDeleteChef = (
+  onError?: (error: unknown) => void,
+  onSuccess?: (data: DeleteChefRes) => void
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn,
-    onSuccess: () => {
+    onSuccess: (response) => {
+      onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [USE_GET_CHEFS_KEY] });
     },
+    onError,
   });
 };

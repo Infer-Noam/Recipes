@@ -60,7 +60,7 @@ router.delete(
 
       if (!exist) throw new HttpError("Chef dosen't exist", 404);
 
-      res.status(204).json({
+      res.status(200).json({
         message: "Chef deleted successfully",
       });
       next();

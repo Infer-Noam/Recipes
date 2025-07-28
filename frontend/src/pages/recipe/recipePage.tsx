@@ -3,12 +3,9 @@ import { useGetRecipeByUuid } from "../../hooks/api/useGetRecipeByUuid.api";
 import { useGetIngredients } from "../../hooks/api/useGetIngredients.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { Recipe } from "../../components/recipe/recipe";
-import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
-import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
+import type { FC } from "react";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
-import { Box } from "@mui/material";
-import type { FC } from "react";
 
 const RecipePage: FC = () => {
   const { uuid } = useParams();
@@ -19,9 +16,6 @@ const RecipePage: FC = () => {
   const { data: ingredients = [] } = useGetIngredients();
   const { data: chefs = [] } = useGetChefs();
 
-  const { mutateAsync: saveRecipe } = useSaveRecipe();
-  const { mutate: deleteRecipe } = useDeleteRecipe();
-
   if (isLoading) return <BackdropLoading />;
 
   if (recipe) {
@@ -31,25 +25,23 @@ const RecipePage: FC = () => {
       description,
       imageUrl,
       steps,
-      ingredients: initialIngredients,
+      ingredients: recipeIngredients,
     } = recipe;
 
     return (
-      <Box>
-        <Recipe
-          chefs={chefs}
-          deleteRecipe={() => deleteRecipe(uuid)}
-          saveRecipe={saveRecipe}
-          uuid={uuid}
-          initialName={name}
-          initialChef={chef}
-          initialDescription={description}
-          initialImageUrl={imageUrl}
-          initialSteps={steps}
-          initialIngredients={initialIngredients}
-          ingredients={ingredients}
-        ></Recipe>
-      </Box>
+      <Recipe
+        chefs={chefs}
+        uuid={uuid}
+        ingredients={ingredients}
+        initialRecipe={{
+          name,
+          chef,
+          description,
+          imageUrl,
+          steps,
+          recipeIngredients,
+        }}
+      ></Recipe>
     );
   }
 

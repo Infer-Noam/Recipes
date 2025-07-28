@@ -8,60 +8,34 @@ import { useState } from "react";
 import { isAxiosError } from "axios";
 import type { FC } from "react";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
-import type { ChefDetails } from "@shared/types/chef.type";
 
 const ChefPage: FC = () => {
-  const { data: chefs } = useGetChefs();
-  const { mutateAsync: deleteChefMutate } = useDeleteChef();
-  const { mutateAsync: saveChefMutate, error } = useSaveChef();
-
   const [message, setMessage] = useState<string | undefined>(undefined);
-  const [isError, setIsError] = useState<boolean | undefined>(undefined);
+  const [isError, setIsError] = useState<boolean>(false);
 
-  const deleteChef = async (uuid: string) => {
-    setMessage(undefined);
-    await deleteChefMutate(uuid)
-      .then((response) => {
-        setMessage(response.message);
-        setIsError(false);
-      })
-      .catch((err) => {
-        if (isAxiosError(err)) setMessage(err.response?.data.message);
-        else setMessage(error?.message);
-        setIsError(true);
-      });
-  };
-
-  const saveChef = async (chefDetails: ChefDetails) => {
-    setMessage(undefined);
-    const { firstName, lastName, phone, email } = chefDetails;
-
-    const emailRegex = /^[\w.-]+@[\w.-]+\.\w{2,}$/;
-
-    let errorMessage: string | undefined = undefined;
-
-    if (firstName.length === 0) errorMessage = "First name is required";
-    else if (lastName.length === 0) errorMessage = "Last name is required";
-    else if (!emailRegex.test(email)) errorMessage = "Invalid email address";
-    else if (phone.length !== 10) errorMessage = "Invalid phone number";
-
-    if (errorMessage) {
-      setMessage(errorMessage);
+  const { data: chefs } = useGetChefs();
+  const { mutateAsync: deleteChef } = useDeleteChef(
+    (err) => {
+      if (isAxiosError(err)) setMessage(err.response?.data.message);
+      else setMessage("Something went wrong");
       setIsError(true);
-      return;
+    },
+    (data) => {
+      setMessage(data.message);
+      setIsError(false);
     }
-
-    await saveChefMutate(chefDetails)
-      .then((response) => {
-        setMessage(response.message);
-        setIsError(false);
-      })
-      .catch((err) => {
-        if (isAxiosError(err)) setMessage(err.response?.data.message);
-        else setMessage(err?.message);
-        setIsError(true);
-      });
-  };
+  );
+  const { mutateAsync: saveChef } = useSaveChef(
+    (err) => {
+      if (isAxiosError(err)) setMessage(err.response?.data.message);
+      else setMessage("Something went wrong");
+      setIsError(true);
+    },
+    (data) => {
+      setMessage(data.message);
+      setIsError(false);
+    }
+  );
 
   type AlertInfo = {
     severity: "success" | "error";
