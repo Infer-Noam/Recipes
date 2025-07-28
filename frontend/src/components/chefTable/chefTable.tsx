@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import ChefTableRow from "./chefTableRow/chefTableRow";
 import AddIcon from "@mui/icons-material/Add";
-import { v4 as uuidv4 } from "uuid";
+import defaultChefDetails from "../../consts/defaultChefDetails";
 
 type ChefTableProps = {
   chefs: ChefDetails[];
@@ -30,8 +30,8 @@ const ChefTable: FC<ChefTableProps> = ({
   const [chefs, setChefs] = useState(defaultChefs);
 
   const CustomTableCell: FC<{ label: string }> = ({ label }) => (
-    <TableCell align="center">
-      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+    <TableCell sx={Styles.centerAlign}>
+      <Typography variant="subtitle1" sx={Styles.labelTypography}>
         {label}
       </Typography>
     </TableCell>
@@ -41,7 +41,7 @@ const ChefTable: FC<ChefTableProps> = ({
       <Table sx={Styles.container} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <CustomTableCell label={""} />
+            <TableCell />
             <CustomTableCell label={"First name"} />
             <CustomTableCell label={"Last name"} />
             <CustomTableCell label={"Email"} />
@@ -62,17 +62,10 @@ const ChefTable: FC<ChefTableProps> = ({
             />
           ))}
           <TableRow>
-            <TableCell align="center">
+            <TableCell sx={Styles.centerAlign}>
               <Button
                 onClick={() => {
-                  const newChef: ChefDetails = {
-                    uuid: uuidv4(),
-                    firstName: "",
-                    lastName: "",
-                    email: "",
-                    phone: "",
-                  };
-                  setChefs((prev) => [...prev, newChef]);
+                  setChefs((prev) => [...prev, defaultChefDetails]);
                 }}
                 startIcon={<AddIcon />}
               >

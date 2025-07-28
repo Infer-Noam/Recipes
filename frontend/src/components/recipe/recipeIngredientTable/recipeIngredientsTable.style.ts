@@ -26,6 +26,12 @@ const container: SxProps = {
   overflow: "auto",
 };
 
+const centerAlign: SxProps = {
+  textAlign: "center",
+};
+
+const labelTypography = { fontWeight: "bold" };
+
 export default {
   amountTextFieldInput,
   recipeIngredientTableRow,
@@ -33,4 +39,6 @@ export default {
   ingredientAutocompleteBox,
   measurementUnitSelect,
   container,
+  centerAlign,
+  labelTypography,
 };

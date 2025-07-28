@@ -7,17 +7,23 @@ import type {
 import { USE_GET_CHEFS_KEY } from "./useGetChefs.api";
 import type { ChefDetails } from "@shared/types/chef.type";
 
-export const useSaveChef = () => {
+const mutationFn = async (chefDetails: ChefDetails) => {
+  const data: SaveChefReq = { chefDetails };
+  const response = await api.post<SaveChefRes>("/chef", data);
+  return response.data;
+};
+export const useSaveChef = (
+  onError?: (error: unknown) => void,
+  onSuccess?: (data: SaveChefRes) => void
+) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (chefDetails: ChefDetails) => {
-      const data: SaveChefReq = { chefDetails };
-      const response = await api.post<SaveChefRes>("/chef", data);
-      return response.data;
-    },
-    onSuccess: () => {
+    mutationFn,
+    onSuccess: (response) => {
+      onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [USE_GET_CHEFS_KEY] });
     },
+    onError,
   });
 };

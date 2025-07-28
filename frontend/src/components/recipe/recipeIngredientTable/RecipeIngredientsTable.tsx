@@ -53,8 +53,8 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
   };
 
   const CustomTableCell: FC<{ label: string }> = ({ label }) => (
-    <TableCell align="center">
-      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
+    <TableCell sx={Styles.centerAlign}>
+      <Typography variant="subtitle1" sx={Styles.labelTypography}>
         {label}
       </Typography>
     </TableCell>
@@ -74,16 +74,16 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
             <Table sx={Styles.container} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <CustomTableCell label={"Ingredient"} />
-                  <CustomTableCell label={"Amount"} />
-                  <CustomTableCell label={"Measurement unit"} />
+                  <CustomTableCell label="Ingredient" />
+                  <CustomTableCell label="Amount" />
+                  <CustomTableCell label="Measurement unit" />
                   <TableCell />
                 </TableRow>
               </TableHead>
               <TableBody>
                 {recipeIngredients.map((ri) => (
                   <TableRow key={ri.uuid} sx={Styles.recipeIngredientTableRow}>
-                    <TableCell align="center">
+                    <TableCell sx={Styles.centerAlign}>
                       <Box sx={Styles.ingredientAutocompleteBox}>
                         <Autocomplete
                           sx={Styles.ingredientAutocomplete}
@@ -113,7 +113,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                         />
                       </Box>
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell sx={Styles.centerAlign}>
                       <TextField
                         type="number"
                         value={ri?.amount}
@@ -135,7 +135,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                         variant="outlined"
                       />
                     </TableCell>
-                    <TableCell align="center">
+                    <TableCell sx={Styles.centerAlign}>
                       <Select
                         sx={Styles.measurementUnitSelect}
                         value={ri.measurementUnit}

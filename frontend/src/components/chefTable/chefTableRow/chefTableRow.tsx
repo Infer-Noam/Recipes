@@ -4,6 +4,14 @@ import { useEffect, useState, type FC } from "react";
 import Styles from "./chefTableRow.style";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { useForm, type SubmitHandler } from "react-hook-form";
+
+type Inputs = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+};
 
 type ChefTableRowProps = {
   chef: ChefDetails;
@@ -22,91 +30,101 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
   saveChef,
   deleteChef,
 }) => {
-  const [firstName, setFirstName] = useState(initialFirstName);
-  const [lastName, setLastName] = useState(initialLastName);
-  const [email, setEmail] = useState(initialEmail);
-  const [phone, setPhone] = useState(initialPhone);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>({
+    defaultValues: {
+      firstName: initialFirstName,
+      lastName: initialLastName,
+      email: initialEmail,
+      phone: initialPhone,
+    },
+  });
+
+  const allValues = watch();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    saveChef({
+      uuid,
+      ...data,
+    });
+  };
 
   const [hasChanged, setHasChanged] = useState(false);
 
   useEffect(() => {
     const changed =
-      firstName !== initialFirstName ||
-      lastName !== initialLastName ||
-      email !== initialEmail ||
-      phone !== initialPhone;
+      allValues.firstName !== initialFirstName ||
+      allValues.lastName !== initialLastName ||
+      allValues.email !== initialEmail ||
+      allValues.phone !== initialPhone;
     setHasChanged(changed);
   }, [
-    firstName,
-    lastName,
-    email,
-    phone,
+    allValues,
     initialFirstName,
     initialLastName,
     initialEmail,
     initialPhone,
   ]);
 
+  const handleSave = () => {
+    handleSubmit(onSubmit)();
+  };
+
   return (
     <TableRow sx={Styles.chefTableRow}>
-      <TableCell align="center">
-        {
-          <IconButton onClick={deleteChef}>
-            <RemoveIcon />
-          </IconButton>
-        }
+      <TableCell sx={Styles.centerAlign}>
+        <IconButton onClick={deleteChef}>
+          <RemoveIcon />
+        </IconButton>
       </TableCell>
-      <TableCell align="center">
+      <TableCell sx={Styles.centerAlign}>
         <TextField
           sx={Styles.firstNameTextField}
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
           variant="outlined"
+          {...register("firstName", { required: true, maxLength: 20 })}
+          error={!!errors.firstName}
         />
       </TableCell>
-      <TableCell align="center">
+      <TableCell sx={Styles.centerAlign}>
         <TextField
           sx={Styles.lastNameTextField}
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
           variant="outlined"
+          {...register("lastName", { required: true, maxLength: 20 })}
+          error={!!errors.lastName}
         />
       </TableCell>
-      <TableCell align="center">
+      <TableCell sx={Styles.centerAlign}>
         <TextField
           sx={Styles.emailTextField}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           variant="outlined"
+          {...register("email", {
+            required: true,
+            pattern: /^[\w.-]+@[\w.-]+\.\w{2,}$/,
+          })}
+          error={!!errors.email}
         />
       </TableCell>
-      <TableCell align="center">
+      <TableCell sx={Styles.centerAlign}>
         <TextField
           sx={Styles.phoneTextField}
-          value={phone}
-          onChange={(e) => {
-            const value = e.target.value;
-            !isNaN(Number(value)) &&
-              value.length <= 10 &&
-              setPhone(e.target.value);
-          }}
+          {...register("phone", {
+            required: true,
+            minLength: 10,
+            maxLength: 10,
+            pattern: /^[0-9]{10}$/,
+          })}
           variant="outlined"
+          error={!!errors.phone}
         />
       </TableCell>
 
       <TableCell>
         {hasChanged && (
-          <IconButton
-            onClick={() =>
-              saveChef({
-                uuid,
-                firstName,
-                lastName,
-                email,
-                phone,
-              })
-            }
-          >
+          <IconButton onClick={handleSave}>
             <CheckIcon />
           </IconButton>
         )}
