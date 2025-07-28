@@ -3,12 +3,15 @@ import service from "./recipe.service";
 import {
   SaveRecipeReq,
   SaveRecipeRes,
-} from "@shared/http-types/recipe/saveRecipe.http-type";
-import { DeleteRecipeReq } from "@shared/http-types/recipe/deleteRecipe.http-type";
-import { GetRecipeByIdRes } from "@shared/http-types/recipe/getRecipeByUuid.http-type";
-import { GetAllRecipesRes } from "@shared/http-types/recipe/getAllRecipes.http-type";
-import { NotFoundError } from "src/utils/errors/notFound.error";
+} from "@shared/api/recipe/saveRecipe.http-type";
+import {
+  DeleteRecipeReq,
+  DeleteRecipeRes,
+} from "@shared/api/recipe/deleteRecipe.http-type";
+import { GetRecipeByIdRes } from "@shared/api/recipe/getRecipeByUuid.http-type";
+import { GetAllRecipesRes } from "@shared/api/recipe/getAllRecipes.http-type";
 import { HttpError } from "@shared/types/httpError.type";
+import { NotFoundError } from "../utils/errors/notFound.error";
 
 const router = Router();
 
@@ -18,17 +21,20 @@ router.post(
     req: Request<null, null, SaveRecipeReq>,
     res: Response<SaveRecipeRes>
   ) => {
-      const recipe = await service.saveRecipe(req.body.recipeDetails);
+    const recipe = await service.saveRecipe(req.body.recipeDetails);
 
-      if (!recipe) throw new HttpError("Recipe creation failed", 500);
+    if (!recipe) throw new HttpError("Recipe creation failed", 500);
 
-      res.status(200).json({ message: "Recipe saved successfully" });
+    res.status(200).json({ message: "Recipe saved successfully" });
   }
 );
 
 router.delete(
   "/",
-  async (req: Request<null, null, DeleteRecipeReq>, res: Response) => {
+  async (
+    req: Request<null, null, DeleteRecipeReq>,
+    res: Response<DeleteRecipeRes>
+  ) => {
     const { uuid } = req.body;
 
     const exist = await service.deleteRecipe(uuid);
