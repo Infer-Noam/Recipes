@@ -6,8 +6,9 @@ import { Box } from "@mui/material";
 import { Recipe } from "../../components/recipe/recipe";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
+import type { FC } from "react";
 
-const RecipePage = () => {
+const RecipePage: FC = () => {
   const navigate = useNavigate();
 
   const { uuid } = useParams();

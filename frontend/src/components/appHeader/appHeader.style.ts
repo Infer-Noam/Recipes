@@ -7,6 +7,7 @@ const appHeader: SxProps<Theme> = (theme) => ({
   },
   borderBottomLeftRadius: 4,
   borderBottomRightRadius: 4,
+  position: "static",
 });
 
 const typography: SxProps = {
@@ -21,12 +22,24 @@ const menuIconButton: SxProps = {
     xs: "flex",
     sm: "none",
   },
+  color: "inherit",
+  edge: "start",
 };
 
+const toggleColorIconButton: SxProps = {
+  color: "inherit",
+};
 const spacer: SxProps = {
   flexGrow: 1,
 };
 
 const logo: SxProps = { height: "30px", ml: 1, mr: 1 };
 
-export default { appHeader, menuIconButton, spacer, typography, logo };
+export default {
+  appHeader,
+  menuIconButton,
+  spacer,
+  typography,
+  logo,
+  toggleColorIconButton,
+};
