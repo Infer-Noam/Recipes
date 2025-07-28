@@ -20,11 +20,11 @@ import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import RecipeStepsList from "./recipeSteps/RecipeStepsList";
 import type { DraftRecipeIngredient } from "./recipeIngredientTable/draftRecipeIngredient.type";
-import type { SaveRecipeRes } from "@shared/http-types/recipe/saveRecipe.http-type";
-import type { MutateOptions } from "@tanstack/react-query";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import type { RecipeIngredient } from "@shared/types/recipeIngredient.type";
 import { useNavigate } from "react-router-dom";
+import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
+import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
+import { isAxiosError } from "axios";
 
 export type RecipeInputs = {
   name: string;
@@ -37,37 +37,16 @@ export type RecipeInputs = {
 
 type RecipeProps = {
   uuid: string;
-  initialName: string;
-  initialChef: ChefModel | undefined;
-  initialDescription: string;
-  initialImageUrl: string;
-  initialSteps: string[];
-  initialIngredients: RecipeIngredient[];
+  initialRecipe: RecipeInputs | undefined;
   chefs: ChefModel[];
   ingredients: IngredientModel[];
-  deleteRecipe: () => void;
-  saveRecipe: (
-    variables: RecipeDetails,
-    options?:
-      | MutateOptions<SaveRecipeRes, Error, RecipeDetails, unknown>
-      | undefined
-  ) => Promise<SaveRecipeRes>;
-  close: () => void;
 };
 
 export const Recipe: FC<RecipeProps> = ({
   uuid,
-  initialName,
-  initialChef,
-  initialDescription,
-  initialImageUrl,
-  initialSteps,
-  initialIngredients,
+  initialRecipe,
   chefs,
   ingredients,
-  deleteRecipe,
-  saveRecipe,
-  close,
 }) => {
   const navigate = useNavigate();
 
@@ -79,17 +58,39 @@ export const Recipe: FC<RecipeProps> = ({
     formState: { errors },
   } = useForm<RecipeInputs>({
     defaultValues: {
-      name: initialName,
-      chef: initialChef,
-      description: initialDescription,
-      imageUrl: initialImageUrl,
-      steps: initialSteps,
-      recipeIngredients: initialIngredients,
+      ...(initialRecipe ?? {
+        name: "",
+        chef: undefined,
+        description: "",
+        imageUrl: "",
+        steps: [],
+        recipeIngredients: [],
+      }),
     },
   });
-
   const { chef, imageUrl } = watch();
-  const [errorText, setErrorText] = useState<string | undefined>(undefined);
+  const [messageText, setMessage] = useState<string | undefined>(undefined);
+
+  const { mutateAsync: saveRecipe } = useSaveRecipe(
+    (err) => {
+      if (isAxiosError(err))
+        setMessage(err.response?.data?.message || "Failed to save recipe");
+      else setMessage("Something went wrong");
+    },
+    () => {
+      navigate(-1);
+    }
+  );
+  const { mutate: deleteRecipe } = useDeleteRecipe(
+    (err) => {
+      if (isAxiosError(err))
+        setMessage(err.response?.data?.message || "Failed to delete recipe");
+      else setMessage("Something went wrong");
+    },
+    () => {
+      navigate(-1);
+    }
+  );
 
   const onSubmit: SubmitHandler<RecipeInputs> = async ({
     name,
@@ -99,7 +100,6 @@ export const Recipe: FC<RecipeProps> = ({
     steps,
     recipeIngredients,
   }) => {
-
     const recipeDetails: RecipeDetails = {
       uuid,
       name,
@@ -116,11 +116,7 @@ export const Recipe: FC<RecipeProps> = ({
       })),
     };
 
-      const response = await saveRecipe(recipeDetails);
-      
-      // on success navigate(-1);
-      // on error setErrorText(saveError?.message || "Failed to save recipe");
-     
+    await saveRecipe(recipeDetails);
   };
 
   return (
@@ -238,32 +234,18 @@ export const Recipe: FC<RecipeProps> = ({
             variant="outlined"
             size="large"
             onClick={() => {
-              deleteRecipe();
-              navigate(-1);
+              deleteRecipe(uuid);
             }}
           >
             Delete
           </Button>
         </Grid>
-      <Grid size={{ xs: 4, md: 3, lg: 4.1, xl: 3 }}>
-        <Button
-          fullWidth
-          variant="outlined"
-          size="large"
-          onClick={() => {
-            deleteRecipe();
-            close();
-          }}
-        >
-          Delete
-        </Button>
-      </Grid>
 
-        {errorText && (
+        {messageText && (
           <Grid size={{ xs: 8, md: 6.5, lg: 4, xl: 6.5 }}>
             <Alert severity="error">
               <AlertTitle>Error</AlertTitle>
-              {errorText}
+              {messageText}
             </Alert>
           </Grid>
         )}
