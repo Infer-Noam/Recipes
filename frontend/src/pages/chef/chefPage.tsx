@@ -4,15 +4,21 @@ import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { useSaveChef } from "../../hooks/api/useSaveChef.api";
 import ChefTable from "../../components/chefTable/chefTable";
 import Styles from "./chefPage.style";
-import { useState } from "react";
+import { useState, type FC } from "react";
 import { isAxiosError } from "axios";
 
-const ChefPage = () => {
+const ChefPage: FC = () => {
+  const [message, setMessage] = useState<string | undefined>(undefined);
+
   const { data: chefs } = useGetChefs();
   const { mutate: deleteChef } = useDeleteChef();
-  const { mutateAsync: saveChef, error, isError } = useSaveChef();
-
-  const [message, setMessage] = useState<string | undefined>(undefined);
+  const { mutateAsync: saveChef, isError } = useSaveChef(
+    (err) => {
+      if (isAxiosError(err)) setMessage(err.response?.data.message);
+      else setMessage("Something went wrong");
+    },
+    (data) => setMessage(data.message)
+  );
 
   if (chefs) {
     return (
@@ -23,15 +29,7 @@ const ChefPage = () => {
             deleteChef(uuid);
             setMessage(undefined);
           }}
-          saveChef={async (chefDetails) => {
-            setMessage(undefined);
-            await saveChef(chefDetails)
-              .then((response) => setMessage(response.message))
-              .catch((err) => {
-                if (isAxiosError(err)) setMessage(err.response?.data.message);
-                else setMessage(error?.message);
-              });
-          }}
+          saveChef={saveChef}
         />
         {message && (
           <Alert sx={Styles.alert} severity={isError ? "error" : "success"}>

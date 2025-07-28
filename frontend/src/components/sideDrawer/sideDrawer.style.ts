@@ -8,7 +8,7 @@ const drawer: SxProps = {
 
 const permanentDrawer: SxProps = {
   ...drawer,
-  [`& .MuiDrawer-paper`]: {
+  "& .MuiDrawer-paper": {
     width: drawerWidth,
     boxSizing: "border-box",
   },
