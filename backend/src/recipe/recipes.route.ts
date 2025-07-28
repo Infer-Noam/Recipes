@@ -3,13 +3,13 @@ import service from "./recipe.service";
 import {
   SaveRecipeReq,
   SaveRecipeRes,
-} from "@shared/http-types/recipe/saveRecipe.http-type";
+} from "@shared/api/recipe/saveRecipe.http-type";
 import {
   DeleteRecipeReq,
   DeleteRecipeRes,
-} from "@shared/http-types/recipe/deleteRecipe.http-type";
-import { GetRecipeByIdRes } from "@shared/http-types/recipe/getRecipeByUuid.http-type";
-import { GetAllRecipesRes } from "@shared/http-types/recipe/getAllRecipes.http-type";
+} from "@shared/api/recipe/deleteRecipe.http-type";
+import { GetRecipeByIdRes } from "@shared/api/recipe/getRecipeByUuid.http-type";
+import { GetAllRecipesRes } from "@shared/api/recipe/getAllRecipes.http-type";
 import { HttpError } from "@shared/types/httpError.type";
 
 const router = Router();

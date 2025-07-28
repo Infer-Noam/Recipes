@@ -3,12 +3,12 @@ import service from "./chef.service";
 import {
   SaveChefReq,
   SaveChefRes,
-} from "@shared/http-types/chef/saveChef.http-type";
-import { GetAllChefsRes } from "@shared/http-types/chef/getAllChefs.http-type";
+} from "@shared/api/chef/saveChef.api";
+import { GetAllChefsRes } from "@shared/api/chef/getAllChefs.api";
 import {
   DeleteChefReq,
   DeleteChefRes,
-} from "@shared/http-types/chef/deleteChef.http-type";
+} from "@shared/api/chef/deleteChef.api";
 import { HttpError } from "@shared/types/httpError.type";
 
 const router = Router();

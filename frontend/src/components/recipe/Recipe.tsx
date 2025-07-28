@@ -82,7 +82,9 @@ export const Recipe: FC<RecipeProps> = ({
   const { mutate: deleteRecipe } = useDeleteRecipe(
     (err) => {
       if (isAxiosError(err))
-        setMessageText(err.response?.data?.message || "Failed to delete recipe");
+        setMessageText(
+          err.response?.data?.message || "Failed to delete recipe"
+        );
       else setMessageText("Something went wrong");
     },
     () => {
