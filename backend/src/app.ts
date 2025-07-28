@@ -27,10 +27,6 @@ app.use(express.urlencoded({ extended: true }));
 // Routers
 app.use("/api", apiRouter);
 
-// The final route
-app.all("/{*catchall}", (_, res) => {
-  res.sendStatus(404);
-});
 // Error logger should be after all middleware and routers
 app.use(errorLogger);
 

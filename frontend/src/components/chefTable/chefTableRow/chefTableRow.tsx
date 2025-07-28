@@ -83,6 +83,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           variant="outlined"
           {...register("firstName", { required: true, maxLength: 20 })}
           error={!!errors.firstName}
+          helperText={errors.firstName && "First name is required"}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
@@ -91,6 +92,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           variant="outlined"
           {...register("lastName", { required: true, maxLength: 20 })}
           error={!!errors.lastName}
+          helperText={errors.lastName && "Last name is required"}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
@@ -102,6 +104,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
             pattern: /^[\w.-]+@[\w.-]+\.\w{2,}$/,
           })}
           error={!!errors.email}
+          helperText={errors.email && "Valid email is required"}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
@@ -115,6 +118,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           })}
           variant="outlined"
           error={!!errors.phone}
+          helperText={errors.phone && "Valid phone is required"}
         />
       </TableCell>
 
