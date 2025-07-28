@@ -20,6 +20,24 @@ const ChefPage: FC = () => {
     (data) => setMessage(data.message)
   );
 
+  type AlertInfo = {
+    severity: "success" | "error";
+    title: "Success" | "Error";
+  };
+
+  const errorAlert: Record<"success" | "error", AlertInfo> = {
+    error: {
+      severity: "error",
+      title: "Error",
+    },
+    success: {
+      severity: "success",
+      title: "Success",
+    },
+  };
+
+  const alert = isError ? errorAlert.error : errorAlert.success;
+
   if (chefs) {
     return (
       <Box>
@@ -32,8 +50,8 @@ const ChefPage: FC = () => {
           saveChef={saveChef}
         />
         {message && (
-          <Alert sx={Styles.alert} severity={isError ? "error" : "success"}>
-            <AlertTitle>{isError ? "Error" : "Success"}</AlertTitle>
+          <Alert sx={Styles.alert} severity={alert.severity}>
+            <AlertTitle>{alert.title}</AlertTitle>
             {message}
           </Alert>
         )}
