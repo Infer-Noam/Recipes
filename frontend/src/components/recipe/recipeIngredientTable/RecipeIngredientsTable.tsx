@@ -67,7 +67,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
 
   return (
     <Controller
-      name="recipeIngredients"
+      name="ingredients"
       control={control}
       rules={{
         required: "At least one ingredient is required",
