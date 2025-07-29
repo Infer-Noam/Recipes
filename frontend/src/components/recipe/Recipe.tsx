@@ -30,7 +30,7 @@ export type RecipeInputs = {
   name: string;
   steps: string[];
   chef: ChefModel;
-  recipeIngredients: DraftRecipeIngredient[];
+  ingredients: DraftRecipeIngredient[];
   description: string;
   imageUrl: string;
 };
@@ -57,25 +57,23 @@ export const Recipe: FC<RecipeProps> = ({
     control,
     formState: { errors },
   } = useForm<RecipeInputs>({
-    defaultValues: {
-      ...(initialRecipe ?? {
-        name: "",
-        chef: undefined,
-        description: "",
-        imageUrl: "",
-        steps: [],
-        recipeIngredients: [],
-      }),
+    defaultValues: initialRecipe ?? {
+      name: "",
+      chef: undefined,
+      description: "",
+      imageUrl: "",
+      steps: [],
+      ingredients: [],
     },
   });
   const { chef, imageUrl } = watch();
-  const [messageText, setMessage] = useState<string | undefined>(undefined);
+  const [messageText, setMessageText] = useState<string | undefined>(undefined);
 
   const { mutateAsync: saveRecipe } = useSaveRecipe(
     (err) => {
       if (isAxiosError(err))
-        setMessage(err.response?.data?.message || "Failed to save recipe");
-      else setMessage("Something went wrong");
+        setMessageText(err.response?.data?.message || "Failed to save recipe");
+      else setMessageText("Something went wrong");
     },
     () => {
       navigate(-1);
@@ -84,8 +82,8 @@ export const Recipe: FC<RecipeProps> = ({
   const { mutate: deleteRecipe } = useDeleteRecipe(
     (err) => {
       if (isAxiosError(err))
-        setMessage(err.response?.data?.message || "Failed to delete recipe");
-      else setMessage("Something went wrong");
+        setMessageText(err.response?.data?.message || "Failed to delete recipe");
+      else setMessageText("Something went wrong");
     },
     () => {
       navigate(-1);
@@ -98,7 +96,7 @@ export const Recipe: FC<RecipeProps> = ({
     description,
     imageUrl,
     steps,
-    recipeIngredients,
+    ingredients,
   }) => {
     const recipeDetails: RecipeDetails = {
       uuid,
@@ -107,7 +105,7 @@ export const Recipe: FC<RecipeProps> = ({
       description,
       imageUrl,
       steps,
-      ingredients: recipeIngredients.map((ri) => ({
+      ingredients: ingredients.map((ri) => ({
         uuid: ri.uuid,
         recipe: { uuid },
         ingredient: { uuid: ri!.ingredient!.uuid! },

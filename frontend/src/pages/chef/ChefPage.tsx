@@ -2,7 +2,7 @@ import { Alert, AlertTitle, Box } from "@mui/material";
 import { useDeleteChef } from "../../hooks/api/useDeleteChef.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { useSaveChef } from "../../hooks/api/useSaveChef.api";
-import ChefTable from "../../components/chefTable/chefTable";
+import ChefTable from "../../components/chefTable/ChefTable";
 import Styles from "./chefPage.style";
 import { useState, type FC } from "react";
 import { isAxiosError } from "axios";

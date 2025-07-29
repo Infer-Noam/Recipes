@@ -1,25 +1,22 @@
 import { useGetIngredients } from "../../hooks/api/useGetIngredients.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
-import { Box } from "@mui/material";
-import { Recipe } from "../../components/recipe/recipe";
+import { Recipe } from "../../components/recipe/Recipe";
 import { v4 as uuidv4 } from "uuid";
-const RecipeCreationPage = () => {
+import type { FC } from "react";
+
+const RecipeCreationPage: FC = () => {
   const { data: ingredients } = useGetIngredients();
   const { data: chefs } = useGetChefs();
 
   const uuid = uuidv4();
-  if (ingredients && chefs) {
-    return (
-      <Box>
-        <Recipe
-          chefs={chefs}
-          ingredients={ingredients}
-          uuid={uuid}
-          initialRecipe={undefined}
-        ></Recipe>
-      </Box>
-    );
-  } else return null;
+  return ingredients && chefs ? (
+    <Recipe
+      chefs={chefs}
+      ingredients={ingredients}
+      uuid={uuid}
+      initialRecipe={undefined}
+    />
+  ) : null;
 };
 
 export default RecipeCreationPage;
