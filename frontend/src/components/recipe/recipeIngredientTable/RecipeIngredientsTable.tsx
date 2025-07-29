@@ -33,7 +33,7 @@ import { v4 as uuidv4 } from "uuid";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomTableCell from "../../customTableCell/CustomTableCell";
 import { Controller, type Control } from "react-hook-form";
-import type { RecipeInputs } from "../Recipe";
+import type { RecipeInputs } from "../recipe";
 
 type RecipeIngredientsTableProps = {
   ingredients: IngredientModel[];
@@ -60,7 +60,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
 
   return (
     <Controller
-      name="recipeIngredients"
+      name="ingredients"
       control={control}
       rules={{
         required: "At least one ingredient is required",
