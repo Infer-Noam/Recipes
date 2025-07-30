@@ -2,16 +2,8 @@ import { Recipe } from "./recipe.entity";
 import { RecipeIngredient as RecipeIngredientEntity } from "../recipe/recipe-ingredient/recipeIngredient.entity";
 import { AppDataSource } from "../data-source";
 import { RecipeDetails } from "@shared/types/recipe.type";
-import { FindOptionsRelations } from "typeorm";
 
 const recipeRepository = AppDataSource.getRepository(Recipe);
-
-const relations: FindOptionsRelations<Recipe> = {
-  ingredients: {
-    ingredient: true,
-  },
-  chef: true,
-};
 
 const createRecipe = async (recipeDetails: RecipeDetails) => {
   const { chefUuid, ...rest } = recipeDetails;
@@ -57,14 +49,20 @@ const deleteRecipe = async (uuid: string) => {
 
 const getAllRecipes = async () => {
   return await recipeRepository.find({
-    relations,
+    relations: {
+      ingredients: true,
+      chef: true,
+    },
   });
 };
 
 const getRecipeByUuid = async (uuid: string) => {
   return await recipeRepository.findOne({
     where: { uuid },
-    relations,
+    relations: {
+      ingredients: true,
+      chef: true,
+    },
   });
 };
 

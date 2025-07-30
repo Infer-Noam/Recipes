@@ -1,10 +1,10 @@
 import { Box, Typography } from "@mui/material";
 import type { FC } from "react";
 
-const RecipePage: FC = () => (
+const RecipeEditPage: FC = () => (
   <Box>
-    <Typography>Recipe</Typography>
+    <Typography>Edit</Typography>
   </Box>
 );
 
-export default RecipePage;
+export default RecipeEditPage;
