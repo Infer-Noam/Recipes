@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { useState, type FC, type MouseEvent } from "react";
 import {
   Card,
   CardHeader,
@@ -32,7 +32,7 @@ export const Recipe: FC<RecipeProps> = ({
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -60,8 +60,8 @@ export const Recipe: FC<RecipeProps> = ({
           subheader={`By ${chef.firstName}`}
         />
         <CardMedia
+          sx={Styles.image}
           component="img"
-          height="200px"
           image={imageUrl}
           alt={`An image of ${name}`}
         />
