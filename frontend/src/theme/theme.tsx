@@ -26,7 +26,7 @@ export const themeOptions: (colorMode: ColorMode) => ThemeOptions = (
   palette: {
     mode: colorMode,
     primary: {
-      main: "#832f2fff",
+      main: "#9f3939ff",
     },
     border: {
       primary: colorMode === ColorMode.LIGHT ? "#bdbdbd" : "#616161",
