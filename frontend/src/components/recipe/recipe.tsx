@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type FC } from "react";
 import {
   Card,
   CardHeader,
@@ -25,17 +25,17 @@ type ExpandMoreProps = IconButtonProps & {
   expand: boolean;
 };
 
-const ExpandMore: React.FC<ExpandMoreProps> = ({ expand, ...other }) => (
+const ExpandMore: FC<ExpandMoreProps> = ({ expand, ...other }) => (
   <IconButton {...other} sx={Styles.expandMore(expand)} />
 );
 
-export const Recipe: React.FC<RecipeProps> = ({
+export const Recipe: FC<RecipeProps> = ({
   recipe: { name, imageUrl, chef, description, createDate, steps },
 }) => {
   const { open, toggle } = useToggle();
 
   return (
-    <Card sx={Styles.card}>
+    <Card variant="elevation" sx={Styles.card}>
       <CardHeader
         avatar={
           <Avatar sx={Styles.avatar} aria-label="recipe">
@@ -50,7 +50,12 @@ export const Recipe: React.FC<RecipeProps> = ({
         title={name}
         subheader={`By ${chef.firstName}`}
       />
-      <CardMedia component="img" height="194" image={imageUrl} alt={name} />
+      <CardMedia
+        component="img"
+        height="194"
+        image={imageUrl}
+        alt={`An image of ${name}`}
+      />
       <CardContent>
         <Typography variant="body2" sx={Styles.descriptionTypography}>
           {description}

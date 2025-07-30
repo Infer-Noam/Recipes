@@ -1,20 +1,23 @@
 import type { SxProps, Theme } from "@mui/material";
+import { drawerWidth } from "./components/sideDrawer/sideDrawer.const";
 
-const mainContainer: SxProps<Theme> = (theme) => ({
-  flexGrow: 1,
-  padding: 3,
+const rootLayout: SxProps<Theme> = (theme) => ({
+  width: "100vw",
+  height: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
   backgroundColor: theme.palette.background.default,
 });
 
-const appContainer: SxProps = { display: "flex" };
+const contentArea: SxProps<Theme> = (theme) => ({
+  position: "fixed",
+  left: { xs: 0, sm: drawerWidth },
+  padding: theme.spacing(3),
+  overflow: "auto",
+});
 
-const drawer: SxProps = {
-  width: "255px",
-  flexShrink: 0,
-  "& .MuiDrawer-paper": {
-    width: "255px",
-    boxSizing: "border-box",
-  },
+export default {
+  rootLayout,
+  contentArea,
 };
-
-export default { mainContainer, drawer, appContainer };
