@@ -15,7 +15,7 @@ const HomePage = () => {
     }
   );
 
-  const chefSrc = () =>
+  const getChefSrc = () =>
     chefSrcArray[Math.floor(Math.random() * chefSrcArray.length)];
 
   if (recipes) {
@@ -34,7 +34,7 @@ const HomePage = () => {
                 deleteRecipe={() => {
                   deleteRecipe(recipe.uuid);
                 }}
-                chefAvatarSrc={chefSrc()}
+                chefAvatarSrc={getChefSrc()}
               />
             </Grid>
           ))}
