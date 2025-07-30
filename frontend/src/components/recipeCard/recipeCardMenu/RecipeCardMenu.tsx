@@ -3,7 +3,7 @@ import { Menu, ListItemText, ListItemIcon } from "@mui/material";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import MenuItem from "@mui/material/MenuItem";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Styles from "./recipeMenu.style";
+import Styles from "./recipeCardMenu.style";
 
 type RecipeMenuProps = {
   open: boolean;
