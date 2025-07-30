@@ -1,4 +1,4 @@
-import { type FC, useState } from "react";
+import { type FC } from "react";
 import { type RecipeDetails } from "../../../../shared/types/recipe.type";
 import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
 import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
@@ -13,8 +13,6 @@ import {
   Tooltip,
   Grid,
   Button,
-  Alert,
-  AlertTitle,
 } from "@mui/material";
 import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -25,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import { isAxiosError } from "axios";
+import swal from "sweetalert";
 
 export type RecipeInputs = {
   name: string;
@@ -67,28 +66,20 @@ export const Recipe: FC<RecipeProps> = ({
     },
   });
   const { chef, imageUrl } = watch();
-  const [messageText, setMessageText] = useState<string | undefined>(undefined);
 
-  const { mutateAsync: saveRecipe } = useSaveRecipe(
-    (err) => {
-      if (isAxiosError(err))
-        setMessageText(err.response?.data?.message || "Failed to save recipe");
-      else setMessageText("Something went wrong");
-    },
-    () => {
-      navigate(-1);
-    }
-  );
-  const { mutate: deleteRecipe } = useDeleteRecipe(
-    (err) => {
-      if (isAxiosError(err))
-        setMessageText(err.response?.data?.message || "Failed to delete recipe");
-      else setMessageText("Something went wrong");
-    },
-    () => {
-      navigate(-1);
-    }
-  );
+  const displayError = (err: unknown) => {
+    let text = "";
+    if (isAxiosError(err))
+      text = err.response?.data?.message || "Failed to save recipe";
+    else text = "Something went wrong";
+    swal("Error", text, "error");
+  };
+  const { mutateAsync: saveRecipe } = useSaveRecipe(displayError, () => {
+    navigate(-1);
+  });
+  const { mutate: deleteRecipe } = useDeleteRecipe(displayError, () => {
+    navigate(-1);
+  });
 
   const onSubmit: SubmitHandler<RecipeInputs> = async ({
     name,
@@ -238,15 +229,6 @@ export const Recipe: FC<RecipeProps> = ({
             Delete
           </Button>
         </Grid>
-
-        {messageText && (
-          <Grid size={{ xs: 8, md: 6.5, lg: 4, xl: 6.5 }}>
-            <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
-              {messageText}
-            </Alert>
-          </Grid>
-        )}
       </Grid>
     </Box>
   );
