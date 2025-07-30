@@ -1,7 +1,7 @@
 import { type FC, useContext, useMemo } from "react";
 import { AppBar, IconButton, Toolbar, Typography, Box } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { getColorModeIcon } from "../../theme/theme";
+import { getColorModeIcon } from "../../theme/colorMode.enum";
 import Styles from "./appHeader.style";
 import { ColorModeContext } from "../../contexts/ColorMode.context";
 import logoSrc from "../../assets/logo.svg";

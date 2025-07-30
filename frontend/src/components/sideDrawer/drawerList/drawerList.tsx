@@ -23,7 +23,7 @@ export const DrawerList: FC<DrawerListProps> = ({
   const navigate = useNavigate();
 
   return (
-    <Box sx={Styles.container} role="presentation">
+    <Box role="presentation">
       <List>
         {drawerListItems.map(({ name, path, icon: ItemIcon }, index) => (
           <ListItem key={name} disablePadding>

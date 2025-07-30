@@ -24,12 +24,11 @@ const temporaryDrawer: SxProps = {
   display: { xs: "block", sm: "none" },
 };
 
-const temporaryDrawerPaper: SxProps<Theme> = {
-  borderTopRightRadius: 8,
-  borderBottomRightRadius: 8,
+const temporaryDrawerPaper: SxProps = {
+  borderEndRadius: 8,
 };
 
-const permenentDrawerPaper: SxProps<Theme> = {
+const permenentDrawerPaper: SxProps = {
   borderBottomRightRadius: 8,
 };
 

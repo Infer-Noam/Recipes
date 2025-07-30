@@ -5,25 +5,25 @@ import {
   useMemo,
   type ReactNode,
 } from "react";
-import { type ColorMode } from "../theme/theme";
+import { ColorMode } from "../theme/colorMode.enum";
 
 export type ColorModeContextType = {
   colorMode: ColorMode;
   toggleColorMode: () => void;
 };
 export const ColorModeContext = createContext<ColorModeContextType>({
-  colorMode: "light",
+  colorMode: ColorMode.LIGHT,
   toggleColorMode: () => {},
 });
 
 export const ColorModeProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [colorMode, setColorMode] = useState<ColorMode>("light");
+  const [colorMode, setColorMode] = useState<ColorMode>(ColorMode.LIGHT);
 
   const toggleColorMode = () =>
     setColorMode((prevColorMode) =>
-      prevColorMode === "light" ? "dark" : "light"
+      prevColorMode === ColorMode.LIGHT ? ColorMode.DARK : ColorMode.LIGHT
     );
 
   const value = useMemo(() => ({ colorMode, toggleColorMode }), [colorMode]);

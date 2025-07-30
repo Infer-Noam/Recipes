@@ -3,13 +3,22 @@ import {
   type ThemeOptions,
   type Theme,
 } from "@mui/material/styles";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
+import { ColorMode } from "./colorMode.enum";
 
-export type ColorMode = "dark" | "light";
+declare module "@mui/material/styles" {
+  interface Palette {
+    border: {
+      primary: string;
+      secondary: string;
+    };
+  }
 
-export const getColorModeIcon = (colorMode: ColorMode) =>
-  colorMode === "light" ? <LightModeIcon /> : <DarkModeIcon />;
+  interface PaletteOptions {
+    border?: {
+      primary?: string;
+    };
+  }
+}
 
 export const themeOptions: (colorMode: ColorMode) => ThemeOptions = (
   colorMode
@@ -18,6 +27,9 @@ export const themeOptions: (colorMode: ColorMode) => ThemeOptions = (
     mode: colorMode,
     primary: {
       main: "#ecececff",
+    },
+    border: {
+      primary: colorMode === ColorMode.LIGHT ? "#bdbdbd" : "#616161",
     },
   },
 });

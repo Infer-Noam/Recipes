@@ -7,10 +7,8 @@ const container: SxProps = {
 
 const listItem: SxProps = {
   borderRadius: 4,
-  ml: "7.5px",
-  mr: "7.5px",
-  mt: "2.5px",
-  mb: "2.5px",
+  mx: "7.5px",
+  my: "2.5px",
 };
 
 export default { container, listItem };
