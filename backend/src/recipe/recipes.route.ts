@@ -11,14 +11,18 @@ import {
 import { GetRecipeByIdRes } from "@shared/api/recipe/getRecipeByUuid.http-type";
 import { GetAllRecipesRes } from "@shared/api/recipe/getAllRecipes.http-type";
 import { HttpError } from "@shared/types/httpError.type";
+import { validateZodSchema } from "../middleware/validation.middleware";
+import { RecipeDetailsSchema } from "@shared/validation/recipeDetailsSchema.validation";
+import { UuidSchema } from "@shared/validation/uuidSchema.validation";
 import { NotFoundError } from "../utils/errors/notFound.error";
 
 const router = Router();
 
 router.post(
   "/",
+  validateZodSchema(RecipeDetailsSchema, "recipeDetails"),
   async (
-    req: Request<null, null, SaveRecipeReq>,
+    req: Request<unknown, SaveRecipeRes, SaveRecipeReq>,
     res: Response<SaveRecipeRes>
   ) => {
     const recipe = await service.saveRecipe(req.body.recipeDetails);
@@ -31,8 +35,9 @@ router.post(
 
 router.delete(
   "/",
+  validateZodSchema(UuidSchema),
   async (
-    req: Request<null, null, DeleteRecipeReq>,
+    req: Request<unknown, DeleteRecipeRes, DeleteRecipeReq>,
     res: Response<DeleteRecipeRes>
   ) => {
     const { uuid } = req.body;
