@@ -12,10 +12,14 @@ const chefAvatar: SxProps<Theme> = (theme) => ({
   border: `1.5px solid ${theme.palette.border.primary}`,
 });
 
+const image: SxProps = {
+  height: "200px",
+};
 export default {
   card,
   descriptionTypography,
   methodTypography,
   tooltip,
   chefAvatar,
+  image,
 };
