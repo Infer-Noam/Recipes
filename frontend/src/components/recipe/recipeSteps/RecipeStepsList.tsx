@@ -21,54 +21,10 @@ import AddIcon from "@mui/icons-material/Add";
 import { useTheme } from "@mui/material/styles";
 import Styles from "./recipeStepsList.style";
 import { Controller, useFormContext, type Control } from "react-hook-form";
-import type { MeasurementUnit } from "@shared/enums/measurement-unit.enum";
+import type { RecipeDetails } from "@shared/types/recipe.type";
 
 type RecipeStepsListProps = {
-  control: Control<
-    {
-      name: string;
-      steps: string[];
-      chef: {
-        uuid: string;
-      };
-      ingredients: {
-        recipe: {
-          uuid: string;
-        };
-        ingredient: {
-          uuid: string;
-        };
-        amount: number;
-        measurementUnit: MeasurementUnit;
-        uuid?: string | undefined;
-      }[];
-      description: string;
-      imageUrl: string;
-      uuid?: string | undefined;
-    },
-    unknown,
-    {
-      name: string;
-      steps: string[];
-      chef: {
-        uuid: string;
-      };
-      ingredients: {
-        recipe: {
-          uuid: string;
-        };
-        ingredient: {
-          uuid: string;
-        };
-        amount: number;
-        measurementUnit: MeasurementUnit;
-        uuid?: string | undefined;
-      }[];
-      description: string;
-      imageUrl: string;
-      uuid?: string | undefined;
-    }
-  >;
+  control: Control<RecipeDetails, unknown, RecipeDetails>;
 };
 const RecipeStepsList: FC<RecipeStepsListProps> = ({ control }) => {
   const setStep = (

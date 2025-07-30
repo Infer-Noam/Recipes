@@ -36,54 +36,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomTableCell from "../../customTableCell/CustomTableCell";
 import { Controller, type Control } from "react-hook-form";
 import { useFormContext } from "react-hook-form";
+import type { RecipeDetails } from "@shared/types/recipe.type";
 
 type RecipeIngredientsTableProps = {
   ingredients: IngredientModel[];
-  control: Control<
-    {
-      name: string;
-      steps: string[];
-      chef: {
-        uuid: string;
-      };
-      ingredients: {
-        recipe: {
-          uuid: string;
-        };
-        ingredient: {
-          uuid: string;
-        };
-        amount: number;
-        measurementUnit: MeasurementUnit;
-        uuid?: string | undefined;
-      }[];
-      description: string;
-      imageUrl: string;
-      uuid?: string | undefined;
-    },
-    unknown,
-    {
-      name: string;
-      steps: string[];
-      chef: {
-        uuid: string;
-      };
-      ingredients: {
-        recipe: {
-          uuid: string;
-        };
-        ingredient: {
-          uuid: string;
-        };
-        amount: number;
-        measurementUnit: MeasurementUnit;
-        uuid?: string | undefined;
-      }[];
-      description: string;
-      imageUrl: string;
-      uuid?: string | undefined;
-    }
-  >;
+  control: Control<RecipeDetails, unknown, RecipeDetails>;
   recipeUuid: String;
 };
 
