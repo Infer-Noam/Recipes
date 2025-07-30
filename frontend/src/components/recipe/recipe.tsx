@@ -1,84 +1,106 @@
-import * as React from "react";
+import { useState, type FC, type MouseEvent } from "react";
 import {
   Card,
   CardHeader,
   CardMedia,
   CardContent,
   CardActions,
-  Collapse,
   Avatar,
   Typography,
   IconButton,
-  type IconButtonProps,
+  Tooltip,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
 import Styles from "./recipe.style";
-import useToggle from "../../hooks/useToggle";
 import { type Recipe as RecipeModel } from "../../../../shared/types/recipe.type";
+import { useNavigate } from "react-router-dom";
+import { RecipeMenu } from "./recipeMenu/recipeMenu";
 
 type RecipeProps = {
   recipe: RecipeModel;
+  deleteRecipe: () => void;
+  chefAvatarSrc: string;
 };
 
-type ExpandMoreProps = IconButtonProps & {
-  expand: boolean;
-};
-
-const ExpandMore: React.FC<ExpandMoreProps> = ({ expand, ...other }) => (
-  <IconButton {...other} sx={Styles.expandMore(expand)} />
-);
-
-export const Recipe: React.FC<RecipeProps> = ({
-  recipe: { name, imageUrl, chef, description, createDate, steps },
+export const Recipe: FC<RecipeProps> = ({
+  recipe: { uuid, name, imageUrl, chef, description, createDate, ingredients },
+  deleteRecipe,
+  chefAvatarSrc,
 }) => {
-  const { open, toggle } = useToggle();
+  const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    <Card sx={Styles.card}>
-      <CardHeader
-        avatar={
-          <Avatar sx={Styles.avatar} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={name}
-        subheader={`By ${chef.firstName}`}
-      />
-      <CardMedia component="img" height="194" image={imageUrl} alt={name} />
-      <CardContent>
-        <Typography variant="body2" sx={Styles.descriptionTypography}>
-          {description}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <Typography variant="body2">
-          {new Date(createDate).toDateString()}
-        </Typography>
-        <ExpandMore
-          expand={open}
-          onClick={toggle}
-          aria-expanded={open}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardActions>
-      <Collapse in={open} timeout="auto" unmountOnExit>
+    <>
+      <Card variant="outlined" sx={Styles.card}>
+        <CardHeader
+          avatar={
+            <Avatar
+              alt={`${chef.firstName} ${chef.lastName}`}
+              src={chefAvatarSrc}
+              sx={Styles.chefAvatar}
+            />
+          }
+          action={
+            <IconButton aria-label="more" onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title={name}
+          subheader={`By ${chef.firstName}`}
+        />
+        <CardMedia
+          sx={Styles.image}
+          component="img"
+          image={imageUrl}
+          alt={`An image of ${name}`}
+        />
         <CardContent>
-          <Typography sx={Styles.methodTypography}>Method:</Typography>
-          {steps.map((step, index) => (
-            <Typography key={index} sx={Styles.stepTypography}>
-              {step}
-            </Typography>
-          ))}
+          <Typography variant="body2" sx={Styles.descriptionTypography}>
+            {description}
+          </Typography>
         </CardContent>
-      </Collapse>
-    </Card>
+        <CardActions disableSpacing>
+          <Typography variant="body2">
+            {new Date(createDate).toDateString()}
+          </Typography>
+          <Tooltip
+            sx={Styles.tooltip}
+            title={
+              <span>
+                <Typography variant="subtitle1">Ingredients</Typography>
+                {ingredients.map((ri, index) => (
+                  <Typography variant="body2" key={index}>
+                    {`${ri.amount} ${ri.measurementUnit} of ${ri.ingredient.name}`}
+                  </Typography>
+                ))}
+              </span>
+            }
+            arrow
+          >
+            <IconButton aria-label="ingredients">
+              <LocalGroceryStoreIcon />
+            </IconButton>
+          </Tooltip>
+        </CardActions>
+      </Card>
+      <RecipeMenu
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        anchorEl={anchorEl}
+        onDelete={deleteRecipe}
+        onView={() => navigate(`recipe/${uuid}`)}
+      />
+    </>
   );
 };

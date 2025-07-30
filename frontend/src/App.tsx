@@ -1,28 +1,34 @@
 import Router from "./router/Router";
 import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "./theme/theme";
+import { createAppTheme } from "./theme/theme";
 import { PAGES_ROUTES } from "./router/routes.const";
-import { Drawer, Box } from "@mui/material";
-import { useState } from "react";
-import { DrawerList } from "./components/drawerList/drawerList";
+import { Box } from "@mui/material";
 import Styles from "./App.style";
+import SideDrawer from "./components/sideDrawer/sideDrawer";
+import AppHeader from "./components/appHeader/appHeader";
+import useToggle from "./hooks/useToggle";
+import { ColorModeContext } from "./contexts/ColorMode.context";
+import { useContext } from "react";
 
 const App = () => {
-  const [open, setOpen] = useState(true);
+  const {
+    open: mobileDrawerOpen,
+    handleClose: handleMobileDrawerClose,
+    handleOpen: handleMobileDrawerOpen,
+  } = useToggle();
+
+  const { colorMode } = useContext(ColorModeContext);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={Styles.appContainer}>
-        <Drawer
-          sx={Styles.drawer}
-          variant="persistent"
-          open={open}
-          onClose={() => setOpen(false)}
-        >
-          <DrawerList toggleDrawer={() => setOpen(open)} />
-        </Drawer>
+    <ThemeProvider theme={createAppTheme(colorMode)}>
+      <Box sx={Styles.rootLayout}>
+        <AppHeader handleMobileDrawerOpen={handleMobileDrawerOpen} />
 
-        <Box component="main" sx={Styles.mainContainer}>
+        <SideDrawer
+          mobileDrawerOpen={mobileDrawerOpen}
+          handleMobileDrawerClose={handleMobileDrawerClose}
+        />
+        <Box component="main" sx={Styles.contentArea}>
           <Router routes={PAGES_ROUTES} />
         </Box>
       </Box>
