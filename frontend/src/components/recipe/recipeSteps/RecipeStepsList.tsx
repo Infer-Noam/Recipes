@@ -13,7 +13,6 @@ import {
   Typography,
 } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Styles from "./recipeStepsList.style";
 import type { FC, Dispatch, SetStateAction } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
@@ -40,7 +39,7 @@ const RecipeStepsList: FC<RecipeStepsListProps> = ({ steps, setSteps }) => {
         <Typography component="span">Steps</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <List sx={Styles.stepsList}>
+        <List>
           {steps.map((step, index) => {
             return (
               <ListItem key={index}>

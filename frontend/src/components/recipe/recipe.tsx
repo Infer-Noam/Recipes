@@ -13,7 +13,6 @@ import {
   Typography,
   Tooltip,
 } from "@mui/material";
-import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import RecipeStepsList from "./recipeSteps/RecipeStepsList";
 
@@ -23,11 +22,7 @@ type RecipeProps = {
   ingredients: IngredientModel[];
 };
 
-export const Recipe: FC<RecipeProps> = ({
-  recipe,
-  chefs,
-  ingredients,
-}) => {
+export const Recipe: FC<RecipeProps> = ({ recipe, chefs, ingredients }) => {
   const [name, setName] = useState(recipe.name);
   const [chef, setChef] = useState(recipe.chef);
   const [description, setDescription] = useState(recipe.description);
@@ -46,7 +41,6 @@ export const Recipe: FC<RecipeProps> = ({
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
-
       <TextField
         multiline
         id="outlined-basic"
@@ -55,7 +49,6 @@ export const Recipe: FC<RecipeProps> = ({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-
       <Tooltip
         arrow
         placement="right"
@@ -67,20 +60,14 @@ export const Recipe: FC<RecipeProps> = ({
         }
       >
         <Autocomplete
-          sx={Styles.chefAutocomplete}
           options={chefs}
           getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
           value={chef || null}
-          onChange={(_, newValue: ChefModel | null) => {
-            if (newValue) {
-              setChef(newValue);
-            }
-          }}
+          onChange={(_, newValue) => newValue && setChef(newValue)}
           renderInput={(params) => <TextField {...params} label="Chef" />}
           isOptionEqualToValue={(option, value) => option.uuid === value.uuid}
         />
       </Tooltip>
-
       <TextField
         id="outlined-basic"
         label="Image url"
@@ -103,9 +90,7 @@ export const Recipe: FC<RecipeProps> = ({
           },
         }}
       />
-
       <RecipeStepsList steps={steps} setSteps={setSteps} />
-
       <RecipeIngredientsTable
         recipeIngredients={recipeIngredients}
         ingredientsOptions={ingredients}

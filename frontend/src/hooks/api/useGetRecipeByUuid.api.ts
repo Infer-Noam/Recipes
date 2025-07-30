@@ -9,6 +9,7 @@ const queryFn = async ({ queryKey }: { queryKey: [string, string] }) => {
   const response = await api.get<GetRecipeByIdRes>(`/recipe/${uuid}`);
   return response.data.recipe;
 };
+
 export const useGetRecipeByUuid = (uuid: string) => {
   return useQuery({
     queryKey: [USE_GET_RECIPE_BY_UUID_KEY, uuid],
