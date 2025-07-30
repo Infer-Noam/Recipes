@@ -12,7 +12,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import ChefTableRow from "./chefTableRow/chefTableRow";
+import ChefTableRow from "./chefTableRow/ChefTableRow";
 import AddIcon from "@mui/icons-material/Add";
 import defaultChefDetails from "../../consts/defaultChefDetails";
 

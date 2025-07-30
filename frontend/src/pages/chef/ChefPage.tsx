@@ -53,19 +53,19 @@ const ChefPage: FC = () => {
 
   const alert = isError ? errorAlert.error : errorAlert.success;
 
-  if (chefs) {
-    return (
-      <Box>
-        <ChefTable chefs={chefs} deleteChef={deleteChef} saveChef={saveChef} />
-        {message && (
-          <Alert sx={Styles.alert} severity={alert.severity}>
-            <AlertTitle>{alert.title}</AlertTitle>
-            {message}
-          </Alert>
-        )}
-      </Box>
-    );
-  } else return null;
+  if (!chefs) return null;
+
+  return (
+    <Box>
+      <ChefTable chefs={chefs} deleteChef={deleteChef} saveChef={saveChef} />
+      {message && (
+        <Alert sx={Styles.alert} severity={alert.severity}>
+          <AlertTitle>{alert.title}</AlertTitle>
+          {message}
+        </Alert>
+      )}
+    </Box>
+  );
 };
 
 export default ChefPage;

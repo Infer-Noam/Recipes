@@ -20,11 +20,55 @@ import type { FC } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
 import { useTheme } from "@mui/material/styles";
-import type { RecipeInputs } from "../recipe";
-import { Controller, type Control } from "react-hook-form";
+import { Controller, useFormContext, type Control } from "react-hook-form";
+import type { MeasurementUnit } from "@shared/enums/measurement-unit.enum";
 
 type RecipeStepsListProps = {
-  control: Control<RecipeInputs, any, RecipeInputs>;
+  control: Control<
+    {
+      name: string;
+      steps: string[];
+      chef: {
+        uuid: string;
+      };
+      ingredients: {
+        recipe: {
+          uuid: string;
+        };
+        ingredient: {
+          uuid: string;
+        };
+        amount: number;
+        measurementUnit: MeasurementUnit;
+        uuid?: string | undefined;
+      }[];
+      description: string;
+      imageUrl: string;
+      uuid?: string | undefined;
+    },
+    unknown,
+    {
+      name: string;
+      steps: string[];
+      chef: {
+        uuid: string;
+      };
+      ingredients: {
+        recipe: {
+          uuid: string;
+        };
+        ingredient: {
+          uuid: string;
+        };
+        amount: number;
+        measurementUnit: MeasurementUnit;
+        uuid?: string | undefined;
+      }[];
+      description: string;
+      imageUrl: string;
+      uuid?: string | undefined;
+    }
+  >;
 };
 const RecipeStepsList: FC<RecipeStepsListProps> = ({ control }) => {
   const setStep = (
@@ -48,6 +92,10 @@ const RecipeStepsList: FC<RecipeStepsListProps> = ({ control }) => {
     onChange(steps.filter((_, i) => index !== i));
   };
 
+  const {
+    formState: { errors },
+  } = useFormContext();
+
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -55,18 +103,6 @@ const RecipeStepsList: FC<RecipeStepsListProps> = ({ control }) => {
     <Controller
       name="steps"
       control={control}
-      rules={{
-        required: "At least one step is required",
-        validate: {
-          minSteps: (value) =>
-            value.length >= 1 || "Recipe must have at least one step",
-          noEmptySteps: (value) =>
-            value.every((step) => step.trim().length > 0) ||
-            "All steps must have content",
-          maxSteps: (value) =>
-            value.length <= 20 || "Recipe cannot have more than 20 steps",
-        },
-      }}
       render={({
         field: { value: steps, onChange },
         fieldState: { error },
@@ -79,6 +115,9 @@ const RecipeStepsList: FC<RecipeStepsListProps> = ({ control }) => {
             <AccordionDetails>
               <List>
                 {steps.map((step, index) => {
+                  const stepError =
+                    Array.isArray(errors.steps) && errors.steps[index];
+
                   return (
                     <ListItem key={index}>
                       <ListItemText sx={Styles.textField}>
@@ -91,6 +130,10 @@ const RecipeStepsList: FC<RecipeStepsListProps> = ({ control }) => {
                           value={step}
                           onChange={(e) =>
                             setStep(index, steps, e.target.value, onChange)
+                          }
+                          error={!!stepError}
+                          helperText={
+                            stepError?.message && "Step cannot be blank"
                           }
                         />
                       </ListItemText>
@@ -116,11 +159,7 @@ const RecipeStepsList: FC<RecipeStepsListProps> = ({ control }) => {
             </AccordionActions>
           </Accordion>
           {error && (
-            <Typography
-              color="error"
-              variant="caption"
-              sx={{ mt: 1, display: "block" }}
-            >
+            <Typography color="error" variant="caption" sx={Styles.error}>
               {error.message}
             </Typography>
           )}
