@@ -15,4 +15,7 @@ const updateChef = async (uuid: string, details: ChefDetails) => {
   });
 };
 
-export default { createChef, updateChef };
+const getAllChefs = async () => {
+  return await chefRepository.find({});
+};
+export default { createChef, updateChef, getAllChefs };

@@ -8,6 +8,7 @@ import {
   UpdateChefReq,
   UpdateChefRes,
 } from "@shared/http-types/chef/updateChef.http-type";
+import { GetAllChefsRes } from "@shared/http-types/chef/getAllChefs.http-type";
 
 const router = Router();
 
@@ -33,13 +34,15 @@ router.put(
   ) => {
     const { uuid, chefDetails } = req.body;
 
-    const chef = await service.updateChef(
-      uuid,
-      chefDetails
-    );
+    const chef = await service.updateChef(uuid, chefDetails);
 
     res.status(200).json({ chef });
   }
 );
+
+router.get("/", async (_: Request, res: Response<GetAllChefsRes>) => {
+  const chefs = await service.getAllChefs();
+  return res.status(200).json({ chefs });
+});
 
 export default router;
