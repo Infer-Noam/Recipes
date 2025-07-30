@@ -1,4 +1,4 @@
-import { emailRegex, phoneRegex } from "@shared/consts/regex.const";
+import { emailRegex, phoneRegex } from "../consts/regex.const";
 import { z } from "zod";
 
 export const ChefDetailsSchema = z.object({
