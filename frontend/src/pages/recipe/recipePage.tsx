@@ -2,9 +2,9 @@ import { useParams } from "react-router-dom";
 import { useGetRecipeByUuid } from "../../hooks/api/useGetRecipeByUuid.api";
 import { useGetIngredients } from "../../hooks/api/useGetIngredients.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
-import { Alert, Backdrop, Box, CircularProgress } from "@mui/material";
 import { Recipe } from "../../components/recipe/recipe";
-import Styles from "./recipePage.style";
+import BackdropLoading from "src/components/backdropLoading/BackdropLoading";
+import CentralErrorAlert from "src/components/centralErrorAlert/CentralErrorAlert";
 
 const RecipePage = () => {
   const { uuid } = useParams();
@@ -15,13 +15,7 @@ const RecipePage = () => {
   const { data: ingredients = [] } = useGetIngredients();
   const { data: chefs = [] } = useGetChefs();
 
-  if (isLoading) {
-    return (
-      <Backdrop sx={Styles.backdrop} open={true}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-    );
-  }
+  if (isLoading) return <BackdropLoading />;
 
   if (recipe) {
     return (
@@ -29,13 +23,7 @@ const RecipePage = () => {
     );
   }
 
-  return (
-    <Box sx={Styles.errorContainer}>
-      <Alert sx={Styles.errorAlert} severity="error">
-        Something went wrong...
-      </Alert>
-    </Box>
-  );
+  return <CentralErrorAlert text="Something went wrong..." />;
 };
 
 export default RecipePage;
