@@ -1,5 +1,5 @@
 import { Recipe } from "../../types/recipe.type";
-import { UuidReq } from "../generic/uuidReq.https-types";
+import { GenericUuid } from "../../types/generic/genericUuid.type";
 
 export type GetRecipeByIdRes = {
   recipe: Recipe;

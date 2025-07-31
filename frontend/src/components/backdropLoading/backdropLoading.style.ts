@@ -1,5 +1,5 @@
 import type { SxProps, Theme } from "@mui/material";
-import { ColorMode } from "src/theme/colorMode.enum";
+import { ColorMode } from "../../theme/colorMode.enum";
 
 const backdrop: SxProps<Theme> = (theme) => ({
   color:

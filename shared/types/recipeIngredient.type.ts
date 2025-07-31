@@ -1,6 +1,7 @@
 import { MeasurementUnit } from "../enums/measurement-unit.enum";
 import { type Ingredient } from "../types/ingredient.type";
 import { type Recipe } from "../types/recipe.type";
+import type { GenericUuid } from "./generic/genericUuid.type";
 
 export type RecipeIngredient = {
   uuid: string;
@@ -14,8 +15,8 @@ export type RecipeIngredient = {
 
 export type RecipeIngredientDetails = {
   uuid?: string;
-  recipe: { uuid: string };
-  ingredient: { uuid: string };
+  recipe: GenericUuid;
+  ingredient: GenericUuid;
   amount: number;
   measurementUnit: MeasurementUnit;
 };

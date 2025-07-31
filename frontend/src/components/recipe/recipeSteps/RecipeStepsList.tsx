@@ -18,6 +18,7 @@ import type { FC, Dispatch, SetStateAction } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
 import { useTheme } from "@mui/material/styles";
+import Styles from "./recipeStepsList.style";
 
 type RecipeStepsListProps = {
   steps: string[];
@@ -46,28 +47,26 @@ const RecipeStepsList: FC<RecipeStepsListProps> = ({ steps, setSteps }) => {
       </AccordionSummary>
       <AccordionDetails>
         <List>
-          {steps.map((step, index) => {
-            return (
-              <ListItem key={index}>
-                <ListItemText sx={Styles.textField}>
-                  <TextField
-                    multiline
-                    fullWidth
-                    id="outlined-basic"
-                    label={`Step ${index + 1}`}
-                    variant="outlined"
-                    value={step}
-                    onChange={(e) => setStep(index, e.target.value)}
-                  />
-                </ListItemText>
-                <ListItemIcon>
-                  <IconButton onClick={() => removeStep(index)}>
-                    <RemoveIcon />
-                  </IconButton>
-                </ListItemIcon>
-              </ListItem>
-            );
-          })}
+          {steps.map((step, index) => (
+            <ListItem key={index}>
+              <ListItemText sx={Styles.textField}>
+                <TextField
+                  multiline
+                  fullWidth
+                  id="outlined-basic"
+                  label={`Step ${index + 1}`}
+                  variant="outlined"
+                  value={step}
+                  onChange={(e) => setStep(index, e.target.value)}
+                />
+              </ListItemText>
+              <ListItemIcon>
+                <IconButton onClick={() => removeStep(index)}>
+                  <RemoveIcon />
+                </IconButton>
+              </ListItemIcon>
+            </ListItem>
+          ))}
         </List>
       </AccordionDetails>
       <AccordionActions>
