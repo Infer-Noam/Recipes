@@ -1,4 +1,5 @@
-import type { RecipeIngredient } from "../../../../../shared/types/recipeIngredient.type";
+import type { RecipeIngredientDetails } from "../../../../../shared/types/recipeIngredient.type";
 
-export type DraftRecipeIngredient = Partial<Omit<RecipeIngredient, "uuid">> &
-  Pick<RecipeIngredient, "uuid">;
+export type DraftRecipeIngredient = {
+  uuid: string;
+} & Partial<Omit<RecipeIngredientDetails, "uuid">>;

@@ -1,17 +1,11 @@
 import { Router, Request, Response } from "express";
 import service from "./recipe.service";
 import {
-  CreateRecipeReq,
-  CreateRecipeRes,
-} from "@shared/http-types/recipe/createRecipe.http-type";
+  SaveRecipeReq,
+  SaveRecipeRes,
+} from "@shared/http-types/recipe/saveRecipe.http-type";
 import { DeleteRecipeReq } from "@shared/http-types/recipe/deleteRecipe.http-type";
-import {
-  UpdateRecipeReq,
-  UpdateRecipeRes,
-} from "@shared/http-types/recipe/updateRecipe.http-type";
-import {
-  GetRecipeByIdRes,
-} from "@shared/http-types/recipe/getRecipeByUuid.http-type";
+import { GetRecipeByIdRes } from "@shared/http-types/recipe/getRecipeByUuid.http-type";
 import { GetAllRecipesRes } from "@shared/http-types/recipe/getAllRecipes.http-type";
 
 const router = Router();
@@ -19,32 +13,14 @@ const router = Router();
 router.post(
   "/",
   async (
-    req: Request<null, null, CreateRecipeReq>,
-    res: Response<CreateRecipeRes>
+    req: Request<null, null, SaveRecipeReq>,
+    res: Response<SaveRecipeRes>
   ) => {
-    const recipe = await service.createRecipe(req.body.recipeDetails);
-    if (!recipe) {
-      res.sendStatus(500);
+    const result = await service.saveRecipe(req.body.recipeDetails);
+    if (result.recipe) {
+      res.status(200).json({ recipe: result.recipe });
     } else {
-      res.status(201).json({ recipe });
-    }
-  }
-);
-
-router.put(
-  "/",
-  async (
-    req: Request<null, null, UpdateRecipeReq>,
-    res: Response<UpdateRecipeRes>
-  ) => {
-    const { uuid, recipeDetails } = req.body;
-
-    const recipe = await service.updateRecipe(uuid, recipeDetails);
-
-    if (!recipe) {
-      res.sendStatus(500);
-    } else {
-      res.status(201).json({ recipe });
+      res.status(500).json({ error: result.error });
     }
   }
 );
@@ -70,17 +46,14 @@ router.get("/", async (_: Request, res: Response<GetAllRecipesRes>) => {
   return res.status(200).json({ recipes });
 });
 
-router.get(
-  "/:uuid",
-  async (req: Request, res: Response<GetRecipeByIdRes>) => {
-    const uuid = req.params.uuid;
+router.get("/:uuid", async (req: Request, res: Response<GetRecipeByIdRes>) => {
+  const uuid = req.params.uuid;
 
-    const recipe = await service.getRecipeByUuid(uuid);
+  const recipe = await service.getRecipeByUuid(uuid);
 
-    if (!recipe) return res.sendStatus(404);
+  if (!recipe) return res.sendStatus(404);
 
-    return res.status(200).json({ recipe });
-  }
-);
+  return res.status(200).json({ recipe });
+});
 
 export default router;

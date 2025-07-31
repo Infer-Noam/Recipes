@@ -25,6 +25,8 @@ import {
   Accordion,
   AccordionDetails,
   AccordionActions,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { type RecipeIngredient as RecipeIngredientModel } from "../../../../../shared/types/recipeIngredient.type";
 import { type Ingredient as IngredientModel } from "../../../../../shared/types/ingredient.type";
@@ -38,13 +40,13 @@ import CustomTableCell from "../../customTableCell/CustomTableCell";
 
 type RecipeIngredientsTableProps = {
   recipeIngredients: DraftRecipeIngredient[];
-  ingredientsOptions: IngredientModel[];
+  ingredients: IngredientModel[];
   setRecipeIngredients: Dispatch<SetStateAction<DraftRecipeIngredient[]>>;
 };
 
 export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
   recipeIngredients,
-  ingredientsOptions,
+  ingredients,
   setRecipeIngredients,
 }) => {
   const setRecipeIngredient = (
@@ -70,8 +72,11 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
     }
   };
 
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <Accordion>
+    <Accordion defaultExpanded={!isXs}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography component="span">Ingredients</Typography>
       </AccordionSummary>
@@ -96,20 +101,24 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                     <Box sx={Styles.ingredientAutocompleteBox}>
                       <Autocomplete
                         sx={Styles.ingredientAutocomplete}
-                        value={recipeIngredient?.ingredient?.name ?? ""}
+                        value={
+                          ingredients.find(
+                            (i) => i.uuid === recipeIngredient.ingredient?.uuid
+                          )?.name ?? ""
+                        }
                         onChange={(_: any, newValue: string | null) => {
                           if (!newValue) return;
 
-                          const ingredientIndex = ingredientsOptions.findIndex(
+                          const ingredientIndex = ingredients.findIndex(
                             (ingredient) => ingredient.name === newValue
                           );
                           if (ingredientIndex === -1) return;
 
                           setRecipeIngredient(recipeIngredient.uuid, {
-                            ingredient: ingredientsOptions[ingredientIndex],
+                            ingredient: ingredients[ingredientIndex],
                           });
                         }}
-                        options={ingredientsOptions.map(
+                        options={ingredients.map(
                           (ingredient) => ingredient.name
                         )}
                         renderInput={(params) => <TextField {...params} />}
@@ -179,7 +188,6 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
         >
           Add ingredient
         </Button>
-        ;
       </AccordionActions>
     </Accordion>
   );

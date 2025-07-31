@@ -3,20 +3,18 @@ import { Box, Grid } from "@mui/material";
 import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
+import { chefSrcArray } from "../../consts/chefSrcArray.const";
+import type { JSX } from "react";
 
 const HomePage = () => {
   const { data: recipes } = useGetRecipes();
 
   const { mutate: deleteRecipe } = useDeleteRecipe();
 
-  const chefSrcArray = [227920, 240413, 227924, 44252, 33158, 218334].map(
-    (n) => {
-      return `https://www.svgrepo.com/show/${n}/chef.svg`;
-    }
-  );
-
-  const getChefSrc = () =>
-    chefSrcArray[Math.floor(Math.random() * chefSrcArray.length)];
+  const getRandomChefSrc = () => {
+    const randomIndex = Math.floor(Math.random() * chefSrcArray.length);
+    return chefSrcArray[randomIndex];
+  };
 
   if (recipes) {
     return (
@@ -27,17 +25,26 @@ const HomePage = () => {
           rowSpacing={2.5}
           columnSpacing={3.5}
         >
-          {recipes.map((recipe) => (
-            <Grid key={recipe.uuid}>
-              <RecipeCard
-                recipe={recipe}
-                deleteRecipe={() => {
-                  deleteRecipe(recipe.uuid);
-                }}
-                chefAvatarSrc={getChefSrc()}
-              />
-            </Grid>
-          ))}
+          {recipes
+            .sort(
+              (a, b) =>
+                new Date(a.createDate).getTime() -
+                new Date(b.createDate).getTime()
+            )
+            .reduce<JSX.Element[]>((acc, recipe) => {
+              acc.push(
+                <Grid key={recipe.uuid}>
+                  <RecipeCard
+                    recipe={recipe}
+                    deleteRecipe={() => {
+                      deleteRecipe(recipe.uuid);
+                    }}
+                    chefAvatarSrc={getRandomChefSrc()}
+                  />
+                </Grid>
+              );
+              return acc;
+            }, [])}
         </Grid>
       </Box>
     );

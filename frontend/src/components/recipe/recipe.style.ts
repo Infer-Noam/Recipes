@@ -6,4 +6,8 @@ const methodList: SxProps = {
   bgcolor: "background.paper",
 };
 
-export default { methodList };
+const gridContainer: SxProps = {
+  justifyContent: "center",
+};
+
+export default { methodList, gridContainer };
