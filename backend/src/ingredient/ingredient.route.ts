@@ -4,6 +4,7 @@ import {
   CreateIngredientReq,
   CreateIngredientRes,
 } from "@shared/http-types/ingredient/createIngredient.http-type";
+import { GetAllIngredientsRes } from "@shared/http-types/ingredient/getAllIngredients.http-type";
 
 const router = Router();
 
@@ -19,5 +20,10 @@ router.post(
     res.status(201).json({ ingredient });
   }
 );
+
+router.get("/", async (_: Request, res: Response<GetAllIngredientsRes>) => {
+  const ingredients = await service.getAllIngredients();
+  return res.status(200).json({ ingredients });
+});
 
 export default router;

@@ -9,6 +9,7 @@ import {
   Typography,
   IconButton,
   Tooltip,
+  Box,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import LocalGroceryStoreIcon from "@mui/icons-material/LocalGroceryStore";
@@ -85,10 +86,10 @@ export const RecipeCard: FC<RecipeCardProps> = ({
           <Tooltip
             sx={Styles.tooltip}
             title={
-              <span>
+              <Box component="span">
                 <Typography variant="subtitle1">Ingredients</Typography>
                 {formatIngredients(ingredients)}
-              </span>
+              </Box>
             }
             arrow
           >
