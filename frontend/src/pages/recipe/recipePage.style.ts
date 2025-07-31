@@ -16,4 +16,6 @@ const backdrop: SxProps<Theme> = (theme) => ({
   zIndex: theme.zIndex.drawer + 1,
 });
 
-export default { errorContainer, backdrop };
+const errorAlert: SxProps = { width: "90%" };
+
+export default { errorContainer, backdrop, errorAlert };

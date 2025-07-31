@@ -11,30 +11,28 @@ const RecipePage = () => {
 
   if (!uuid) return null;
 
-  const { data: recipe, isLoading: areRecipesLoading } =
-    useGetRecipeByUuid(uuid);
-  const { data: ingredients, isLoading: areIngredientsLoading } =
-    useGetIngredients();
-  const { data: chefs, isLoading: areChefsLoading } = useGetChefs();
+  const { data: recipe, isLoading } = useGetRecipeByUuid(uuid);
+  const { data: ingredients = [] } = useGetIngredients();
+  const { data: chefs = [] } = useGetChefs();
 
-  if (recipe && ingredients && chefs) {
-    return (
-      <Recipe recipe={recipe} chefs={chefs} ingredients={ingredients}></Recipe>
-    );
-  } else if (areRecipesLoading || areIngredientsLoading || areChefsLoading) {
+  if (isLoading) {
     return (
       <Backdrop sx={Styles.backdrop} open={true}>
         <CircularProgress color="inherit" />
       </Backdrop>
     );
-  } else {
+  }
+
+  if (recipe) {
     return (
-      <Box sx={Styles.errorContainer}>
-        <Alert sx={{ width: "90%" }} severity="error">
-          Something went wrong...
-        </Alert>
-      </Box>
+      <Recipe recipe={recipe} chefs={chefs ?? []} ingredients={ingredients} />
     );
+  } else {
+    <Box sx={Styles.errorContainer}>
+      <Alert sx={Styles.errorAlert} severity="error">
+        Something went wrong...
+      </Alert>
+    </Box>;
   }
 };
 

@@ -40,27 +40,25 @@ const RecipeStepsList: FC<RecipeStepsListProps> = ({ steps, setSteps }) => {
       </AccordionSummary>
       <AccordionDetails>
         <List>
-          {steps.map((step, index) => {
-            return (
-              <ListItem key={index}>
-                <ListItemText>
-                  <TextField
-                    multiline
-                    id="outlined-basic"
-                    label={`Step ${index + 1}`}
-                    variant="outlined"
-                    value={step}
-                    onChange={(e) => setStep(index, e.target.value)}
-                  />
-                </ListItemText>
-                <ListItemIcon>
-                  <IconButton onClick={() => removeStep(index)}>
-                    <RemoveIcon />
-                  </IconButton>
-                </ListItemIcon>
-              </ListItem>
-            );
-          })}
+          {steps.map((step, index) => (
+            <ListItem key={index}>
+              <ListItemText>
+                <TextField
+                  multiline
+                  id="outlined-basic"
+                  label={`Step ${index + 1}`}
+                  variant="outlined"
+                  value={step}
+                  onChange={(e) => setStep(index, e.target.value)}
+                />
+              </ListItemText>
+              <ListItemIcon>
+                <IconButton onClick={() => removeStep(index)}>
+                  <RemoveIcon />
+                </IconButton>
+              </ListItemIcon>
+            </ListItem>
+          ))}
         </List>
       </AccordionDetails>
       <AccordionActions>

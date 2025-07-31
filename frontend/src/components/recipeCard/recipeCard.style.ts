@@ -15,6 +15,7 @@ const chefAvatar: SxProps<Theme> = (theme) => ({
 const image: SxProps = {
   height: "200px",
 };
+
 export default {
   card,
   descriptionTypography,
