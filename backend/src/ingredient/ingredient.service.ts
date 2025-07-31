@@ -7,8 +7,6 @@ const createIngredient = async (name: string) => {
   return await ingredientRepository.save({ name });
 };
 
-const getAllIngredients = async () => {
-  return await ingredientRepository.find();
-};
+const getAllIngredients = async () => await ingredientRepository.find();
 
 export default { createIngredient, getAllIngredients };

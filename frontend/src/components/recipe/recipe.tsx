@@ -19,13 +19,13 @@ import {
   Alert,
   AlertTitle,
 } from "@mui/material";
-import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import RecipeStepsList from "./recipeSteps/RecipeStepsList";
 import { useNavigate } from "react-router-dom";
 import type { DraftRecipeIngredient } from "./recipeIngredientTable/draftRecipeIngredient.type";
 import type { SaveRecipeRes } from "@shared/http-types/recipe/saveRecipe.http-type";
 import type { MutateOptions } from "@tanstack/react-query";
+import Styles from "./recipe.style";
 
 type RecipeProps = {
   recipe: RecipeModel;
@@ -105,7 +105,6 @@ export const Recipe: FC<RecipeProps> = ({
       <Grid size={{ xs: 6, lg: 3.5, xl: 6 }}>
         <TextField
           fullWidth
-          sx={Styles.nameTextField}
           id="outlined-basic"
           label="Recipe name"
           variant="outlined"

@@ -14,7 +14,6 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Styles from "./recipeStepsList.style";
 import type { FC, Dispatch, SetStateAction } from "react";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
