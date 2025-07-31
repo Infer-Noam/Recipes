@@ -27,13 +27,15 @@ const RecipePage = () => {
     return (
       <Recipe recipe={recipe} chefs={chefs ?? []} ingredients={ingredients} />
     );
-  } else {
+  }
+
+  return (
     <Box sx={Styles.errorContainer}>
       <Alert sx={Styles.errorAlert} severity="error">
         Something went wrong...
       </Alert>
-    </Box>;
-  }
+    </Box>
+  );
 };
 
 export default RecipePage;
