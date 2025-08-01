@@ -62,7 +62,7 @@ export const Recipe: FC<RecipeProps> = ({
         sx={Styles.chefAutocomplete}
         options={chefs}
         getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
-        value={chefs.find((c) => c.uuid === chef.uuid) || null}
+        value={chefs.find((chef) => chef.uuid === chef.uuid) || null}
         onChange={(_, newValue: ChefModel | null) => {
           if (newValue) {
             setChef(newValue);

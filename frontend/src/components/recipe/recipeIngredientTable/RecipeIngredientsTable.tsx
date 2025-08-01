@@ -46,7 +46,11 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
     updatedFields: Partial<RecipeIngredientModel>
   ) => {
     setRecipeIngredients((prev) =>
-      prev.map((ri) => (ri.uuid === uuid ? { ...ri, ...updatedFields } : ri))
+      prev.map((recipeIngredient) =>
+        recipeIngredient.uuid === uuid
+          ? { ...recipeIngredient, ...updatedFields }
+          : recipeIngredient
+      )
     );
   };
 
@@ -75,22 +79,25 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {recipeIngredients.map((ri) => (
-                <TableRow key={ri.uuid} sx={Styles.recipeIngredientTableRow}>
+              {recipeIngredients.map((recipeIngredient) => (
+                <TableRow
+                  key={recipeIngredient.uuid}
+                  sx={Styles.recipeIngredientTableRow}
+                >
                   <TableCell align="center">
                     <Box sx={Styles.ingredientAutocompleteBox}>
                       <Autocomplete
                         sx={Styles.ingredientAutocomplete}
-                        value={ri?.ingredient?.name ?? ""}
+                        value={recipeIngredient?.ingredient?.name ?? ""}
                         onChange={(_: any, newValue: string | null) => {
                           if (!newValue) return;
 
                           const ingredientIndex = ingredientsOptions.findIndex(
-                            (i) => i.name === newValue
+                            (index) => index.name === newValue
                           );
                           if (ingredientIndex === -1) return;
 
-                          setRecipeIngredient(ri.uuid, {
+                          setRecipeIngredient(recipeIngredient.uuid, {
                             ingredient: ingredientsOptions[ingredientIndex],
                           });
                         }}
@@ -102,11 +109,13 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                   <TableCell align="center">
                     <TextField
                       type="number"
-                      value={ri?.amount ?? 0}
+                      value={recipeIngredient?.amount ?? 0}
                       onChange={(e) => {
                         const value = parseInt(e.target.value);
                         if (value >= 0 && value <= 99) {
-                          setRecipeIngredient(ri.uuid, { amount: value });
+                          setRecipeIngredient(recipeIngredient.uuid, {
+                            amount: value,
+                          });
                         }
                       }}
                       slotProps={{
@@ -124,25 +133,27 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                   <TableCell align="center">
                     <Select
                       sx={Styles.measurementUnitSelect}
-                      value={ri.measurementUnit}
+                      value={recipeIngredient.measurementUnit}
                       onChange={(e) => {
-                        setRecipeIngredient(ri.uuid, {
+                        setRecipeIngredient(recipeIngredient.uuid, {
                           measurementUnit: e.target.value,
                         });
                       }}
                     >
-                      {Object.values(MeasurementUnit).map((m, index) => (
-                        <MenuItem key={index} value={m}>
-                          {m}
-                        </MenuItem>
-                      ))}
+                      {Object.values(MeasurementUnit).map(
+                        (measurementUnit, index) => (
+                          <MenuItem key={index} value={measurementUnit}>
+                            {measurementUnit}
+                          </MenuItem>
+                        )
+                      )}
                     </Select>
                   </TableCell>
                   <TableCell>
                     <IconButton
                       onClick={() =>
                         setRecipeIngredients((prev) =>
-                          prev.filter((p) => ri.uuid !== p.uuid)
+                          prev.filter((p) => recipeIngredient.uuid !== p.uuid)
                         )
                       }
                     >
