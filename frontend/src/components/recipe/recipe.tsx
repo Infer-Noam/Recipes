@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import RecipeStepsList from "./recipeSteps/RecipeStepsList";
 
 type RecipeProps = {
   recipe: RecipeModel;
