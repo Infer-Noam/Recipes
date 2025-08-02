@@ -10,11 +10,11 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
 import ChefTableRow from "./chefTableRow/chefTableRow";
 import AddIcon from "@mui/icons-material/Add";
 import { v4 as uuidv4 } from "uuid";
+import CustomTableCell from "../customTableCell/CustomTableCell";
 
 type ChefTableProps = {
   chefs: ChefDetails[];
@@ -29,23 +29,16 @@ const ChefTable: FC<ChefTableProps> = ({
 }) => {
   const [chefs, setChefs] = useState(defaultChefs);
 
-  const CustomTableCell: FC<{ label: string }> = ({ label }) => (
-    <TableCell align="center">
-      <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-        {label}
-      </Typography>
-    </TableCell>
-  );
   return (
     <TableContainer component={Paper}>
       <Table sx={Styles.container} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <CustomTableCell label={""} />
-            <CustomTableCell label={"First name"} />
-            <CustomTableCell label={"Last name"} />
-            <CustomTableCell label={"Email"} />
-            <CustomTableCell label={"Phone number"} />
+            <CustomTableCell label="" />
+            <CustomTableCell label="First name" />
+            <CustomTableCell label="Last name" />
+            <CustomTableCell label="Email" />
+            <CustomTableCell label="Phone number" />
             <TableCell />
           </TableRow>
         </TableHead>
