@@ -52,7 +52,6 @@ type RecipeProps = {
       | MutateOptions<SaveRecipeRes, Error, RecipeDetails, unknown>
       | undefined
   ) => Promise<SaveRecipeRes>;
-  close: () => void;
 };
 
 export const Recipe: FC<RecipeProps> = ({
