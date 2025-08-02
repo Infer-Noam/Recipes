@@ -3,7 +3,7 @@ import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { useSaveChef } from "../../hooks/api/useSaveChef.api";
 import ChefTable from "../../components/chefTable/chefTable";
 import type { FC } from "react";
-import CentralErrorAlert from "src/components/centralErrorAlert/CentralErrorAlert";
+import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 
 const ChefPage: FC = () => {
   const { data: chefs } = useGetChefs();
