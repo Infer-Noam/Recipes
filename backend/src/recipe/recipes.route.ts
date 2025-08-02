@@ -4,9 +4,7 @@ import {
   SaveRecipeReq,
   SaveRecipeRes,
 } from "@shared/http-types/recipe/saveRecipe.http-type";
-import {
-  DeleteRecipeReq,
-} from "@shared/http-types/recipe/deleteRecipe.http-type";
+import { DeleteRecipeReq } from "@shared/http-types/recipe/deleteRecipe.http-type";
 import { GetRecipeByIdRes } from "@shared/http-types/recipe/getRecipeByUuid.http-type";
 import { GetAllRecipesRes } from "@shared/http-types/recipe/getAllRecipes.http-type";
 import { HttpError } from "@shared/types/httpError.type";
@@ -60,10 +58,6 @@ router.get(
   async (_: Request, res: Response<GetAllRecipesRes>, next: NextFunction) => {
     try {
       const recipes = await service.getAllRecipes();
-
-      if (!recipes.length) {
-        throw new HttpError("Recipes not found", 404);
-      }
 
       res.status(200).json({ recipes });
       next();
