@@ -41,7 +41,7 @@ const RecipePage: FC = () => {
           steps,
           recipeIngredients,
         }}
-      ></Recipe>
+      />
     );
   }
 

@@ -8,34 +8,30 @@ import { useState } from "react";
 import { isAxiosError } from "axios";
 import type { FC } from "react";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
+import type { DeleteChefRes } from "../../../../shared/http-types/chef/deleteChef.http-type";
+import type { SaveChefRes } from "../../../../shared/http-types/chef/saveChef.http-type";
 
 const ChefPage: FC = () => {
   const [message, setMessage] = useState<string | undefined>(undefined);
   const [isError, setIsError] = useState<boolean>(false);
 
   const { data: chefs } = useGetChefs();
-  const { mutateAsync: deleteChef } = useDeleteChef(
-    (err) => {
-      if (isAxiosError(err)) setMessage(err.response?.data.message);
-      else setMessage("Something went wrong");
-      setIsError(true);
-    },
-    (data) => {
-      setMessage(data.message);
-      setIsError(false);
-    }
-  );
-  const { mutateAsync: saveChef } = useSaveChef(
-    (err) => {
-      if (isAxiosError(err)) setMessage(err.response?.data.message);
-      else setMessage("Something went wrong");
-      setIsError(true);
-    },
-    (data) => {
-      setMessage(data.message);
-      setIsError(false);
-    }
-  );
+
+  const onError = (err: unknown) => {
+    const defaultMessage = "Something went wrong";
+    if (isAxiosError(err))
+      setMessage(err.response?.data?.message || defaultMessage);
+    else setMessage(defaultMessage);
+    setIsError(true);
+  };
+
+  const onSuccess = (data: DeleteChefRes | SaveChefRes) => {
+    setMessage(data.message);
+    setIsError(false);
+  };
+
+  const { mutateAsync: deleteChef } = useDeleteChef(onError, onSuccess);
+  const { mutateAsync: saveChef } = useSaveChef(onError, onSuccess);
 
   type AlertInfo = {
     severity: "success" | "error";

@@ -6,7 +6,7 @@ import type {
   DeleteChefRes,
 } from "../../../../shared/http-types/chef/deleteChef.http-type";
 
-const mutationFn = async (uuid: string) => {
+const deleteChef = async (uuid: string) => {
   const data: DeleteChefReq = { uuid };
   const response = await api.delete<DeleteChefRes>("/chef", { data });
   return response.data;
@@ -19,7 +19,7 @@ export const useDeleteChef = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn,
+    mutationFn: deleteChef,
     onSuccess: (response) => {
       onSuccess?.(response);
       queryClient.invalidateQueries({ queryKey: [USE_GET_CHEFS_KEY] });

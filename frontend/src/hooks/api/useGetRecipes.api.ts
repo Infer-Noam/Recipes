@@ -4,7 +4,7 @@ import api from "../../api";
 
 export const USE_GET_RECIPES_KEY = "useGetRecipesKey";
 
-const queryFn = () =>
+const getRecipes = () =>
   api
     .get<GetAllRecipesRes>("/recipe")
     .then((response) => response.data.recipes);
@@ -12,6 +12,6 @@ const queryFn = () =>
 export const useGetRecipes = () => {
   return useQuery({
     queryKey: [USE_GET_RECIPES_KEY],
-    queryFn,
+    queryFn: getRecipes,
   });
 };

@@ -4,7 +4,7 @@ import type { SaveChefRes } from "../../../../shared/http-types/chef/saveChef.ht
 import { USE_GET_CHEFS_KEY } from "./useGetChefs.api";
 import type { ChefDetails } from "@shared/types/chef.type";
 
-const mutationFn = async (chefDetails: ChefDetails) =>
+const saveChef = async (chefDetails: ChefDetails) =>
   api.post<SaveChefRes>("/chef", { chefDetails });
 
 export const useSaveChef = (
@@ -14,7 +14,7 @@ export const useSaveChef = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn,
+    mutationFn: saveChef,
     onSuccess: (response) => {
       onSuccess?.(response.data);
       queryClient.invalidateQueries({ queryKey: [USE_GET_CHEFS_KEY] });

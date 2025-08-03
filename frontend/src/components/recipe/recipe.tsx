@@ -25,6 +25,7 @@ import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import { isAxiosError } from "axios";
 import type { RecipeInputs } from "./recipeInputs.type";
+import defaultRecipeDetails from "./defaultRecipeDetails.const";
 
 type RecipeProps = {
   uuid: string;
@@ -49,38 +50,28 @@ export const Recipe: FC<RecipeProps> = ({
     formState: { errors },
   } = useForm<RecipeInputs>({
     defaultValues: {
-      ...(initialRecipe ?? {
-        name: "",
-        chef: undefined,
-        description: "",
-        imageUrl: "",
-        steps: [],
-        recipeIngredients: [],
-      }),
+      ...(initialRecipe ?? defaultRecipeDetails),
     },
   });
-  const { chef, imageUrl } = watch();
+  const [chef, imageUrl] = watch(["chef", "imageUrl"]);
   const [messageText, setMessage] = useState<string | undefined>(undefined);
 
+  const onError = (defaultMessage: string) => (err: unknown) => {
+    if (isAxiosError(err))
+      setMessage(err.response?.data?.message || defaultMessage);
+    else setMessage(defaultMessage);
+  };
+
+  const onSuccess = () => navigate(-1);
+
   const { mutateAsync: saveRecipe } = useSaveRecipe(
-    (err) => {
-      if (isAxiosError(err))
-        setMessage(err.response?.data?.message || "Failed to save recipe");
-      else setMessage("Something went wrong");
-    },
-    () => {
-      navigate(-1);
-    }
+    onError("Failed to save recipe"),
+    onSuccess
   );
+
   const { mutate: deleteRecipe } = useDeleteRecipe(
-    (err) => {
-      if (isAxiosError(err))
-        setMessage(err.response?.data?.message || "Failed to delete recipe");
-      else setMessage("Something went wrong");
-    },
-    () => {
-      navigate(-1);
-    }
+    onError("Failed to delete recipe"),
+    onSuccess
   );
 
   const onSubmit: SubmitHandler<RecipeInputs> = async ({

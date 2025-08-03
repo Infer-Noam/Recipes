@@ -5,7 +5,7 @@ import type { RecipeDetails } from "../../../../shared/types/recipe.type";
 import { USE_GET_RECIPES_KEY } from "./useGetRecipes.api";
 import { USE_GET_RECIPE_BY_UUID_KEY } from "./useGetRecipeByUuid.api";
 
-const mutationFn = async (recipeDetails: RecipeDetails) =>
+const saveRecipe = async (recipeDetails: RecipeDetails) =>
   await api.post<SaveRecipeRes>("/recipe", { recipeDetails });
 
 export const useSaveRecipe = (
@@ -15,7 +15,7 @@ export const useSaveRecipe = (
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn,
+    mutationFn: saveRecipe,
     onSuccess: (response) => {
       onSuccess?.(response.data);
       queryClient.invalidateQueries({ queryKey: [USE_GET_RECIPES_KEY] });
