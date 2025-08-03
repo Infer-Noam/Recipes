@@ -98,12 +98,12 @@ export const Recipe: FC<RecipeProps> = ({
       description,
       imageUrl,
       steps,
-      ingredients: recipeIngredients.map((ri) => ({
-        uuid: ri.uuid,
+      ingredients: recipeIngredients.map((recipeIngredient) => ({
+        uuid: recipeIngredient.uuid,
         recipe: { uuid },
-        ingredient: { uuid: ri!.ingredient!.uuid! },
-        amount: ri!.amount!,
-        measurementUnit: ri!.measurementUnit!,
+        ingredient: { uuid: recipeIngredient!.ingredient!.uuid! },
+        amount: recipeIngredient!.amount!,
+        measurementUnit: recipeIngredient!.measurementUnit!,
       })),
     };
 
