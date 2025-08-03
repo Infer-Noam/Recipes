@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import service from "./recipe.service";
 import {
   SaveRecipeReq,
@@ -7,6 +7,7 @@ import {
 import { DeleteRecipeReq } from "@shared/http-types/recipe/deleteRecipe.http-type";
 import { GetRecipeByIdRes } from "@shared/http-types/recipe/getRecipeByUuid.http-type";
 import { GetAllRecipesRes } from "@shared/http-types/recipe/getAllRecipes.http-type";
+import { NotFoundError } from "src/utils/errors/notFound.error";
 
 const router = Router();
 
@@ -16,15 +17,11 @@ router.post(
     req: Request<null, null, SaveRecipeReq>,
     res: Response<SaveRecipeRes>
   ) => {
-    try {
-      const recipe = await service.saveRecipe(req.body.recipeDetails);
-      if (recipe) {
-        res.status(200).json({ recipe });
-      } else {
-        res.sendStatus(500);
-      }
-    } catch (err) {
-      res.sendStatus(400);
+    const recipe = await service.saveRecipe(req.body.recipeDetails);
+    if (recipe) {
+      res.status(200).json({ recipe });
+    } else {
+      res.sendStatus(500);
     }
   }
 );
@@ -36,7 +33,9 @@ router.delete(
 
     const exist = await service.deleteRecipe(uuid);
 
-    res.sendStatus(exist ? 204 : 404);
+    if (!exist) throw new NotFoundError("Recipe");
+
+    res.sendStatus(204);
   }
 );
 
@@ -44,10 +43,10 @@ router.get("/", async (_: Request, res: Response<GetAllRecipesRes>) => {
   const recipes = await service.getAllRecipes();
 
   if (!recipes.length) {
-    return res.sendStatus(404);
+    throw new NotFoundError("Recipes");
   }
 
-  return res.status(200).json({ recipes });
+  res.status(200).json({ recipes });
 });
 
 router.get("/:uuid", async (req: Request, res: Response<GetRecipeByIdRes>) => {
@@ -55,9 +54,9 @@ router.get("/:uuid", async (req: Request, res: Response<GetRecipeByIdRes>) => {
 
   const recipe = await service.getRecipeByUuid(uuid);
 
-  if (!recipe) return res.sendStatus(404);
+  if (!recipe) throw new NotFoundError("Recipe");
 
-  return res.status(200).json({ recipe });
+  res.status(200).json({ recipe });
 });
 
 export default router;

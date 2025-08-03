@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import service from "./chef.service";
 import {
   SaveChefReq,
@@ -6,32 +6,25 @@ import {
 } from "@shared/http-types/chef/saveChef.http-type";
 import { GetAllChefsRes } from "@shared/http-types/chef/getAllChefs.http-type";
 import { DeleteChefReq } from "@shared/http-types/chef/deleteChef.http-type";
+import { HttpError } from "@shared/types/httpError.type";
+import { NotFoundError } from "src/utils/errors/notFound.error";
 
 const router = Router();
 
 router.post(
   "/",
   async (req: Request<null, null, SaveChefReq>, res: Response<SaveChefRes>) => {
-    try {
-      const chef = await service.saveChef(req.body.chefDetails);
-      if (chef) {
-        res.status(200).json({ message: "Chef saved successfully" });
-      } else {
-        res.status(500).json({ message: "Something went wrong" });
-      }
-    } catch (err) {
-      if (err instanceof Error) {
-        res.status(400).json({ message: err.message });
-      } else {
-        res.status(400).json({ message: "Something went wrong" });
-      }
+    const chef = await service.saveChef(req.body.chefDetails);
+    if (!chef) {
+      new HttpError("Something went wrong");
     }
+    res.status(200).json({ message: "Chef saved successfully" });
   }
 );
 
 router.get("/", async (_: Request, res: Response<GetAllChefsRes>) => {
   const chefs = await service.getAllChefs();
-  return res.status(200).json({ chefs });
+  res.status(200).json({ chefs });
 });
 
 router.delete(
@@ -41,7 +34,9 @@ router.delete(
 
     const exist = await service.deleteChef(uuid);
 
-    res.sendStatus(exist ? 204 : 404);
+    if (!exist) throw new NotFoundError("Chef");
+
+    res.sendStatus(204);
   }
 );
 export default router;
