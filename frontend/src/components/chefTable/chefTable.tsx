@@ -31,7 +31,7 @@ const ChefTable: FC<ChefTableProps> = ({
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={Styles.container} aria-label="simple table">
+      <Table sx={Styles.container}>
         <TableHead>
           <TableRow>
             <CustomTableCell label="" />

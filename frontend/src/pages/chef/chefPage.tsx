@@ -12,7 +12,7 @@ import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAl
 const ChefPage: FC = () => {
   const { data: chefs } = useGetChefs();
   const { mutate: deleteChef } = useDeleteChef();
-  const { mutateAsync: saveChef, error, isError } = useSaveChef();
+  const { mutateAsync: saveChef, isError } = useSaveChef();
 
   const [message, setMessage] = useState<string | undefined>(undefined);
 
@@ -31,7 +31,7 @@ const ChefPage: FC = () => {
               .then((response) => setMessage(response.message))
               .catch((err) => {
                 if (isAxiosError(err)) setMessage(err.response?.data.message);
-                else setMessage(error?.message);
+                else setMessage(err.message);
               });
           }}
         />

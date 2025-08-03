@@ -16,7 +16,7 @@ const relations: FindOptionsRelations<Recipe> = {
 export const saveRecipe = async (recipeDetails: RecipeDetails) => {
   const { uuid, ...rest } = recipeDetails;
 
-  return await AppDataSource.transaction(
+  return AppDataSource.transaction(
     async (transaction) =>
       await transaction.save(Recipe, {
         ...rest,
@@ -40,18 +40,16 @@ const deleteRecipe = async (uuid: string) => {
   return true;
 };
 
-const getAllRecipes = async () => {
-  return await recipeRepository.find({
+const getAllRecipes = async () =>
+  recipeRepository.find({
     relations,
   });
-};
 
-const getRecipeByUuid = async (uuid: string) => {
-  return await recipeRepository.findOne({
+const getRecipeByUuid = async (uuid: string) =>
+  recipeRepository.findOne({
     where: { uuid },
     relations,
   });
-};
 
 export default {
   saveRecipe,
