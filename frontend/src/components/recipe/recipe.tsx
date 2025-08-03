@@ -86,7 +86,7 @@ export const Recipe: FC<RecipeProps> = ({
     },
   });
 
-  const { chef, imageUrl } = watch();
+  const [chef, imageUrl] = watch(["chef", "imageUrl"]);
   const [errorText, setErrorText] = useState<string | undefined>(undefined);
 
   const onSubmit: SubmitHandler<RecipeInputs> = async ({
@@ -97,7 +97,6 @@ export const Recipe: FC<RecipeProps> = ({
     steps,
     recipeIngredients,
   }) => {
-
     const recipeDetails: RecipeDetails = {
       uuid,
       name,
@@ -134,7 +133,6 @@ export const Recipe: FC<RecipeProps> = ({
         <Grid size={{ xs: 6, lg: 3.5, xl: 6 }}>
           <TextField
             fullWidth
-            id="outlined-basic"
             label="Recipe name"
             variant="outlined"
             {...register("name", { required: true, maxLength: 20 })}
@@ -187,7 +185,6 @@ export const Recipe: FC<RecipeProps> = ({
           <TextField
             fullWidth
             multiline
-            id="outlined-basic"
             label="Short description"
             variant="outlined"
             {...register("description", { required: false })}
@@ -197,7 +194,6 @@ export const Recipe: FC<RecipeProps> = ({
         <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
           <TextField
             fullWidth
-            id="outlined-basic"
             label="Image url"
             variant="outlined"
             {...register("imageUrl", {
