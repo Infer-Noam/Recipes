@@ -23,19 +23,10 @@ import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import RecipeStepsList from "./recipeSteps/RecipeStepsList";
 import { useNavigate } from "react-router-dom";
-import type { DraftRecipeIngredient } from "./recipeIngredientTable/draftRecipeIngredient.type";
 import type { SaveRecipeRes } from "@shared/http-types/recipe/saveRecipe.http-type";
 import type { MutateOptions } from "@tanstack/react-query";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-
-export type RecipeInputs = {
-  name: string;
-  steps: string[];
-  chef: ChefModel;
-  recipeIngredients: DraftRecipeIngredient[];
-  description: string;
-  imageUrl: string;
-};
+import type { RecipeInputs } from "./recipeInputs.type";
 
 type RecipeProps = {
   recipe: RecipeModel;

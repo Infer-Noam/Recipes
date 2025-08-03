@@ -14,7 +14,7 @@ const ChefPage: FC = () => {
   const { mutate: deleteChef } = useDeleteChef();
   const { mutateAsync: saveChef, isError } = useSaveChef();
 
-  const [message, setMessage] = useState<string | undefined>(undefined);
+  const [message, setMessage] = useState<string | undefined>();
 
   type AlertInfo = {
     severity: "success" | "error";
