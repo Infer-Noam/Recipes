@@ -16,7 +16,7 @@ const relations: FindOptionsRelations<Recipe> = {
 export const saveRecipe = async (recipeDetails: RecipeDetails) => {
   const { uuid, ...rest } = recipeDetails;
 
-  return await AppDataSource.transaction(
+  return AppDataSource.transaction(
     async (transaction) =>
       await transaction.save(Recipe, {
         ...rest,

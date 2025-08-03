@@ -33,7 +33,7 @@ const RecipePage = () => {
           deleteRecipe={() => deleteRecipe(uuid)}
           saveRecipe={saveRecipe}
           saveError={saveError}
-        ></Recipe>
+        />
       </Box>
     );
   }
