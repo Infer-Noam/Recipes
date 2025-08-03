@@ -7,6 +7,7 @@ import {
 import { DeleteRecipeReq } from "@shared/http-types/recipe/deleteRecipe.http-type";
 import { GetRecipeByIdRes } from "@shared/http-types/recipe/getRecipeByUuid.http-type";
 import { GetAllRecipesRes } from "@shared/http-types/recipe/getAllRecipes.http-type";
+import { NotFoundError } from "src/utils/errors/notFound.error";
 import { HttpError } from "@shared/types/httpError.type";
 
 const router = Router();
@@ -15,74 +16,47 @@ router.post(
   "/",
   async (
     req: Request<null, null, SaveRecipeReq>,
-    res: Response<SaveRecipeRes>,
-    next: NextFunction
+    res: Response<SaveRecipeRes>
   ) => {
-    try {
       const recipe = await service.saveRecipe(req.body.recipeDetails);
 
       if (!recipe) throw new HttpError("Recipe creation failed", 500);
 
       res.status(200).json({ message: "Recipe saved successfully" });
-      next();
-    } catch (err) {
-      next(err);
-    }
   }
 );
 
 router.delete(
   "/",
-  async (
-    req: Request<null, null, DeleteRecipeReq>,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      const { uuid } = req.body;
+  async (req: Request<null, null, DeleteRecipeReq>, res: Response) => {
+    const { uuid } = req.body;
 
-      const exist = await service.deleteRecipe(uuid);
+    const exist = await service.deleteRecipe(uuid);
 
-      if (!exist) throw new HttpError("Recipe not found", 404);
+    if (!exist) throw new NotFoundError("Recipe");
 
-      res.status(200).json({ message: "Recipe deleted successfully" });
-      next();
-    } catch (err) {
-      next(err);
-    }
+    res.status(200).json({ message: "Recipe deleted successfully" });
   }
 );
 
-router.get(
-  "/",
-  async (_: Request, res: Response<GetAllRecipesRes>, next: NextFunction) => {
-    try {
-      const recipes = await service.getAllRecipes();
+router.get("/", async (_: Request, res: Response<GetAllRecipesRes>) => {
+  const recipes = await service.getAllRecipes();
 
-      res.status(200).json({ recipes });
-      next();
-    } catch (err) {
-      next(err);
-    }
+  if (!recipes.length) {
+    throw new NotFoundError("Recipes");
   }
-);
 
-router.get(
-  "/:uuid",
-  async (req: Request, res: Response<GetRecipeByIdRes>, next: NextFunction) => {
-    try {
-      const uuid = req.params.uuid;
+  res.status(200).json({ recipes });
+});
 
-      const recipe = await service.getRecipeByUuid(uuid);
+router.get("/:uuid", async (req: Request, res: Response<GetRecipeByIdRes>) => {
+  const uuid = req.params.uuid;
 
-      if (!recipe) throw new HttpError("Recipe not found", 404);
+  const recipe = await service.getRecipeByUuid(uuid);
 
-      res.status(200).json({ recipe });
-      next();
-    } catch (err) {
-      next(err);
-    }
-  }
-);
+  if (!recipe) throw new NotFoundError("Recipe");
+
+  res.status(200).json({ recipe });
+});
 
 export default router;

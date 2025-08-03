@@ -27,11 +27,12 @@ const ChefTable: FC<ChefTableProps> = ({
   saveChef,
   deleteChef,
 }) => {
+  const cellCount = 5;
   const [chefs, setChefs] = useState(defaultChefs);
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={Styles.container} aria-label="simple table">
+      <Table sx={Styles.container}>
         <TableHead>
           <TableRow>
             <CustomTableCell label="" />
@@ -65,11 +66,9 @@ const ChefTable: FC<ChefTableProps> = ({
                 Add chef
               </Button>
             </TableCell>
-            <TableCell />
-            <TableCell />
-            <TableCell />
-            <TableCell />
-            <TableCell />
+            {Array.from({ length: cellCount }, (_, i) => (
+              <TableCell key={i} />
+            ))}
           </TableRow>
         </TableBody>
       </Table>
