@@ -13,7 +13,6 @@ const ChefPage: FC = () => {
   const { data: chefs } = useGetChefs();
   const { mutate: deleteChef } = useDeleteChef();
   const { mutateAsync: saveChef, isError } = useSaveChef();
-  const { mutateAsync: saveChef, isError } = useSaveChef();
 
   const [message, setMessage] = useState<string | undefined>();
 
