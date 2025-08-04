@@ -1,13 +1,17 @@
 import { RecipeCard } from "../../components/recipeCard/RecipeCard";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Link } from "@mui/material";
 import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import { chefSrcArray } from "../chef/chefSrcArray.const";
-import type { JSX } from "react";
+import type { FC, JSX } from "react";
+import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
+import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
+import NotFoundImage from "../../assets/recipe_not_found.png";
+import ImageTextDisplay from "../../components/imageTextDisplay/ImageTextDisplay";
 
-const HomePage = () => {
-  const { data: recipes } = useGetRecipes();
+const HomePage: FC = () => {
+  const { data: recipes, isLoading } = useGetRecipes();
 
   const { mutate: deleteRecipe } = useDeleteRecipe();
 
@@ -16,39 +20,49 @@ const HomePage = () => {
     return chefSrcArray[randomIndex];
   };
 
-  if (recipes) {
+  if (isLoading) return <BackdropLoading />;
+
+  if (!recipes) return <CentralErrorAlert text="Something went wrong..." />;
+
+  if (!recipes.length)
     return (
-      <Box>
-        <Grid
-          container
-          sx={Styles.gridContainer}
-          rowSpacing={2.5}
-          columnSpacing={3.5}
-        >
-          {recipes
-            .sort(
-              (a, b) =>
-                new Date(a.createDate).getTime() -
-                new Date(b.createDate).getTime()
-            )
-            .reduce<JSX.Element[]>((acc, recipe) => {
-              acc.push(
-                <Grid key={recipe.uuid}>
-                  <RecipeCard
-                    recipe={recipe}
-                    deleteRecipe={() => {
-                      deleteRecipe(recipe.uuid);
-                    }}
-                    chefAvatarSrc={getRandomChefSrc()}
-                  />
-                </Grid>
-              );
-              return acc;
-            }, [])}
-        </Grid>
-      </Box>
+      <ImageTextDisplay src={NotFoundImage}>
+        No recipes found. Click <Link href="/creation">here</Link> to create
+        one!
+      </ImageTextDisplay>
     );
-  } else return null;
+
+  return (
+    <Box>
+      <Grid
+        container
+        sx={Styles.gridContainer}
+        rowSpacing={2.5}
+        columnSpacing={3.5}
+      >
+        {recipes
+          .sort(
+            (a, b) =>
+              new Date(a.createDate).getTime() -
+              new Date(b.createDate).getTime()
+          )
+          .reduce<JSX.Element[]>((acc, recipe) => {
+            acc.push(
+              <Grid key={recipe.uuid}>
+                <RecipeCard
+                  recipe={recipe}
+                  deleteRecipe={() => {
+                    deleteRecipe(recipe.uuid);
+                  }}
+                  chefAvatarSrc={getRandomChefSrc()}
+                />
+              </Grid>
+            );
+            return acc;
+          }, [])}
+      </Grid>
+    </Box>
+  );
 };
 
 export default HomePage;
