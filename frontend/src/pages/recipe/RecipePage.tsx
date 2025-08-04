@@ -5,7 +5,6 @@ import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { Recipe } from "../../components/recipe/recipe";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
-import { Box } from "@mui/material";
 
 const RecipePage = () => {
   const { uuid } = useParams();
@@ -18,20 +17,18 @@ const RecipePage = () => {
 
   if (isLoading) return <BackdropLoading />;
 
-  if (recipe) {
-    return (
-      <Box>
-        <Recipe
-          uuid={uuid}
-          initialRecipe={recipe}
-          chefs={chefs}
-          ingredients={ingredients}
-        ></Recipe>
-      </Box>
-    );
+  if (!recipe) {
+    return <CentralErrorAlert text="Something went wrong..." />;
   }
 
-  return <CentralErrorAlert text="Something went wrong..." />;
+  return (
+    <Recipe
+      uuid={uuid}
+      initialRecipe={recipe}
+      chefs={chefs}
+      ingredients={ingredients}
+    />
+  );
 };
 
 export default RecipePage;

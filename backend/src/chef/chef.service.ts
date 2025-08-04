@@ -8,7 +8,7 @@ const chefRepository = AppDataSource.getRepository(Chef);
 const saveChef = async (details: ChefDetails) => {
   const { uuid, ...rest } = details;
 
-  return await AppDataSource.transaction(
+  return AppDataSource.transaction(
     async (transaction) =>
       await transaction.save(Chef, {
         ...rest,
@@ -17,9 +17,7 @@ const saveChef = async (details: ChefDetails) => {
   );
 };
 
-const getAllChefs = async () => {
-  return await chefRepository.find({});
-};
+const getAllChefs = async () => chefRepository.find({});
 
 const deleteChef = async (uuid: string) => {
   const exist = await chefRepository.exists({

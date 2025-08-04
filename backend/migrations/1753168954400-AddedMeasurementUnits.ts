@@ -13,7 +13,7 @@ export class AddedMeasurementUnits1753168954400 implements MigrationInterface {
       `CREATE TYPE ${DB_SCHEMA}."recipe_ingredient_measurement_unit_enum" AS ENUM('kg', 'mg', 'g', 'lb', 'oz', 'l', 'ml', 'cup', 'piece', 'unit')`
     );
     await queryRunner.query(
-      `ALTER TABLE ${DB_SCHEMA}."recipe_ingredient" ALTER COLUMN "measurement_unit" TYPE "public"."recipe_ingredient_measurement_unit_enum" USING "measurement_unit"::"text"::"public"."recipe_ingredient_measurement_unit_enum"`
+      `ALTER TABLE ${DB_SCHEMA}."recipe_ingredient" ALTER COLUMN "measurement_unit" TYPE ${DB_SCHEMA}."recipe_ingredient_measurement_unit_enum" USING "measurement_unit"::"text"::${DB_SCHEMA}."recipe_ingredient_measurement_unit_enum"`
     );
     await queryRunner.query(
       `DROP TYPE ${DB_SCHEMA}."recipe_ingredient_measurement_unit_enum_old"`
@@ -25,7 +25,7 @@ export class AddedMeasurementUnits1753168954400 implements MigrationInterface {
       `CREATE TYPE ${DB_SCHEMA}."recipe_ingredient_measurement_unit_enum_old" AS ENUM('Kg', 'Mg')`
     );
     await queryRunner.query(
-      `ALTER TABLE ${DB_SCHEMA}."recipe_ingredient" ALTER COLUMN "measurement_unit" TYPE "public"."recipe_ingredient_measurement_unit_enum_old" USING "measurement_unit"::"text"::"public"."recipe_ingredient_measurement_unit_enum_old"`
+      `ALTER TABLE ${DB_SCHEMA}."recipe_ingredient" ALTER COLUMN "measurement_unit" TYPE ${DB_SCHEMA}."recipe_ingredient_measurement_unit_enum_old" USING "measurement_unit"::"text"::${DB_SCHEMA}."recipe_ingredient_measurement_unit_enum_old"`
     );
     await queryRunner.query(
       `DROP TYPE ${DB_SCHEMA}."recipe_ingredient_measurement_unit_enum"`

@@ -10,63 +10,38 @@ import {
   DeleteChefRes,
 } from "@shared/http-types/chef/deleteChef.http-type";
 import { HttpError } from "@shared/types/httpError.type";
+import { NotFoundError } from "src/utils/errors/notFound.error";
 
 const router = Router();
 
 router.post(
   "/",
-  async (
-    req: Request<null, null, SaveChefReq>,
-    res: Response<SaveChefRes>,
-    next: NextFunction
-  ) => {
-    try {
-      const chef = await service.saveChef(req.body.chefDetails);
-      if (!chef) {
-        new HttpError("Something went wrong", 500);
-      }
-      res.status(200).json({ message: "Chef saved successfully" });
-      next();
-    } catch (err) {
-      next(err);
+  async (req: Request<null, null, SaveChefReq>, res: Response<SaveChefRes>) => {
+    const chef = await service.saveChef(req.body.chefDetails);
+    if (!chef) {
+      new HttpError("Something went wrong");
     }
+    res.status(200).json({ message: "Chef saved successfully" });
   }
 );
 
-router.get(
-  "/",
-  async (_: Request, res: Response<GetAllChefsRes>, next: NextFunction) => {
-    try {
-      const chefs = await service.getAllChefs();
-      res.status(200).json({ chefs });
-      next();
-    } catch (err) {
-      next(err);
-    }
-  }
-);
+router.get("/", async (_: Request, res: Response<GetAllChefsRes>) => {
+  const chefs = await service.getAllChefs();
+  res.status(200).json({ chefs });
+});
 
 router.delete(
   "/",
-  async (
-    req: Request<null, null, DeleteChefReq>,
-    res: Response<DeleteChefRes>,
-    next: NextFunction
-  ) => {
-    try {
-      const { uuid } = req.body;
+  async (req: Request<null, null, DeleteChefReq>, res: Response<DeleteChefRes>) => {
+    const { uuid } = req.body;
 
-      const exist = await service.deleteChef(uuid);
+    const exist = await service.deleteChef(uuid);
 
-      if (!exist) throw new HttpError("Chef dosen't exist", 404);
+    if (!exist) throw new NotFoundError("Chef");
 
-      res.status(200).json({
+    res.status(200).json({
         message: "Chef deleted successfully",
       });
-      next();
-    } catch (err) {
-      next(err);
-    }
   }
 );
 export default router;

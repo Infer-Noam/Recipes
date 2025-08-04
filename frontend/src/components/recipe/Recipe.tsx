@@ -17,22 +17,13 @@ import {
 import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import RecipeStepsList from "./recipeSteps/RecipeStepsList";
-import type { DraftRecipeIngredient } from "./recipeIngredientTable/draftRecipeIngredient.type";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import { isAxiosError } from "axios";
-import swal from "sweetalert";
-
-export type RecipeInputs = {
-  name: string;
-  steps: string[];
-  chef: ChefModel;
-  ingredients: DraftRecipeIngredient[];
-  description: string;
-  imageUrl: string;
-};
+import type { RecipeInputs } from "./recipeInputs.type";
+import defaultRecipeDetails from "./defaultRecipeDetails.const";
 
 type RecipeProps = {
   uuid: string;
@@ -56,30 +47,30 @@ export const Recipe: FC<RecipeProps> = ({
     control,
     formState: { errors },
   } = useForm<RecipeInputs>({
-    defaultValues: initialRecipe ?? {
-      name: "",
-      chef: undefined,
-      description: "",
-      imageUrl: "",
-      steps: [],
-      ingredients: [],
+    defaultValues: {
+      ...(initialRecipe ?? defaultRecipeDetails),
     },
   });
-  const { chef, imageUrl } = watch();
+  const [chef, imageUrl] = watch(["chef", "imageUrl"]);
 
-  const displayError = (err: unknown) => {
-    let text = "";
-    if (isAxiosError(err))
-      text = err.response?.data?.message || "Failed to save recipe";
-    else text = "Something went wrong";
+  const onError = (defaultMessage: string) => (err: unknown) => {
+    let text = defaultMessage;
+    if (isAxiosError(err) && err.response)
+      text = err.response.data.message;
     swal("Error", text, "error");
   };
-  const { mutateAsync: saveRecipe } = useSaveRecipe(displayError, () => {
-    navigate(-1);
-  });
-  const { mutate: deleteRecipe } = useDeleteRecipe(displayError, () => {
-    navigate(-1);
-  });
+
+  const onSuccess = () => navigate(-1);
+
+  const { mutateAsync: saveRecipe } = useSaveRecipe(
+    onError("Failed to save recipe"),
+    onSuccess
+  );
+
+  const { mutate: deleteRecipe } = useDeleteRecipe(
+    onError("Failed to delete recipe"),
+    onSuccess
+  );
 
   const onSubmit: SubmitHandler<RecipeInputs> = async ({
     name,
@@ -114,7 +105,6 @@ export const Recipe: FC<RecipeProps> = ({
         <Grid size={{ xs: 6, lg: 3.5, xl: 6 }}>
           <TextField
             fullWidth
-            id="outlined-basic"
             label="Recipe name"
             variant="outlined"
             {...register("name", { required: true, maxLength: 20 })}
@@ -167,7 +157,6 @@ export const Recipe: FC<RecipeProps> = ({
           <TextField
             fullWidth
             multiline
-            id="outlined-basic"
             label="Short description"
             variant="outlined"
             {...register("description", { required: false })}
@@ -177,7 +166,6 @@ export const Recipe: FC<RecipeProps> = ({
         <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
           <TextField
             fullWidth
-            id="outlined-basic"
             label="Image url"
             variant="outlined"
             {...register("imageUrl", {

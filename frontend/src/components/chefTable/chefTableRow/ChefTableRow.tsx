@@ -1,17 +1,11 @@
 import { IconButton, TableCell, TableRow, TextField } from "@mui/material";
 import type { ChefDetails } from "@shared/types/chef.type";
-import { useEffect, useState, type FC } from "react";
+import { type FC } from "react";
 import Styles from "./chefTableRow.style";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useForm, type SubmitHandler } from "react-hook-form";
-
-type Inputs = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-};
+import type { ChefTableRowInputs } from "../chefTableRowInput.type";
 
 type ChefTableRowProps = {
   chef: ChefDetails;
@@ -33,9 +27,8 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>({
+    formState: { errors, isDirty },
+  } = useForm<ChefTableRowInputs>({
     defaultValues: {
       firstName: initialFirstName,
       lastName: initialLastName,
@@ -44,31 +37,12 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
     },
   });
 
-  const allValues = watch();
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<ChefTableRowInputs> = (data) => {
     saveChef({
       uuid,
       ...data,
     });
   };
-
-  const [hasChanged, setHasChanged] = useState(false);
-
-  useEffect(() => {
-    const changed =
-      allValues.firstName !== initialFirstName ||
-      allValues.lastName !== initialLastName ||
-      allValues.email !== initialEmail ||
-      allValues.phone !== initialPhone;
-    setHasChanged(changed);
-  }, [
-    allValues,
-    initialFirstName,
-    initialLastName,
-    initialEmail,
-    initialPhone,
-  ]);
 
   return (
     <TableRow sx={Styles.chefTableRow}>
@@ -123,11 +97,9 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
       </TableCell>
 
       <TableCell>
-        {hasChanged && (
-          <IconButton onClick={() => handleSubmit(onSubmit)()}>
-            <CheckIcon />
-          </IconButton>
-        )}
+        <IconButton onClick={() => handleSubmit(onSubmit)()} disabled={isDirty}>
+          <CheckIcon />
+        </IconButton>
       </TableCell>
     </TableRow>
   );

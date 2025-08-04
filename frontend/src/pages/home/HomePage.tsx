@@ -3,7 +3,7 @@ import { Box, Grid } from "@mui/material";
 import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
-import { chefSrcArray } from "../../consts/chefSrcArray.const";
+import { chefSrcArray } from "../chef/chefSrcArray.const";
 import type { JSX } from "react";
 
 const HomePage = () => {
