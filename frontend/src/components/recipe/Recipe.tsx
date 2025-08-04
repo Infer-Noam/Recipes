@@ -47,7 +47,7 @@ export const Recipe: FC<RecipeProps> = ({
   type RecipeFormData = z.infer<typeof RecipeDetailsSchema>;
 
   const methods = useForm<RecipeFormData>({
-    defaultValues: initialRecipe ?? defaultRecipeDetails,
+    defaultValues: initialRecipe ?? { uuid, ...defaultRecipeDetails },
     resolver: zodResolver(RecipeDetailsSchema),
   });
 
@@ -73,7 +73,7 @@ export const Recipe: FC<RecipeProps> = ({
   );
 
   const chefModel = useMemo(
-    () => chefs.find((c) => c.uuid === chef.uuid),
+    () => chefs.find((c) => c.uuid === chef?.uuid),
     [chef]
   );
 
@@ -88,7 +88,6 @@ export const Recipe: FC<RecipeProps> = ({
           <Controller
             name="name"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <TextField
                 {...field}
@@ -149,7 +148,6 @@ export const Recipe: FC<RecipeProps> = ({
           <Controller
             name="description"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <TextField
                 {...field}
@@ -166,7 +164,6 @@ export const Recipe: FC<RecipeProps> = ({
           <Controller
             name="imageUrl"
             control={control}
-            defaultValue=""
             render={({ field }) => (
               <TextField
                 {...field}

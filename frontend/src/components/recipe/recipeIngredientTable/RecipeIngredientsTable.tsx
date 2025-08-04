@@ -91,7 +91,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
               <Typography component="span">Ingredients</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {recipeIngredients?.length > 0 && (
+              {recipeIngredients.length > 0 && (
                 <TableContainer component={Paper}>
                   <Table sx={Styles.container} aria-label="simple table">
                     <TableHead>
@@ -105,7 +105,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                     <TableBody>
                       {recipeIngredients.map((ri, index) => {
                         const ingredientError = getIngredientError(index);
-                        const ingredient = getIngredient(ri?.uuid);
+                        const ingredient = getIngredient(ri?.ingredient?.uuid);
 
                         return (
                           <TableRow

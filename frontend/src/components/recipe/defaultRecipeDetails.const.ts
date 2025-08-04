@@ -4,7 +4,7 @@ const defaultRecipeDetails = {
   description: "",
   imageUrl: "",
   steps: [],
-  recipeIngredients: [],
+  ingredients: [],
 };
 
 export default defaultRecipeDetails;
