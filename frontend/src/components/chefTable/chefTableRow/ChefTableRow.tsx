@@ -4,8 +4,6 @@ import { type FC } from "react";
 import Styles from "./chefTableRow.style";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useForm, type SubmitHandler } from "react-hook-form";
-import type { ChefTableRowInputs } from "../chefTableRowInput.type";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
@@ -17,13 +15,7 @@ type ChefTableRowProps = {
 };
 
 const ChefTableRow: FC<ChefTableRowProps> = ({
-  chef: {
-    uuid,
-    firstName: initialFirstName,
-    lastName: initialLastName,
-    email: initialEmail,
-    phone: initialPhone,
-  },
+  chef,
   saveChef,
   deleteChef,
 }) => {
@@ -31,24 +23,13 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
     register,
     handleSubmit,
     formState: { errors, isDirty },
-    watch
   } = useForm({
-    defaultValues: {
-      uuid,
-      firstName: initialFirstName,
-      lastName: initialLastName,
-      email: initialEmail,
-      phone: initialPhone,
-    },
+    defaultValues: chef,
     resolver: zodResolver(ChefDetailsSchema),
   });
 
-  const allValues = watch();
-
-  const onSubmit = () => {
-    saveChef({
-      ...allValues,
-    });
+  const onSubmit = (chef: ChefDetails) => {
+    saveChef(chef);
   };
 
   return (

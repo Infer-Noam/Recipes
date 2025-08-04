@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import { type RecipeDetails } from "../../../../shared/types/recipe.type";
 import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
 import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
@@ -13,8 +13,6 @@ import {
   Tooltip,
   Grid,
   Button,
-  Alert,
-  AlertTitle,
 } from "@mui/material";
 import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -23,10 +21,8 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
-import { isAxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RecipeDetailsSchema } from "../../../../shared/validation/recipeDetailsSchema.validation";
-import type { RecipeInputs } from "./recipeInputs.type";
 import defaultRecipeDetails from "./defaultRecipeDetails.const";
 import { useSwal } from "../../hooks/useSwal";
 
@@ -60,9 +56,9 @@ export const Recipe: FC<RecipeProps> = ({
     formState: { errors },
   } = methods;
 
-  const allValues = watch();
-   const onSuccess = () => navigate(-1);
-   
+  const [chef, imageUrl] = watch(["chef", "imageUrl"]);
+  const onSuccess = () => navigate(-1);
+
   const { mutateAsync: saveRecipe } = useSaveRecipe(
     (err) => showError(err, "Failed to save recipe"),
     onSuccess
@@ -73,8 +69,8 @@ export const Recipe: FC<RecipeProps> = ({
     onSuccess
   );
 
-  const onSubmit = async () => {
-    await saveRecipe(allValues);
+  const onSubmit = async (recipeDetails: RecipeDetails) => {
+    await saveRecipe(recipeDetails);
   };
 
   return (
@@ -84,8 +80,6 @@ export const Recipe: FC<RecipeProps> = ({
           <Grid size={{ xs: 6, lg: 3.5, xl: 6 }}>
             <TextField
               fullWidth
-              sx={Styles.nameTextField}
-              id="outlined-basic"
               label="Recipe name"
               variant="outlined"
               {...register("name")}
@@ -105,12 +99,10 @@ export const Recipe: FC<RecipeProps> = ({
                   title={
                     <Box component="span">
                       <Typography>{`Email: ${
-                        chefs.find((c) => c.uuid === allValues?.chef?.uuid)
-                          ?.email || ""
+                        chefs.find((c) => c.uuid === chef?.uuid)?.email || ""
                       }`}</Typography>
                       <Typography>{`Phone number: ${
-                        chefs.find((c) => c.uuid === allValues?.chef?.uuid)
-                          ?.phone || ""
+                        chefs.find((c) => c.uuid === chef?.uuid)?.phone || ""
                       }`}</Typography>
                     </Box>
                   }
@@ -143,7 +135,6 @@ export const Recipe: FC<RecipeProps> = ({
             <TextField
               fullWidth
               multiline
-              id="outlined-basic"
               label="Short description"
               variant="outlined"
               {...register("description")}
@@ -153,7 +144,6 @@ export const Recipe: FC<RecipeProps> = ({
           <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
             <TextField
               fullWidth
-              id="outlined-basic"
               label="Image url"
               variant="outlined"
               {...register("imageUrl")}
@@ -163,7 +153,7 @@ export const Recipe: FC<RecipeProps> = ({
                     <InputAdornment position="end">
                       <IconButton
                         aria-label={"Open image"}
-                        onClick={() => window.open(allValues?.imageUrl)}
+                        onClick={() => window.open(imageUrl)}
                         edge="end"
                       >
                         <OpenInNewIcon />
