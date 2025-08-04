@@ -2,15 +2,12 @@ import { useParams } from "react-router-dom";
 import { useGetRecipeByUuid } from "../../hooks/api/useGetRecipeByUuid.api";
 import { useGetIngredients } from "../../hooks/api/useGetIngredients.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
-import { Recipe } from "../../components/recipe/recipe";
-import type { FC } from "react";
+import { Recipe } from "../../components/recipe/Recipe";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 
-const RecipePage: FC = () => {
+const RecipePage = () => {
   const { uuid } = useParams();
-
-  if (!uuid) return null;
 
   const { data: recipe, isLoading } = useGetRecipeByUuid(uuid);
   const { data: ingredients = [] } = useGetIngredients();
@@ -18,34 +15,20 @@ const RecipePage: FC = () => {
 
   if (isLoading) return <BackdropLoading />;
 
-  if (recipe) {
-    const {
-      name,
-      chef,
-      description,
-      imageUrl,
-      steps,
-      ingredients: recipeIngredients,
-    } = recipe;
+  if (!uuid) return <CentralErrorAlert text="Recipe identifier missing" />;
 
-    return (
-      <Recipe
-        chefs={chefs}
-        uuid={uuid}
-        ingredients={ingredients}
-        initialRecipe={{
-          name,
-          chef,
-          description,
-          imageUrl,
-          steps,
-          recipeIngredients,
-        }}
-      />
-    );
+  if (!recipe) {
+    return <CentralErrorAlert text="Something went wrong..." />;
   }
 
-  return <CentralErrorAlert text="Something went wrong..." />;
+  return (
+    <Recipe
+      uuid={uuid}
+      initialRecipe={recipe}
+      chefs={chefs}
+      ingredients={ingredients}
+    />
+  );
 };
 
 export default RecipePage;

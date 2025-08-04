@@ -1,4 +1,4 @@
-import { type FC, useState } from "react";
+import { type FC } from "react";
 import { type RecipeDetails } from "../../../../shared/types/recipe.type";
 import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
 import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
@@ -13,8 +13,6 @@ import {
   Tooltip,
   Grid,
   Button,
-  Alert,
-  AlertTitle,
 } from "@mui/material";
 import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -23,9 +21,9 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
-import { isAxiosError } from "axios";
 import type { RecipeInputs } from "./recipeInputs.type";
 import defaultRecipeDetails from "./defaultRecipeDetails.const";
+import { useSwal } from "../../hooks/useSwal";
 
 type RecipeProps = {
   uuid: string;
@@ -42,6 +40,8 @@ export const Recipe: FC<RecipeProps> = ({
 }) => {
   const navigate = useNavigate();
 
+  const { showError } = useSwal();
+
   const {
     register,
     handleSubmit,
@@ -54,23 +54,16 @@ export const Recipe: FC<RecipeProps> = ({
     },
   });
   const [chef, imageUrl] = watch(["chef", "imageUrl"]);
-  const [messageText, setMessage] = useState<string | undefined>(undefined);
-
-  const onError = (defaultMessage: string) => (err: unknown) => {
-    if (isAxiosError(err))
-      setMessage(err.response?.data?.message || defaultMessage);
-    else setMessage(defaultMessage);
-  };
 
   const onSuccess = () => navigate(-1);
 
   const { mutateAsync: saveRecipe } = useSaveRecipe(
-    onError("Failed to save recipe"),
+    (err) => showError(err, "Failed to save recipe"),
     onSuccess
   );
 
   const { mutate: deleteRecipe } = useDeleteRecipe(
-    onError("Failed to delete recipe"),
+    (err) => showError(err, "Failed to delete recipe"),
     onSuccess
   );
 
@@ -80,7 +73,7 @@ export const Recipe: FC<RecipeProps> = ({
     description,
     imageUrl,
     steps,
-    recipeIngredients,
+    ingredients,
   }) => {
     const recipeDetails: RecipeDetails = {
       uuid,
@@ -89,7 +82,7 @@ export const Recipe: FC<RecipeProps> = ({
       description,
       imageUrl,
       steps,
-      ingredients: recipeIngredients.map((recipeIngredient) => ({
+      ingredients: ingredients.map((recipeIngredient) => ({
         uuid: recipeIngredient.uuid,
         recipe: { uuid },
         ingredient: { uuid: recipeIngredient!.ingredient!.uuid! },
@@ -218,15 +211,6 @@ export const Recipe: FC<RecipeProps> = ({
             Delete
           </Button>
         </Grid>
-
-        {messageText && (
-          <Grid size={{ xs: 8, md: 6.5, lg: 4, xl: 6.5 }}>
-            <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
-              {messageText}
-            </Alert>
-          </Grid>
-        )}
       </Grid>
     </Box>
   );

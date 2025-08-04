@@ -4,15 +4,15 @@ import api from "../../api";
 
 export const USE_GET_RECIPE_BY_UUID_KEY = "useGetRecipeByUuidKey";
 
-const getRecipeByUuid = async ({ queryKey }: { queryKey: [string, string] }) => {
-  const [, uuid] = queryKey;
+const getRecipeByUuid = async (uuid: string) => {
   const response = await api.get<GetRecipeByIdRes>(`/recipe/${uuid}`);
   return response.data.recipe;
 };
 
-export const useGetRecipeByUuid = (uuid: string) => {
+export const useGetRecipeByUuid = (uuid: string | undefined) => {
   return useQuery({
     queryKey: [USE_GET_RECIPE_BY_UUID_KEY, uuid],
-    queryFn: getRecipeByUuid,
+    queryFn: () => getRecipeByUuid(uuid!),
+    enabled: Boolean(uuid),
   });
 };

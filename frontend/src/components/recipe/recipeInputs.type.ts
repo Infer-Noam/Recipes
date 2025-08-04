@@ -5,7 +5,7 @@ export type RecipeInputs = {
   name: string;
   steps: string[];
   chef: ChefModel;
-  recipeIngredients: DraftRecipeIngredient[];
+  ingredients: DraftRecipeIngredient[];
   description: string;
   imageUrl: string;
 };
