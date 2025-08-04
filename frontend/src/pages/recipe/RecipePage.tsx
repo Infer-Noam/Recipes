@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useGetRecipeByUuid } from "../../hooks/api/useGetRecipeByUuid.api";
 import { useGetIngredients } from "../../hooks/api/useGetIngredients.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
-import { Recipe } from "../../components/recipe/recipe";
+import { Recipe } from "../../components/recipe/Recipe";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 

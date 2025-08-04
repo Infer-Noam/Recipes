@@ -21,9 +21,9 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
-import { isAxiosError } from "axios";
 import type { RecipeInputs } from "./recipeInputs.type";
 import defaultRecipeDetails from "./defaultRecipeDetails.const";
+import { useSwal } from "../../hooks/useSwal";
 
 type RecipeProps = {
   uuid: string;
@@ -40,6 +40,8 @@ export const Recipe: FC<RecipeProps> = ({
 }) => {
   const navigate = useNavigate();
 
+  const { showError } = useSwal();
+
   const {
     register,
     handleSubmit,
@@ -53,22 +55,15 @@ export const Recipe: FC<RecipeProps> = ({
   });
   const [chef, imageUrl] = watch(["chef", "imageUrl"]);
 
-  const onError = (defaultMessage: string) => (err: unknown) => {
-    let text = defaultMessage;
-    if (isAxiosError(err) && err.response)
-      text = err.response.data.message;
-    swal("Error", text, "error");
-  };
-
   const onSuccess = () => navigate(-1);
 
   const { mutateAsync: saveRecipe } = useSaveRecipe(
-    onError("Failed to save recipe"),
+    (err) => showError(err, "Failed to save recipe"),
     onSuccess
   );
 
   const { mutate: deleteRecipe } = useDeleteRecipe(
-    onError("Failed to delete recipe"),
+    (err) => showError(err, "Failed to delete recipe"),
     onSuccess
   );
 
