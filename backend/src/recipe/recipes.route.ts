@@ -53,10 +53,6 @@ router.delete(
 router.get("/", async (_: Request, res: Response<GetAllRecipesRes>) => {
   const recipes = await service.getAllRecipes();
 
-  if (!recipes.length) {
-    throw new NotFoundError("Recipes");
-  }
-
   res.status(200).json({ recipes });
 });
 
