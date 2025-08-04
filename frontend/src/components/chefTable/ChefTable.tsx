@@ -11,7 +11,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import ChefTableRow from "./chefTableRow/chefTableRow";
+import ChefTableRow from "./chefTableRow/ChefTableRow";
 import AddIcon from "@mui/icons-material/Add";
 import defaultChefDetails from "./defaultChefDetails.const";
 import CustomTableCell from "../customTableCell/CustomTableCell";
