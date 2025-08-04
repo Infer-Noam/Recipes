@@ -9,13 +9,13 @@ import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAl
 const RecipePage = () => {
   const { uuid } = useParams();
 
-  if (!uuid) return <CentralErrorAlert text="Recipe identifier missing" />;
-
   const { data: recipe, isLoading } = useGetRecipeByUuid(uuid);
   const { data: ingredients = [] } = useGetIngredients();
   const { data: chefs = [] } = useGetChefs();
 
   if (isLoading) return <BackdropLoading />;
+
+  if (!uuid) return <CentralErrorAlert text="Recipe identifier missing" />;
 
   if (!recipe) {
     return <CentralErrorAlert text="Something went wrong..." />;
