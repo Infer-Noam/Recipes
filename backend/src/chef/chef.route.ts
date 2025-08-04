@@ -5,7 +5,10 @@ import {
   SaveChefRes,
 } from "@shared/http-types/chef/saveChef.http-type";
 import { GetAllChefsRes } from "@shared/http-types/chef/getAllChefs.http-type";
-import { DeleteChefReq } from "@shared/http-types/chef/deleteChef.http-type";
+import {
+  DeleteChefReq,
+  DeleteChefRes,
+} from "@shared/http-types/chef/deleteChef.http-type";
 import { HttpError } from "@shared/types/httpError.type";
 import { NotFoundError } from "src/utils/errors/notFound.error";
 
@@ -29,14 +32,16 @@ router.get("/", async (_: Request, res: Response<GetAllChefsRes>) => {
 
 router.delete(
   "/",
-  async (req: Request<null, null, DeleteChefReq>, res: Response) => {
+  async (req: Request<null, null, DeleteChefReq>, res: Response<DeleteChefRes>) => {
     const { uuid } = req.body;
 
     const exist = await service.deleteChef(uuid);
 
     if (!exist) throw new NotFoundError("Chef");
 
-    res.sendStatus(204);
+    res.status(200).json({
+        message: "Chef deleted successfully",
+      });
   }
 );
 export default router;

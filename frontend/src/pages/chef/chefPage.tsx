@@ -8,14 +8,30 @@ import { useState } from "react";
 import { isAxiosError } from "axios";
 import type { FC } from "react";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
+import type { DeleteChefRes } from "../../../../shared/http-types/chef/deleteChef.http-type";
+import type { SaveChefRes } from "../../../../shared/http-types/chef/saveChef.http-type";
 
 const ChefPage: FC = () => {
-  const { data: chefs } = useGetChefs();
-  const { mutate: deleteChef } = useDeleteChef();
-  const { mutateAsync: saveChef, isError } = useSaveChef();
-  const { mutateAsync: saveChef, isError } = useSaveChef();
+  const [message, setMessage] = useState<string | undefined>(undefined);
+  const [isError, setIsError] = useState<boolean>(false);
 
-  const [message, setMessage] = useState<string | undefined>();
+  const { data: chefs } = useGetChefs();
+
+  const onError = (err: unknown) => {
+    const defaultMessage = "Something went wrong";
+    if (isAxiosError(err))
+      setMessage(err.response?.data?.message || defaultMessage);
+    else setMessage(defaultMessage);
+    setIsError(true);
+  };
+
+  const onSuccess = (data: DeleteChefRes | SaveChefRes) => {
+    setMessage(data.message);
+    setIsError(false);
+  };
+
+  const { mutateAsync: deleteChef } = useDeleteChef(onError, onSuccess);
+  const { mutateAsync: saveChef } = useSaveChef(onError, onSuccess);
 
   type AlertInfo = {
     severity: "success" | "error";
@@ -35,36 +51,19 @@ const ChefPage: FC = () => {
 
   const alert = isError ? errorAlert.error : errorAlert.success;
 
-  if (chefs) {
-    return (
-      <Box>
-        <ChefTable
-          chefs={chefs}
-          deleteChef={(uuid) => {
-            deleteChef(uuid);
-            setMessage(undefined);
-          }}
-          saveChef={async (chefDetails) => {
-            setMessage(undefined);
-            await saveChef(chefDetails)
-              .then((response) => setMessage(response.message))
-              .catch((err) => {
-                if (isAxiosError(err)) setMessage(err.response?.data.message);
-                else setMessage(err?.message);
-              });
-          }}
-        />
-        {message && (
-          <Alert sx={Styles.alert} severity={alert.severity}>
-            <AlertTitle>{alert.title}</AlertTitle>
-            {message}
-          </Alert>
-        )}
-      </Box>
-    );
-  }
+  if (!chefs) return <CentralErrorAlert text="Something went wrong..." />;
 
-  return <CentralErrorAlert text="Something went wrong..." />;
+  return (
+    <Box>
+      <ChefTable chefs={chefs} deleteChef={deleteChef} saveChef={saveChef} />
+      {message && (
+        <Alert sx={Styles.alert} severity={alert.severity}>
+          <AlertTitle>{alert.title}</AlertTitle>
+          {message}
+        </Alert>
+      )}
+    </Box>
+  );
 };
 
 export default ChefPage;

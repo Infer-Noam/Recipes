@@ -8,6 +8,7 @@ import { DeleteRecipeReq } from "@shared/http-types/recipe/deleteRecipe.http-typ
 import { GetRecipeByIdRes } from "@shared/http-types/recipe/getRecipeByUuid.http-type";
 import { GetAllRecipesRes } from "@shared/http-types/recipe/getAllRecipes.http-type";
 import { NotFoundError } from "src/utils/errors/notFound.error";
+import { HttpError } from "@shared/types/httpError.type";
 
 const router = Router();
 
@@ -17,12 +18,11 @@ router.post(
     req: Request<null, null, SaveRecipeReq>,
     res: Response<SaveRecipeRes>
   ) => {
-    const recipe = await service.saveRecipe(req.body.recipeDetails);
-    if (recipe) {
-      res.status(200).json({ recipe });
-    } else {
-      res.sendStatus(500);
-    }
+      const recipe = await service.saveRecipe(req.body.recipeDetails);
+
+      if (!recipe) throw new HttpError("Recipe creation failed", 500);
+
+      res.status(200).json({ message: "Recipe saved successfully" });
   }
 );
 
@@ -35,7 +35,7 @@ router.delete(
 
     if (!exist) throw new NotFoundError("Recipe");
 
-    res.sendStatus(204);
+    res.status(200).json({ message: "Recipe deleted successfully" });
   }
 );
 

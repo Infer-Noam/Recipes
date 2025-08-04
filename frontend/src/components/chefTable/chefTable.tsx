@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import ChefTableRow from "./chefTableRow/chefTableRow";
 import AddIcon from "@mui/icons-material/Add";
-import defaultChefDetails from "../../consts/defaultChefDetails";
+import defaultChefDetails from "./defaultChefDetails.const";
 import CustomTableCell from "../customTableCell/CustomTableCell";
 
 type ChefTableProps = {
