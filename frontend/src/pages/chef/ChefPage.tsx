@@ -1,7 +1,7 @@
 import { useDeleteChef } from "../../hooks/api/useDeleteChef.api";
 import { useGetChefs } from "../../hooks/api/useGetChefs.api";
 import { useSaveChef } from "../../hooks/api/useSaveChef.api";
-import ChefTable from "../../components/chefTable/ChefTable";
+import ChefTable from "../../components/chefTable/chefTable";
 import { type FC } from "react";
 import { isAxiosError } from "axios";
 import swal from "sweetalert";
