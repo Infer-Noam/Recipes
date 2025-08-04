@@ -6,11 +6,11 @@ export const useSwal = () => {
     err: unknown,
     fallbackMessage = "Something went wrong"
   ) => {
-    let text = fallbackMessage;
-    if (isAxiosError(err)) {
-      text = err.response?.data?.message || fallbackMessage;
-    }
-    swal("Error", text, "error");
+    const message: string = isAxiosError(err)
+      ? err.response?.data?.message ?? fallbackMessage
+      : fallbackMessage;
+
+    swal("Error", message, "error");
   };
 
   const showSuccess = (message: string = "Operation successful") => {
