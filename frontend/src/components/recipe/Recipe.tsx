@@ -13,8 +13,6 @@ import {
   Tooltip,
   Grid,
   Button,
-  Alert,
-  AlertTitle,
 } from "@mui/material";
 import Styles from "./recipe.style";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
@@ -23,12 +21,11 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
-import { isAxiosError } from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RecipeDetailsSchema } from "../../../../shared/validation/recipeDetailsSchema.validation";
-import type { RecipeInputs } from "./recipeInputs.type";
 import defaultRecipeDetails from "./defaultRecipeDetails.const";
 import { useSwal } from "../../hooks/useSwal";
+import { z } from "zod";
 
 type RecipeProps = {
   uuid: string;
@@ -47,7 +44,9 @@ export const Recipe: FC<RecipeProps> = ({
 
   const { showError } = useSwal();
 
-  const methods = useForm<RecipeDetails>({
+  type RecipeFormData = z.infer<typeof RecipeDetailsSchema>;
+
+  const methods = useForm<RecipeFormData>({
     defaultValues: initialRecipe ?? defaultRecipeDetails,
     resolver: zodResolver(RecipeDetailsSchema),
   });
@@ -59,9 +58,10 @@ export const Recipe: FC<RecipeProps> = ({
     formState: { errors },
   } = methods;
 
-  const allValues = watch();
-   const onSuccess = () => navigate(-1);
-   
+  const [chef] = watch(["chef"]);
+
+  const onSuccess = () => navigate(-1);
+
   const { mutateAsync: saveRecipe } = useSaveRecipe(
     (err) => showError(err, "Failed to save recipe"),
     onSuccess
@@ -72,10 +72,14 @@ export const Recipe: FC<RecipeProps> = ({
     onSuccess
   );
 
-  const chef = useMemo(
-    () => chefs.find((c) => c.uuid === allValues?.chef?.uuid),
-    [allValues?.chef?.uuid]
+  const chefModel = useMemo(
+    () => chefs.find((c) => c.uuid === chef.uuid),
+    [chef]
   );
+
+  const onSubmit = async (recipeDetails: RecipeDetails) => {
+    await saveRecipe(recipeDetails);
+  };
 
   return (
     <FormProvider {...methods}>
@@ -89,7 +93,6 @@ export const Recipe: FC<RecipeProps> = ({
               <TextField
                 {...field}
                 fullWidth
-                sx={Styles.nameTextField}
                 label="Recipe name"
                 variant="outlined"
                 error={!!errors.name}
@@ -109,9 +112,11 @@ export const Recipe: FC<RecipeProps> = ({
                 placement="right"
                 title={
                   <Box component="span">
-                    <Typography>{`Email: ${chef?.email || ""}`}</Typography>
+                    <Typography>{`Email: ${
+                      chefModel?.email || ""
+                    }`}</Typography>
                     <Typography>{`Phone number: ${
-                      chef?.phone || ""
+                      chefModel?.phone || ""
                     }`}</Typography>
                   </Box>
                 }
@@ -205,7 +210,7 @@ export const Recipe: FC<RecipeProps> = ({
             fullWidth
             variant="outlined"
             size="large"
-            onClick={handleSubmit(async () => await saveRecipe(allValues))}
+            onClick={handleSubmit(onSubmit)}
           >
             Save
           </Button>

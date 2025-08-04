@@ -56,7 +56,11 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
     uuid?: string
   ) => {
     onChange(
-      value.map((recipeIngredient) => (recipeIngredient.uuid === uuid ? { ...recipeIngredient, ...updatedFields } : recipeIngredient))
+      value.map((recipeIngredient) =>
+        recipeIngredient.uuid === uuid
+          ? { ...recipeIngredient, ...updatedFields }
+          : recipeIngredient
+      )
     );
   };
 
@@ -66,6 +70,12 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
 
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const getIngredient = (ingredinetUuid?: string) =>
+    ingredients.find((i) => i.uuid === ingredinetUuid);
+
+  const getIngredientError = (index: number) =>
+    Array.isArray(errors.ingredients) && errors.ingredients[index];
 
   return (
     <Controller
@@ -81,7 +91,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
               <Typography component="span">Ingredients</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {recipeIngredients.length > 0 && (
+              {recipeIngredients?.length > 0 && (
                 <TableContainer component={Paper}>
                   <Table sx={Styles.container} aria-label="simple table">
                     <TableHead>
@@ -94,17 +104,8 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                     </TableHead>
                     <TableBody>
                       {recipeIngredients.map((ri, index) => {
-                        const amountError =
-                          Array.isArray(errors.ingredients) &&
-                          errors.ingredients[index]?.amount;
-
-                        const measurementUnitError =
-                          Array.isArray(errors.ingredients) &&
-                          errors.ingredients[index]?.measurementUnit;
-
-                        const ingredientError =
-                          Array.isArray(errors.ingredients) &&
-                          errors.ingredients[index]?.ingredient;
+                        const ingredientError = getIngredientError(index);
+                        const ingredient = getIngredient(ri?.uuid);
 
                         return (
                           <TableRow
@@ -115,11 +116,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                               <Box sx={Styles.ingredientAutocompleteBox}>
                                 <Autocomplete
                                   sx={Styles.ingredientAutocomplete}
-                                  value={
-                                    ingredients.find(
-                                      (i) => i.uuid === ri.ingredient?.uuid
-                                    )?.name ?? ""
-                                  }
+                                  value={ingredient?.name ?? ""}
                                   onChange={(
                                     _: any,
                                     newValue: string | null
@@ -147,9 +144,9 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                                   renderInput={(params) => (
                                     <TextField
                                       {...params}
-                                      error={!!ingredientError}
+                                      error={!!ingredientError?.ingredient}
                                       helperText={
-                                        ingredientError?.message &&
+                                        ingredientError?.ingredient?.message &&
                                         "Ingredient is required"
                                       }
                                     />
@@ -182,9 +179,9 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                                   },
                                 }}
                                 variant="outlined"
-                                error={!!amountError}
+                                error={!!ingredientError?.amount}
                                 helperText={
-                                  amountError?.message &&
+                                  ingredientError?.amount?.message &&
                                   "Valid amount is required"
                                 }
                               />
@@ -203,7 +200,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                                     ri.uuid
                                   );
                                 }}
-                                error={!!measurementUnitError}
+                                error={!!ingredientError?.measurementUnit}
                               >
                                 {Object.values(MeasurementUnit).map(
                                   (m, index) => (
