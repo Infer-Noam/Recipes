@@ -25,6 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RecipeDetailsSchema } from "../../../../shared/validation/recipeDetailsSchema.validation";
 import defaultRecipeDetails from "./defaultRecipeDetails.const";
 import { useSwal } from "../../hooks/useSwal";
+import { z } from "zod";
 
 type RecipeProps = {
   uuid: string;
@@ -43,7 +44,9 @@ export const Recipe: FC<RecipeProps> = ({
 
   const { showError } = useSwal();
 
-  const methods = useForm<RecipeDetails>({
+  type RecipeFormData = z.infer<typeof RecipeDetailsSchema>;
+
+  const methods = useForm<RecipeFormData>({
     defaultValues: initialRecipe ?? defaultRecipeDetails,
     resolver: zodResolver(RecipeDetailsSchema),
   });
@@ -109,7 +112,9 @@ export const Recipe: FC<RecipeProps> = ({
                 placement="right"
                 title={
                   <Box component="span">
-                    <Typography>{`Email: ${chefModel?.email || ""}`}</Typography>
+                    <Typography>{`Email: ${
+                      chefModel?.email || ""
+                    }`}</Typography>
                     <Typography>{`Phone number: ${
                       chefModel?.phone || ""
                     }`}</Typography>
