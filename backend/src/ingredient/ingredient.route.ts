@@ -3,8 +3,8 @@ import service from "./ingredient.service";
 import {
   CreateIngredientReq,
   CreateIngredientRes,
-} from "@shared/http-types/ingredient/createIngredient.http-type";
-import { GetAllIngredientsRes } from "@shared/http-types/ingredient/getAllIngredients.http-type";
+} from "@shared/api/ingredient/createIngredient.api";
+import { GetAllIngredientsRes } from "@shared/api/ingredient/getAllIngredients.api";
 
 const router = Router();
 
