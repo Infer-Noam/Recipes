@@ -2,8 +2,8 @@ import {
   type RecipeIngredientDetails,
   type RecipeIngredient as RecipeIngredientModel,
 } from "../../../../../shared/types/recipeIngredient.type";
-import type { Ingredient as IngredientModel } from "@shared/types/ingredient.type";
-import type { MeasurementUnit } from "@shared/enums/measurement-unit.enum";
+import type { Ingredient as IngredientModel } from "../../../../../shared/types/ingredient.type";
+import type { MeasurementUnit } from "../../../../../shared/enums/measurement-unit.enum";
 import { v4 as uuidv4 } from "uuid";
 
 const useRecipeIngredient = (

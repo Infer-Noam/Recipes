@@ -1,4 +1,4 @@
-import type { ChefDetails } from "@shared/types/chef.type";
+import type { ChefDetails } from "../../../../shared/types/chef.type";
 import Styles from "./chefTable.style";
 import { useState, type FC } from "react";
 import {

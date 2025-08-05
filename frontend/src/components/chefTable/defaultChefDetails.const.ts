@@ -1,4 +1,4 @@
-import type { ChefDetails } from "@shared/types/chef.type";
+import type { ChefDetails } from "../../../../shared/types/chef.type";
 import { v4 as uuidv4 } from "uuid";
 
 const DEFAULT_CHEF_DETAILS: ChefDetails = {

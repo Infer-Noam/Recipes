@@ -21,7 +21,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useTheme } from "@mui/material/styles";
 import Styles from "./recipeStepsList.style";
 import { Controller, useFormContext, type Control } from "react-hook-form";
-import type { RecipeDetails } from "@shared/types/recipe.type";
+import type { RecipeDetails } from "../../../../../shared/types/recipe.type";
 
 type RecipeStepsListProps = {
   control: Control<RecipeDetails, unknown, RecipeDetails>;

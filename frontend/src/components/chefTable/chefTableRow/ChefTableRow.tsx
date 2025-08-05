@@ -1,5 +1,5 @@
 import { IconButton, TableCell, TableRow, TextField } from "@mui/material";
-import type { ChefDetails } from "@shared/types/chef.type";
+import type { ChefDetails } from "../../../../../shared/types/chef.type";
 import { type FC } from "react";
 import Styles from "./chefTableRow.style";
 import CheckIcon from "@mui/icons-material/Check";
