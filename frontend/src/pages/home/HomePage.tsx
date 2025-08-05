@@ -4,7 +4,7 @@ import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import { CHEF_SRC_ARRAY } from "../chef/chefSrcArray.const";
-import type { FC, JSX } from "react";
+import { useMemo, type FC } from "react";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
 import NotFoundImage from "../../assets/notFound.png";
@@ -19,6 +19,23 @@ const HomePage: FC = () => {
     const randomIndex = Math.floor(Math.random() * CHEF_SRC_ARRAY.length);
     return CHEF_SRC_ARRAY[randomIndex];
   };
+
+  const sortedRecipes = useMemo(() => {
+    return recipes
+      ?.sort(
+        (a, b) =>
+          new Date(a.createDate).getTime() - new Date(b.createDate).getTime()
+      )
+      ?.map((recipe) => (
+        <Grid key={recipe.uuid}>
+          <RecipeCard
+            recipe={recipe}
+            deleteRecipe={() => deleteRecipe(recipe.uuid)}
+            chefAvatarSrc={getRandomChefSrc()}
+          />
+        </Grid>
+      ));
+  }, [recipes]);
 
   if (isLoading) return <BackdropLoading />;
 
@@ -40,26 +57,7 @@ const HomePage: FC = () => {
         rowSpacing={2.5}
         columnSpacing={3.5}
       >
-        {recipes
-          .sort(
-            (a, b) =>
-              new Date(a.createDate).getTime() -
-              new Date(b.createDate).getTime()
-          )
-          .reduce<JSX.Element[]>((acc, recipe) => {
-            acc.push(
-              <Grid key={recipe.uuid}>
-                <RecipeCard
-                  recipe={recipe}
-                  deleteRecipe={() => {
-                    deleteRecipe(recipe.uuid);
-                  }}
-                  chefAvatarSrc={getRandomChefSrc()}
-                />
-              </Grid>
-            );
-            return acc;
-          }, [])}
+        {sortedRecipes}
       </Grid>
     </Box>
   );

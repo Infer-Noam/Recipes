@@ -81,7 +81,7 @@ export const Recipe: FC<RecipeProps> = ({
   return (
     <FormProvider {...methods}>
       <Grid container spacing={2} sx={Styles.gridContainer}>
-        <Grid size={{ xs: 6, lg: 3.5, xl: 6 }}>
+        <Grid size={Styles.nameGridSize}>
           <Controller
             name="name"
             control={control}
@@ -97,7 +97,7 @@ export const Recipe: FC<RecipeProps> = ({
             )}
           />
         </Grid>
-        <Grid size={{ xs: 6, lg: 4.5, xl: 6 }}>
+        <Grid size={Styles.chefGridSize}>
           <Controller
             name="chef"
             control={control}
@@ -142,7 +142,7 @@ export const Recipe: FC<RecipeProps> = ({
             )}
           />
         </Grid>
-        <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
+        <Grid size={Styles.descriptionGridSize}>
           <Controller
             name="description"
             control={control}
@@ -158,7 +158,7 @@ export const Recipe: FC<RecipeProps> = ({
           />
         </Grid>
 
-        <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
+        <Grid size={Styles.imageGridSize}>
           <Controller
             name="imageUrl"
             control={control}
@@ -189,10 +189,10 @@ export const Recipe: FC<RecipeProps> = ({
             )}
           />
         </Grid>
-        <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
+        <Grid size={Styles.stepListGridSize}>
           <RecipeStepsList control={control} />
         </Grid>
-        <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
+        <Grid size={Styles.ingredientTableGridSize}>
           <RecipeIngredientsTable
             ingredients={ingredients}
             control={control}
@@ -200,7 +200,7 @@ export const Recipe: FC<RecipeProps> = ({
           />
         </Grid>
 
-        <Grid size={{ xs: 4, md: 3, lg: 4.1, xl: 3 }}>
+        <Grid size={Styles.saveGridSize}>
           <Button
             fullWidth
             variant="outlined"
@@ -211,7 +211,7 @@ export const Recipe: FC<RecipeProps> = ({
           </Button>
         </Grid>
 
-        <Grid size={{ xs: 4, md: 3, lg: 4.1, xl: 3 }}>
+        <Grid size={Styles.deleteGridSize}>
           <Button
             fullWidth
             variant="outlined"
