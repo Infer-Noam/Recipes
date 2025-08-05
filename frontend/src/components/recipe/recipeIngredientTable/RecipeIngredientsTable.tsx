@@ -36,54 +36,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomTableCell from "../../customTableCell/CustomTableCell";
 import { Controller, type Control } from "react-hook-form";
 import { useFormContext } from "react-hook-form";
+import type { RecipeDetails } from "@shared/types/recipe.type";
 
 type RecipeIngredientsTableProps = {
   ingredients: IngredientModel[];
-  control: Control<
-    {
-      name: string;
-      steps: string[];
-      chef: {
-        uuid: string;
-      };
-      ingredients: {
-        recipe: {
-          uuid: string;
-        };
-        ingredient: {
-          uuid: string;
-        };
-        amount: number;
-        measurementUnit: MeasurementUnit;
-        uuid?: string | undefined;
-      }[];
-      description: string;
-      imageUrl: string;
-      uuid?: string | undefined;
-    },
-    unknown,
-    {
-      name: string;
-      steps: string[];
-      chef: {
-        uuid: string;
-      };
-      ingredients: {
-        recipe: {
-          uuid: string;
-        };
-        ingredient: {
-          uuid: string;
-        };
-        amount: number;
-        measurementUnit: MeasurementUnit;
-        uuid?: string | undefined;
-      }[];
-      description: string;
-      imageUrl: string;
-      uuid?: string | undefined;
-    }
-  >;
+  control: Control<RecipeDetails, unknown, RecipeDetails>;
   recipeUuid: String;
 };
 
@@ -114,6 +71,9 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const getIngredient = (ingredinetUuid?: string) =>
+    ingredients.find((i) => i.uuid === ingredinetUuid);
+
   const getIngredientError = (index: number) =>
     Array.isArray(errors.ingredients) && errors.ingredients[index];
 
@@ -131,7 +91,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
               <Typography component="span">Ingredients</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              {recipeIngredients.length > 0 && (
+              {recipeIngredients?.length > 0 && (
                 <TableContainer component={Paper}>
                   <Table sx={Styles.container} aria-label="simple table">
                     <TableHead>
@@ -145,6 +105,8 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                     <TableBody>
                       {recipeIngredients.map((ri, index) => {
                         const ingredientError = getIngredientError(index);
+                        const ingredient = getIngredient(ri?.uuid);
+
                         return (
                           <TableRow
                             key={ri.uuid}
@@ -154,11 +116,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                               <Box sx={Styles.ingredientAutocompleteBox}>
                                 <Autocomplete
                                   sx={Styles.ingredientAutocomplete}
-                                  value={
-                                    ingredients.find(
-                                      (i) => i.uuid === ri.ingredient?.uuid
-                                    )?.name ?? ""
-                                  }
+                                  value={ingredient?.name ?? ""}
                                   onChange={(
                                     _: any,
                                     newValue: string | null

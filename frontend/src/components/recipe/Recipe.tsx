@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import { useMemo, type FC } from "react";
 import { type RecipeDetails } from "../../../../shared/types/recipe.type";
 import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
 import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
@@ -25,6 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RecipeDetailsSchema } from "../../../../shared/validation/recipeDetailsSchema.validation";
 import defaultRecipeDetails from "./defaultRecipeDetails.const";
 import { useSwal } from "../../hooks/useSwal";
+import { z } from "zod";
 
 type RecipeProps = {
   uuid: string;
@@ -43,20 +44,22 @@ export const Recipe: FC<RecipeProps> = ({
 
   const { showError } = useSwal();
 
-  const methods = useForm({
+  type RecipeFormData = z.infer<typeof RecipeDetailsSchema>;
+
+  const methods = useForm<RecipeFormData>({
     defaultValues: initialRecipe ?? defaultRecipeDetails,
     resolver: zodResolver(RecipeDetailsSchema),
   });
 
   const {
-    register,
     handleSubmit,
     watch,
     control,
     formState: { errors },
   } = methods;
 
-  const [chef, imageUrl] = watch(["chef", "imageUrl"]);
+  const chef = watch("chef");
+
   const onSuccess = () => navigate(-1);
 
   const { mutateAsync: saveRecipe } = useSaveRecipe(
@@ -69,134 +72,169 @@ export const Recipe: FC<RecipeProps> = ({
     onSuccess
   );
 
+  const chefMap = useMemo(() => {
+    return chefs.reduce((acc: Record<string, ChefModel>, chef) => {
+      acc[chef.uuid] = chef;
+      return acc;
+    }, {});
+  }, [chefs]);
+
+  const chefModel = useMemo(() => chefMap[chef?.uuid], [chef]);
+
   const onSubmit = async (recipeDetails: RecipeDetails) => {
     await saveRecipe(recipeDetails);
   };
 
   return (
     <FormProvider {...methods}>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={2} sx={Styles.gridContainer}>
-          <Grid size={{ xs: 6, lg: 3.5, xl: 6 }}>
-            <TextField
-              fullWidth
-              label="Recipe name"
-              variant="outlined"
-              {...register("name")}
-              error={!!errors.name}
-              helperText={errors.name && "Recipe name is required"}
-            />
-          </Grid>
-          <Grid size={{ xs: 6, lg: 4.5, xl: 6 }}>
-            <Controller
-              name="chef"
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { onChange, value } }) => (
-                <Tooltip
-                  arrow
-                  placement="right"
-                  title={
+      <Grid container spacing={2} sx={Styles.gridContainer}>
+        <Grid size={{ xs: 6, lg: 3.5, xl: 6 }}>
+          <Controller
+            name="name"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Recipe name"
+                variant="outlined"
+                error={!!errors.name}
+                helperText={errors.name && "Recipe name is required"}
+              />
+            )}
+          />
+        </Grid>
+        <Grid size={{ xs: 6, lg: 4.5, xl: 6 }}>
+          <Controller
+            name="chef"
+            control={control}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <Tooltip
+                arrow
+                placement="right"
+                title={
+                  chefModel && (
                     <Box component="span">
                       <Typography>{`Email: ${
-                        chefs.find((c) => c.uuid === chef?.uuid)?.email || ""
+                        chefModel?.email || ""
                       }`}</Typography>
                       <Typography>{`Phone number: ${
-                        chefs.find((c) => c.uuid === chef?.uuid)?.phone || ""
+                        chefModel?.phone || ""
                       }`}</Typography>
                     </Box>
+                  )
+                }
+              >
+                <Autocomplete
+                  options={chefs}
+                  getOptionLabel={(option) => {
+                    const chef = chefMap[option.uuid];
+                    return `${chef?.firstName} ${chef?.lastName}`;
+                  }}
+                  value={value || null}
+                  onChange={(_, newValue) => onChange(newValue)}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Chef"
+                      error={!!errors.chef}
+                      helperText={errors.chef && "Chef is required"}
+                    />
+                  )}
+                  isOptionEqualToValue={(option, value) =>
+                    option.uuid === value.uuid
                   }
-                >
-                  <Autocomplete
-                    options={chefs}
-                    getOptionLabel={(option) => {
-                      const chef = chefs.find((c) => c.uuid === option.uuid);
-                      return `${chef?.firstName} ${chef?.lastName}`;
-                    }}
-                    value={value || null}
-                    onChange={(_, newValue) => onChange(newValue)}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="Chef"
-                        error={!!errors.chef}
-                        helperText={errors.chef && "Chef is required"}
-                      />
-                    )}
-                    isOptionEqualToValue={(option, value) =>
-                      option.uuid === value.uuid
-                    }
-                  />
-                </Tooltip>
-              )}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
-            <TextField
-              fullWidth
-              multiline
-              label="Short description"
-              variant="outlined"
-              {...register("description")}
-            />
-          </Grid>
-
-          <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
-            <TextField
-              fullWidth
-              label="Image url"
-              variant="outlined"
-              {...register("imageUrl")}
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label={"Open image"}
-                        onClick={() => window.open(imageUrl)}
-                        edge="end"
-                      >
-                        <OpenInNewIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
-              error={!!errors.imageUrl}
-              helperText={errors.imageUrl && "Valid image URL is required"}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
-            <RecipeStepsList control={control} />
-          </Grid>
-          <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
-            <RecipeIngredientsTable
-              ingredients={ingredients}
-              control={control}
-              recipeUuid={uuid}
-            />
-          </Grid>
-
-          <Grid size={{ xs: 4, md: 3, lg: 4.1, xl: 3 }}>
-            <Button fullWidth variant="outlined" size="large" type="submit">
-              Save
-            </Button>
-          </Grid>
-
-          <Grid size={{ xs: 4, md: 3, lg: 4.1, xl: 3 }}>
-            <Button
-              fullWidth
-              variant="outlined"
-              size="large"
-              onClick={() => {
-                deleteRecipe(uuid);
-              }}
-            >
-              Delete
-            </Button>
-          </Grid>
+                />
+              </Tooltip>
+            )}
+          />
         </Grid>
-      </Box>
+        <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
+          <Controller
+            name="description"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                multiline
+                label="Short description"
+                variant="outlined"
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
+          <Controller
+            name="imageUrl"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                label="Image url"
+                variant="outlined"
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="Open image"
+                          onClick={() => window.open(field.value)}
+                          edge="end"
+                        >
+                          <OpenInNewIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  },
+                }}
+                error={!!errors.imageUrl}
+                helperText={errors.imageUrl && "Valid image URL is required"}
+              />
+            )}
+          />
+        </Grid>
+        <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
+          <RecipeStepsList control={control} />
+        </Grid>
+        <Grid size={{ xs: 12, lg: 8, xl: 6 }}>
+          <RecipeIngredientsTable
+            ingredients={ingredients}
+            control={control}
+            recipeUuid={uuid}
+          />
+        </Grid>
+
+        <Grid size={{ xs: 4, md: 3, lg: 4.1, xl: 3 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            size="large"
+            onClick={handleSubmit(onSubmit)}
+          >
+            Save
+          </Button>
+        </Grid>
+
+        <Grid size={{ xs: 4, md: 3, lg: 4.1, xl: 3 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            size="large"
+            onClick={() => {
+              deleteRecipe(uuid);
+            }}
+          >
+            Delete
+          </Button>
+        </Grid>
+      </Grid>
     </FormProvider>
   );
 };

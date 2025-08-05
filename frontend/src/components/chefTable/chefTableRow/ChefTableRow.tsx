@@ -4,9 +4,10 @@ import { type FC } from "react";
 import Styles from "./chefTableRow.style";
 import CheckIcon from "@mui/icons-material/Check";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
+import { z } from "zod";
 
 type ChefTableRowProps = {
   chef: ChefDetails;
@@ -19,11 +20,13 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
   saveChef,
   deleteChef,
 }) => {
+  type ChefFormData = z.infer<typeof ChefDetailsSchema>;
+
   const {
-    register,
+    control,
     handleSubmit,
     formState: { errors, isDirty },
-  } = useForm({
+  } = useForm<ChefFormData>({
     defaultValues: chef,
     resolver: zodResolver(ChefDetailsSchema),
   });
@@ -40,39 +43,67 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
         </IconButton>
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
-        <TextField
-          sx={Styles.firstNameTextField}
-          variant="outlined"
-          {...register("firstName")}
-          error={!!errors.firstName}
-          helperText={errors.firstName && "First name is required"}
+        <Controller
+          name="firstName"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={Styles.firstNameTextField}
+              variant="outlined"
+              error={!!errors.firstName}
+              helperText={errors.firstName && "First name is required"}
+            />
+          )}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
-        <TextField
-          sx={Styles.lastNameTextField}
-          variant="outlined"
-          {...register("lastName")}
-          error={!!errors.lastName}
-          helperText={errors.lastName && "Last name is required"}
+        <Controller
+          name="lastName"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={Styles.lastNameTextField}
+              variant="outlined"
+              error={!!errors.lastName}
+              helperText={errors.lastName && "Last name is required"}
+            />
+          )}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
-        <TextField
-          sx={Styles.emailTextField}
-          variant="outlined"
-          {...register("email")}
-          error={!!errors.email}
-          helperText={errors.email && "Valid email is required"}
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={Styles.emailTextField}
+              variant="outlined"
+              error={!!errors.email}
+              helperText={errors.email && "Valid email is required"}
+            />
+          )}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
-        <TextField
-          sx={Styles.phoneTextField}
-          {...register("phone")}
-          variant="outlined"
-          error={!!errors.phone}
-          helperText={errors.phone && "Valid phone is required"}
+        <Controller
+          name="phone"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <TextField
+              {...field}
+              sx={Styles.phoneTextField}
+              variant="outlined"
+              error={!!errors.phone}
+              helperText={errors.phone && "Valid phone is required"}
+            />
+          )}
         />
       </TableCell>
 
