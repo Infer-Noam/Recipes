@@ -11,38 +11,20 @@ const gridContainer: SxProps = {
   justifyContent: "center",
 };
 
-const nameGridSize: ResponsiveStyleValue<GridSize> = { xs: 6, lg: 3.5, xl: 6 };
-
-const chefGridSize: ResponsiveStyleValue<GridSize> = { xs: 6, lg: 4.5, xl: 6 };
-
-const descriptionGridSize: ResponsiveStyleValue<GridSize> = {
+const descriptionItemGridSize: ResponsiveStyleValue<GridSize> = {
   xs: 12,
   lg: 8,
   xl: 6,
 };
 
-const imageGridSize: ResponsiveStyleValue<GridSize> = { xs: 12, lg: 8, xl: 6 };
-
-const stepListGridSize: ResponsiveStyleValue<GridSize> = {
-  xs: 12,
-  lg: 8,
-  xl: 6,
-};
-
-const ingredientTableGridSize: ResponsiveStyleValue<GridSize> = {
-  xs: 12,
-  lg: 8,
-  xl: 6,
-};
-
-const saveGridSize: ResponsiveStyleValue<GridSize> = {
+const saveGridItemSize: ResponsiveStyleValue<GridSize> = {
   xs: 4,
   md: 3,
   lg: 4.1,
   xl: 3,
 };
 
-const deleteGridSize: ResponsiveStyleValue<GridSize> = {
+const deleteGridItemSize: ResponsiveStyleValue<GridSize> = {
   xs: 4,
   md: 3,
   lg: 4.1,
@@ -52,12 +34,7 @@ const deleteGridSize: ResponsiveStyleValue<GridSize> = {
 export default {
   methodList,
   gridContainer,
-  nameGridSize,
-  chefGridSize,
-  descriptionGridSize,
-  imageGridSize,
-  stepListGridSize,
-  ingredientTableGridSize,
-  saveGridSize,
-  deleteGridSize,
+  descriptionItemGridSize,
+  saveGridItemSize,
+  deleteGridItemSize,
 };
