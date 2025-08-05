@@ -1,5 +1,5 @@
-export const imageUrlRegex = /https?:\/\/[^\/\s]+\/[^\/\s]/i;
+export const IMAGE_URL_REGEX = /https?:\/\/[^\/\s]+\/[^\/\s]/i;
 
-export const phoneRegex = /^[0-9]{10}$/;
+export const PHONE_REGEX = /^[0-9]{10}$/;
 
-export const emailRegex = /^[\w.-]+@[\w.-]+\.\w{2,}$/;
+export const EMAIL_REGEX = /^[\w.-]+@[\w.-]+\.\w{2,}$/;

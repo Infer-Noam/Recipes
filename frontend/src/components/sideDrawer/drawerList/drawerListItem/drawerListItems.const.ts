@@ -3,7 +3,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import ContactsIcon from "@mui/icons-material/Contacts";
 
-export const drawerListItems: DrawerListItem[] = [
+export const DRAWER_LIST_ITEMS: DrawerListItem[] = [
   {
     name: "Home",
     icon: HomeIcon,

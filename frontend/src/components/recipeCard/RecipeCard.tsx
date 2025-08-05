@@ -70,7 +70,6 @@ export const RecipeCard: FC<RecipeCardProps> = ({
         />
         <CardMedia
           component="img"
-          height="200px"
           image={imageUrl}
           alt={`An image of ${name}`}
         />

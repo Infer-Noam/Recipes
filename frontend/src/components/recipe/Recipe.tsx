@@ -1,7 +1,6 @@
 import { useMemo, type FC } from "react";
 import { type RecipeDetails } from "../../../../shared/types/recipe.type";
 import { type Chef as ChefModel } from "../../../../shared/types/chef.type";
-import { type Ingredient as IngredientModel } from "../../../../shared/types/ingredient.type";
 import { RecipeIngredientsTable } from "./recipeIngredientTable/RecipeIngredientsTable";
 import {
   Autocomplete,
@@ -23,16 +22,10 @@ import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RecipeDetailsSchema } from "../../../../shared/validation/recipeDetailsSchema.validation";
-import defaultRecipeDetails from "./defaultRecipeDetails.const";
+import DEFAULT_RECIPE_DETAILS from "./defaultRecipeDetails.const";
 import { useSwal } from "../../hooks/useSwal";
 import { z } from "zod";
-
-type RecipeProps = {
-  uuid: string;
-  initialRecipe: RecipeDetails | undefined;
-  chefs: ChefModel[];
-  ingredients: IngredientModel[];
-};
+import type { RecipeProps } from "./RecipeProps.type";
 
 export const Recipe: FC<RecipeProps> = ({
   uuid,
@@ -47,7 +40,7 @@ export const Recipe: FC<RecipeProps> = ({
   type RecipeFormData = z.infer<typeof RecipeDetailsSchema>;
 
   const methods = useForm<RecipeFormData>({
-    defaultValues: initialRecipe ?? { uuid, ...defaultRecipeDetails },
+    defaultValues: initialRecipe ?? { uuid, ...DEFAULT_RECIPE_DETAILS },
     resolver: zodResolver(RecipeDetailsSchema),
   });
 
@@ -108,7 +101,6 @@ export const Recipe: FC<RecipeProps> = ({
           <Controller
             name="chef"
             control={control}
-            rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <Tooltip
                 arrow

@@ -8,12 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
 import { z } from "zod";
-
-type ChefTableRowProps = {
-  chef: ChefDetails;
-  saveChef: (chef: ChefDetails) => void;
-  deleteChef: () => void;
-};
+import type { ChefTableRowProps } from "./chefTableRowProps.type";
 
 const ChefTableRow: FC<ChefTableRowProps> = ({
   chef,

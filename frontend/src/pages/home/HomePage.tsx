@@ -3,7 +3,7 @@ import { Box, Grid, Link } from "@mui/material";
 import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
-import { chefSrcArray } from "../chef/chefSrcArray.const";
+import { CHEF_SRC_ARRAY } from "../chef/chefSrcArray.const";
 import type { FC, JSX } from "react";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
@@ -16,8 +16,8 @@ const HomePage: FC = () => {
   const { mutate: deleteRecipe } = useDeleteRecipe();
 
   const getRandomChefSrc = () => {
-    const randomIndex = Math.floor(Math.random() * chefSrcArray.length);
-    return chefSrcArray[randomIndex];
+    const randomIndex = Math.floor(Math.random() * CHEF_SRC_ARRAY.length);
+    return CHEF_SRC_ARRAY[randomIndex];
   };
 
   if (isLoading) return <BackdropLoading />;

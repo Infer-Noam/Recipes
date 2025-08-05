@@ -8,9 +8,9 @@ import SideDrawer from "./components/sideDrawer/SideDrawer";
 import AppHeader from "./components/appHeader/AppHeader";
 import useToggle from "./hooks/useToggle";
 import { ColorModeContext } from "./contexts/ColorMode.context";
-import { useContext } from "react";
+import { useContext, type FC } from "react";
 
-const App = () => {
+const App: FC = () => {
   const {
     open: mobileDrawerOpen,
     handleClose: handleMobileDrawerClose,

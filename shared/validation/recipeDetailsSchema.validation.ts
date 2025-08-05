@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { MeasurementUnit } from "../enums/measurement-unit.enum";
-import { imageUrlRegex } from "../consts/regex.const";
+import { IMAGE_URL_REGEX } from "../consts/regex.const";
 
 export const RecipeDetailsSchema = z.object({
   uuid: z.string().optional(),
@@ -20,5 +20,5 @@ export const RecipeDetailsSchema = z.object({
     .min(1)
     .max(50),
   description: z.string(),
-  imageUrl: z.string().regex(imageUrlRegex),
+  imageUrl: z.string().regex(IMAGE_URL_REGEX),
 });
