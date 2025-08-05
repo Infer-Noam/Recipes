@@ -157,7 +157,6 @@ export const Recipe: FC<RecipeProps> = ({
             )}
           />
         </Grid>
-
         <Grid size={Styles.imageGridSize}>
           <Controller
             name="imageUrl"
@@ -195,7 +194,6 @@ export const Recipe: FC<RecipeProps> = ({
         <Grid size={Styles.ingredientTableGridSize}>
           <RecipeIngredientsTable ingredients={ingredients} control={control} />
         </Grid>
-
         <Grid size={Styles.saveGridSize}>
           <Button
             fullWidth
@@ -206,20 +204,20 @@ export const Recipe: FC<RecipeProps> = ({
             Save
           </Button>
         </Grid>
-
-        <Grid size={Styles.deleteGridSize}>
-          <Button
-            fullWidth
-            variant="outlined"
-            size="large"
-            onClick={() => {
-              const uuid = initialRecipe?.uuid;
-              uuid ? deleteRecipe(uuid) : onSuccess();
-            }}
-          >
-            Delete
-          </Button>
-        </Grid>
+        {initialRecipe?.uuid && (
+          <Grid size={Styles.deleteGridSize}>
+            <Button
+              fullWidth
+              variant="outlined"
+              size="large"
+              onClick={() =>
+                initialRecipe?.uuid && deleteRecipe(initialRecipe.uuid)
+              }
+            >
+              Delete
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </FormProvider>
   );
