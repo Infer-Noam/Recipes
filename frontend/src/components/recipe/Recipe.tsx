@@ -58,7 +58,7 @@ export const Recipe: FC<RecipeProps> = ({
     formState: { errors },
   } = methods;
 
-  const [chef] = watch(["chef"]);
+  const chef = watch("chef");
 
   const onSuccess = () => navigate(-1);
 
@@ -72,10 +72,14 @@ export const Recipe: FC<RecipeProps> = ({
     onSuccess
   );
 
-  const chefModel = useMemo(
-    () => chefs.find((c) => c.uuid === chef?.uuid),
-    [chef]
-  );
+  const chefMap = useMemo(() => {
+    return chefs.reduce((acc: Record<string, ChefModel>, chef) => {
+      acc[chef.uuid] = chef;
+      return acc;
+    }, {});
+  }, [chefs]);
+
+  const chefModel = useMemo(() => chefMap[chef?.uuid], [chef]);
 
   const onSubmit = async (recipeDetails: RecipeDetails) => {
     await saveRecipe(recipeDetails);
@@ -110,20 +114,22 @@ export const Recipe: FC<RecipeProps> = ({
                 arrow
                 placement="right"
                 title={
-                  <Box component="span">
-                    <Typography>{`Email: ${
-                      chefModel?.email || ""
-                    }`}</Typography>
-                    <Typography>{`Phone number: ${
-                      chefModel?.phone || ""
-                    }`}</Typography>
-                  </Box>
+                  chefModel && (
+                    <Box component="span">
+                      <Typography>{`Email: ${
+                        chefModel?.email || ""
+                      }`}</Typography>
+                      <Typography>{`Phone number: ${
+                        chefModel?.phone || ""
+                      }`}</Typography>
+                    </Box>
+                  )
                 }
               >
                 <Autocomplete
                   options={chefs}
                   getOptionLabel={(option) => {
-                    const chef = chefs.find((c) => c.uuid === option.uuid);
+                    const chef = chefMap[option.uuid];
                     return `${chef?.firstName} ${chef?.lastName}`;
                   }}
                   value={value || null}
