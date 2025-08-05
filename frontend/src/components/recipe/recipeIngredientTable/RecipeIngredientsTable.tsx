@@ -30,7 +30,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomTableCell from "../../customTableCell/CustomTableCell";
 import { Controller } from "react-hook-form";
 import { useFormContext } from "react-hook-form";
-import type { RecipeIngredientsTableProps } from "./RecipeIngredientsTableProps.type";
+import type { RecipeIngredientsTableProps } from "./RecipeIngredientsTable.type";
 import useRecipeIngredient from "./useRecipeIngredient";
 
 export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({

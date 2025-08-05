@@ -8,7 +8,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
 import { z } from "zod";
-import type { ChefTableRowProps } from "./chefTableRowProps.type";
+import type { ChefTableRowProps } from "./chefTableRow.type";
 
 const ChefTableRow: FC<ChefTableRowProps> = ({
   chef,
@@ -103,7 +103,10 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
       </TableCell>
 
       <TableCell>
-        <IconButton onClick={() => handleSubmit(onSubmit)()} disabled={isDirty}>
+        <IconButton
+          onClick={() => handleSubmit(onSubmit)()}
+          disabled={!isDirty}
+        >
           <CheckIcon />
         </IconButton>
       </TableCell>

@@ -7,7 +7,7 @@ import { CHEF_SRC_ARRAY } from "../chef/chefSrcArray.const";
 import type { FC, JSX } from "react";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
-import NotFoundImage from "../../assets/recipe_not_found.png";
+import NotFoundImage from "../../assets/notFound.png";
 import ImageTextDisplay from "../../components/imageTextDisplay/ImageTextDisplay";
 
 const HomePage: FC = () => {
