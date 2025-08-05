@@ -79,7 +79,7 @@ export const Recipe: FC<RecipeProps> = ({
     }, {});
   }, [chefs]);
 
-  const chefModel = useMemo(() => chefMap[chef?.uuid], [chefMap]);
+  const chefModel = useMemo(() => chefMap[chef?.uuid], [chef]);
 
   const onSubmit = async (recipeDetails: RecipeDetails) => {
     await saveRecipe(recipeDetails);
