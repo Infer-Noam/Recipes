@@ -27,8 +27,9 @@ import { useSwal } from "../../hooks/useSwal";
 import { z } from "zod";
 import type { RecipeProps } from "./RecipeProps.type";
 
+export type RecipeFormData = z.infer<typeof RecipeDetailsSchema>;
+
 export const Recipe: FC<RecipeProps> = ({
-  uuid,
   initialRecipe,
   chefs,
   ingredients,
@@ -37,10 +38,8 @@ export const Recipe: FC<RecipeProps> = ({
 
   const { showError } = useSwal();
 
-  type RecipeFormData = z.infer<typeof RecipeDetailsSchema>;
-
   const methods = useForm<RecipeFormData>({
-    defaultValues: initialRecipe ?? { uuid, ...DEFAULT_RECIPE_DETAILS },
+    defaultValues: initialRecipe ?? { ...DEFAULT_RECIPE_DETAILS },
     resolver: zodResolver(RecipeDetailsSchema),
   });
 
@@ -78,6 +77,7 @@ export const Recipe: FC<RecipeProps> = ({
     await saveRecipe(recipeDetails);
   };
 
+  console.log(JSON.stringify(errors));
   return (
     <FormProvider {...methods}>
       <Grid container spacing={2} sx={Styles.gridContainer}>
@@ -193,11 +193,7 @@ export const Recipe: FC<RecipeProps> = ({
           <RecipeStepsList control={control} />
         </Grid>
         <Grid size={Styles.ingredientTableGridSize}>
-          <RecipeIngredientsTable
-            ingredients={ingredients}
-            control={control}
-            recipeUuid={uuid}
-          />
+          <RecipeIngredientsTable ingredients={ingredients} control={control} />
         </Grid>
 
         <Grid size={Styles.saveGridSize}>
@@ -217,7 +213,8 @@ export const Recipe: FC<RecipeProps> = ({
             variant="outlined"
             size="large"
             onClick={() => {
-              deleteRecipe(uuid);
+              const uuid = initialRecipe?.uuid;
+              uuid ? deleteRecipe(uuid) : onSuccess();
             }}
           >
             Delete

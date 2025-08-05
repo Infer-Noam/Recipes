@@ -11,7 +11,7 @@ export const RecipeDetailsSchema = z.object({
     .array(
       z.object({
         uuid: z.string().optional(),
-        recipe: z.object({ uuid: z.string() }),
+        recipe: z.union([z.object({ uuid: z.string() }), z.undefined()]),
         ingredient: z.object({ uuid: z.string() }),
         amount: z.number().min(1),
         measurementUnit: z.enum(MeasurementUnit),

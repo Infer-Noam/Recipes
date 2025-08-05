@@ -15,7 +15,7 @@ export type RecipeIngredient = {
 
 export type RecipeIngredientDetails = {
   uuid?: string;
-  recipe: GenericUuid;
+  recipe: GenericUuid | undefined;
   ingredient: GenericUuid;
   amount: number;
   measurementUnit: MeasurementUnit;

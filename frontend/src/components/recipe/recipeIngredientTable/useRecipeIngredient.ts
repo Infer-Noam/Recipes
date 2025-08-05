@@ -4,7 +4,6 @@ import {
 } from "../../../../../shared/types/recipeIngredient.type";
 import type { Ingredient as IngredientModel } from "../../../../../shared/types/ingredient.type";
 import type { MeasurementUnit } from "../../../../../shared/enums/measurement-unit.enum";
-import { v4 as uuidv4 } from "uuid";
 
 const useRecipeIngredient = (
   value: RecipeIngredientDetails[],
@@ -24,8 +23,9 @@ const useRecipeIngredient = (
     );
   };
 
-  const addRecipeIngredient = (recipeUuid: string) => {
-    onChange([...value, { uuid: uuidv4(), recipe: { uuid: recipeUuid } }]);
+  const addRecipeIngredient = (recipeUuid?: string) => {
+    const recipe = recipeUuid ? { uuid: recipeUuid } : undefined;
+    onChange([...value, { recipe }]);
   };
 
   const removeRecipeIngredient = (recipeIngredientUuid?: string) => {

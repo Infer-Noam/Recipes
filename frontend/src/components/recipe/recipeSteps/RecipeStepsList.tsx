@@ -21,10 +21,10 @@ import AddIcon from "@mui/icons-material/Add";
 import { useTheme } from "@mui/material/styles";
 import Styles from "./recipeStepsList.style";
 import { Controller, useFormContext, type Control } from "react-hook-form";
-import type { RecipeDetails } from "../../../../../shared/types/recipe.type";
+import type { RecipeFormData } from "../Recipe";
 
 type RecipeStepsListProps = {
-  control: Control<RecipeDetails, unknown, RecipeDetails>;
+  control: Control<RecipeFormData, unknown, RecipeFormData>;
 };
 const RecipeStepsList: FC<RecipeStepsListProps> = ({ control }) => {
   const setStep = (

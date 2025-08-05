@@ -36,7 +36,6 @@ import useRecipeIngredient from "./useRecipeIngredient";
 export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
   ingredients,
   control,
-  recipeUuid,
 }) => {
   const {
     formState: { errors },
@@ -205,7 +204,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
               </AccordionDetails>
               <AccordionActions>
                 <Button
-                  onClick={() => addRecipeIngredient(recipeUuid)}
+                  onClick={() => addRecipeIngredient()}
                   startIcon={<AddIcon />}
                 >
                   Add ingredient
