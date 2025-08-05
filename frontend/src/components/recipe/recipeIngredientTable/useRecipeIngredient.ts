@@ -28,9 +28,11 @@ const useRecipeIngredient = (
     onChange([...value, { uuid: uuidv4(), recipe: { uuid: recipeUuid } }]);
   };
 
-  const removeRecipeIngredient = (recipeUuid: string) => {
+  const removeRecipeIngredient = (recipeIngredientUuid?: string) => {
     onChange(
-      value.filter((recipeIngredient) => recipeIngredient.uuid !== recipeUuid)
+      value.filter(
+        (recipeIngredient) => recipeIngredient.uuid !== recipeIngredientUuid
+      )
     );
   };
 

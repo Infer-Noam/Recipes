@@ -186,7 +186,9 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                               <TableCell>
                                 <IconButton
                                   onClick={() =>
-                                    removeRecipeIngredient(recipeUuid)
+                                    removeRecipeIngredient(
+                                      recipeIngredient.uuid
+                                    )
                                   }
                                 >
                                   <RemoveIcon />

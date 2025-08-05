@@ -2,12 +2,12 @@ import { Box, Typography } from "@mui/material";
 import type { FC, ReactNode } from "react";
 import Styles from "./imageTextDisplay.style";
 
-type Props = {
+type ImageTextDisplayProps = {
   src: string;
   children: ReactNode;
 };
 
-const ImageTextDisplay: FC<Props> = ({ src, children }) => (
+const ImageTextDisplay: FC<ImageTextDisplayProps> = ({ src, children }) => (
   <Box sx={Styles.container}>
     <Box
       component="img"
