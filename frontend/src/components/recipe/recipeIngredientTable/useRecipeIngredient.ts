@@ -23,9 +23,8 @@ const useRecipeIngredient = (
     );
   };
 
-  const addRecipeIngredient = (recipeUuid?: string) => {
-    const recipe = recipeUuid ? { uuid: recipeUuid } : undefined;
-    onChange([...value, { recipe }]);
+  const addRecipeIngredient = () => {
+    onChange([...value, {}]);
   };
 
   const removeRecipeIngredient = (recipeIngredientUuid?: string) => {

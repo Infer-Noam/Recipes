@@ -24,10 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RecipeDetailsSchema } from "../../../../shared/validation/recipeDetailsSchema.validation";
 import DEFAULT_RECIPE_DETAILS from "./defaultRecipeDetails.const";
 import { useSwal } from "../../hooks/useSwal";
-import { z } from "zod";
-import type { RecipeProps } from "./RecipeProps.type";
-
-export type RecipeFormData = z.infer<typeof RecipeDetailsSchema>;
+import type { RecipeFormData, RecipeProps } from "./Recipe.type";
 
 export const Recipe: FC<RecipeProps> = ({
   initialRecipe,
@@ -39,7 +36,7 @@ export const Recipe: FC<RecipeProps> = ({
   const { showError } = useSwal();
 
   const methods = useForm<RecipeFormData>({
-    defaultValues: initialRecipe ?? { ...DEFAULT_RECIPE_DETAILS },
+    defaultValues: initialRecipe ?? DEFAULT_RECIPE_DETAILS,
     resolver: zodResolver(RecipeDetailsSchema),
   });
 
@@ -77,7 +74,6 @@ export const Recipe: FC<RecipeProps> = ({
     await saveRecipe(recipeDetails);
   };
 
-  console.log(JSON.stringify(errors));
   return (
     <FormProvider {...methods}>
       <Grid container spacing={2} sx={Styles.gridContainer}>

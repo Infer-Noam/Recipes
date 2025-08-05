@@ -203,10 +203,7 @@ export const RecipeIngredientsTable: FC<RecipeIngredientsTableProps> = ({
                 )}
               </AccordionDetails>
               <AccordionActions>
-                <Button
-                  onClick={() => addRecipeIngredient()}
-                  startIcon={<AddIcon />}
-                >
+                <Button onClick={addRecipeIngredient} startIcon={<AddIcon />}>
                   Add ingredient
                 </Button>
               </AccordionActions>
