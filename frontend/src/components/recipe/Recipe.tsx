@@ -79,6 +79,8 @@ export const Recipe: FC<RecipeProps> = ({
     }, {});
   }, [chefs]);
 
+  const chefModel = chefMap[chef?.uuid];
+
   const onSubmit = async (recipeDetails: RecipeDetails) => {
     await saveRecipe(recipeDetails);
   };
@@ -113,14 +115,16 @@ export const Recipe: FC<RecipeProps> = ({
                 arrow
                 placement="right"
                 title={
-                  <Box component="span">
-                    <Typography>{`Email: ${
-                      chefMap[chef.uuid]?.email || ""
-                    }`}</Typography>
-                    <Typography>{`Phone number: ${
-                      chefMap[chef.uuid]?.phone || ""
-                    }`}</Typography>
-                  </Box>
+                  chefModel && (
+                    <Box component="span">
+                      <Typography>{`Email: ${
+                        chefModel?.email || ""
+                      }`}</Typography>
+                      <Typography>{`Phone number: ${
+                        chefModel?.phone || ""
+                      }`}</Typography>
+                    </Box>
+                  )
                 }
               >
                 <Autocomplete
