@@ -5,4 +5,5 @@ import type { RecipeFormData } from "../../Recipe.type";
 export type RecipeIngredientsTableItemProps = {
   ingredients: IngredientModel[];
   control: Control<RecipeFormData, unknown, RecipeFormData>;
+  isSubmitted: boolean;
 };

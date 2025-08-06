@@ -1,7 +1,6 @@
 import {
   Controller,
   type Control,
-  type FieldError,
   type FieldValues,
   type Path,
 } from "react-hook-form";
@@ -10,24 +9,29 @@ import { TextField, type TextFieldProps } from "@mui/material";
 type ControlledTextFieldProps<T extends FieldValues> = TextFieldProps & {
   name: Path<T>;
   control: Control<T>;
-  fieldError?: FieldError;
+  transformValue?: (value: string) => any;
 };
 
 const ControlledTextField = <T extends FieldValues>({
   name,
   control,
-  fieldError,
+  transformValue,
   ...rest
 }: ControlledTextFieldProps<T>) => (
   <Controller
     name={name}
     control={control}
-    render={({ field }) => (
+    render={({ field, fieldState: { error } }) => (
       <TextField
         {...field}
         {...rest}
-        error={!!fieldError}
-        helperText={fieldError?.message}
+        onChange={(e) => {
+          const value = e.target.value;
+          const transformedValue = transformValue?.(value) ?? value;
+          field.onChange(transformedValue);
+        }}
+        error={!!error}
+        helperText={error?.message}
       />
     )}
   />

@@ -35,7 +35,7 @@ import ErrorElement from "./elements/error/ErrorElement";
 
 export const RecipeIngredientsTableItem: FC<
   RecipeIngredientsTableItemProps
-> = ({ ingredients, control }) => {
+> = ({ ingredients, control, isSubmitted }) => {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -84,11 +84,7 @@ export const RecipeIngredientsTableItem: FC<
                             />
                           </TableCell>
                           <TableCell sx={Styles.centerAlign}>
-                            <AmountElement
-                              index={index}
-                              recipeIngredient={recipeIngredient}
-                              control={control}
-                            />
+                            <AmountElement index={index} control={control} />
                           </TableCell>
                           <TableCell sx={Styles.centerAlign}>
                             <MeasurementUnitElement
@@ -125,7 +121,7 @@ export const RecipeIngredientsTableItem: FC<
           </AccordionActions>
         </Accordion>
         <ErrorElement
-          error={recipeIngredients.length === 0}
+          error={isSubmitted && recipeIngredients.length === 0}
           errorMessage="At least one ingredient is required"
         />
       </Box>
