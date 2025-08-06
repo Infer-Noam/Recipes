@@ -19,8 +19,7 @@ const NameItem: FC<NameItemProps> = ({ control, error }) => (
       fullWidth
       label="Recipe name"
       variant="outlined"
-      error={!!error}
-      helperText={error && "Recipe name is required"}
+      fieldError={error}
     />
   </Grid>
 );

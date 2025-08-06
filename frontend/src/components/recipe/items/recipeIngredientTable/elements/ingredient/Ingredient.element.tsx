@@ -32,11 +32,7 @@ const IngredientElement: FC<IngredientElementProps> = ({
         }
         options={ingredients.map((ingredient) => ingredient.name)}
         renderInput={(params) => (
-          <TextField
-            {...params}
-            error={!!error}
-            helperText={error?.message && "Ingredient is required"}
-          />
+          <TextField {...params} error={!!error} helperText={error?.message} />
         )}
       />
     </Box>

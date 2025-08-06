@@ -90,9 +90,7 @@ const StepsItem: FC<StepsItemProps> = ({ control }) => {
                               setStep(index, steps, e.target.value, onChange)
                             }
                             error={!!stepError}
-                            helperText={
-                              stepError?.message && "Step cannot be blank"
-                            }
+                            helperText={stepError?.message}
                           />
                         </ListItemText>
                         <ListItemIcon>

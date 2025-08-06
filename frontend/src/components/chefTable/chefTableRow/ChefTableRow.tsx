@@ -45,10 +45,9 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
         <ControlledTextField
           name="firstName"
           control={control}
+          fieldError={errors.firstName}
           sx={Styles.firstNameTextField}
           variant="outlined"
-          error={!!errors.firstName}
-          helperText={errors.firstName && "First name is required"}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
@@ -57,8 +56,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           control={control}
           sx={Styles.lastNameTextField}
           variant="outlined"
-          error={!!errors.lastName}
-          helperText={errors.lastName && "Last name is required"}
+          fieldError={errors.lastName}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
@@ -67,8 +65,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           control={control}
           sx={Styles.emailTextField}
           variant="outlined"
-          error={!!errors.email}
-          helperText={errors.email && "Valid email is required"}
+          fieldError={errors.email}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
@@ -77,8 +74,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           control={control}
           sx={Styles.phoneTextField}
           variant="outlined"
-          error={!!errors.phone}
-          helperText={errors.phone && "Valid phone is required"}
+          fieldError={errors.phone}
         />
       </TableCell>
 

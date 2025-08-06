@@ -29,7 +29,7 @@ const AmountElement: FC<AmountElementProps> = ({
     }}
     variant="outlined"
     error={!!error}
-    helperText={error?.message && "Valid amount is required"}
+    helperText={error?.message}
   />
 );
 

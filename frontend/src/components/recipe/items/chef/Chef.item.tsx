@@ -72,7 +72,7 @@ const ChefItem: FC<ChefItemProps> = ({ chefs, chef, control, error }) => {
                   {...params}
                   label="Chef"
                   error={!!error}
-                  helperText={error && "Chef is required"}
+                  helperText={error?.message}
                 />
               )}
               isOptionEqualToValue={(option, value) =>

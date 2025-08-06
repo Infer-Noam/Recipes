@@ -36,8 +36,7 @@ const ImageItem: FC<ImageItemProps> = ({ imageUrl, control, error }) => (
           ),
         },
       }}
-      error={!!error}
-      helperText={error && "Valid image URL is required"}
+      fieldError={error}
     />
   </Grid>
 );
