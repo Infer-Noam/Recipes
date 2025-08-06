@@ -3,6 +3,7 @@ import type { ChefDetails } from "../../../../../shared/types/chef.type";
 import { type FC } from "react";
 import Styles from "./chefTableRow.style";
 import CheckIcon from "@mui/icons-material/Check";
+import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -84,7 +85,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           onClick={() => handleSubmit(onSubmit)()}
           disabled={!isDirty}
         >
-          <CheckIcon />
+          {chef.uuid ? <CheckIcon /> : <AddIcon />}
         </IconButton>
       </TableCell>
     </TableRow>
