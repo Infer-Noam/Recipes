@@ -1,9 +1,9 @@
 import { type FC } from "react";
 import { type RecipeDetails } from "../../../../shared/types/recipe.type";
-import { RecipeIngredientsTableItem } from "./items/recipeIngredientTable/RecipeIngredientsTable.item";
+import { RecipeIngredientsTableItem } from "./items/recipeIngredientTable/RecipeIngredientsTableItem";
 import { Grid, Button } from "@mui/material";
 import Styles from "./recipe.style";
-import StepsItem from "./items/steps/Steps.item";
+import StepsItem from "./items/steps/StepsItem";
 import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
@@ -14,9 +14,9 @@ import DEFAULT_RECIPE_DETAILS from "./defaultRecipeDetails.const";
 import { useSwal } from "../../hooks/useSwal";
 import type { RecipeFormData, RecipeProps } from "./Recipe.type";
 import ControlledTextField from "../controlledTextField/ControlledTextField";
-import NameItem from "./items/name/Name.item";
-import ChefItem from "./items/chef/Chef.item";
-import ImageItem from "./items/image/Image.item";
+import NameItem from "./items/name/NameItem";
+import ChefItem from "./items/chef/ChefItem";
+import ImageItem from "./items/image/ImageItem";
 
 export const Recipe: FC<RecipeProps> = ({
   initialRecipe,
