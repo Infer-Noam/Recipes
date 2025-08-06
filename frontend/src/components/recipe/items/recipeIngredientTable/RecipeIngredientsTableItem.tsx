@@ -24,7 +24,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomTableCell from "../../../customTableCell/CustomTableCell";
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import type { RecipeIngredientsTableItemProps } from "./recipeIngredientsTableItem.type";
 import IngredientElement from "./elements/ingredient/IngredientElement";
 import AmountElement from "./elements/amount/AmountElement";
@@ -35,9 +35,14 @@ import ErrorElement from "./elements/error/ErrorElement";
 
 export const RecipeIngredientsTableItem: FC<
   RecipeIngredientsTableItemProps
-> = ({ ingredients, control, isSubmitted }) => {
+> = ({ ingredients }) => {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const {
+    control,
+    formState: { isSubmitted },
+  } = useFormContext<RecipeFormData>();
 
   const { fields, append, remove } = useFieldArray<
     RecipeFormData,
@@ -79,19 +84,13 @@ export const RecipeIngredientsTableItem: FC<
                             <IngredientElement
                               index={index}
                               ingredients={ingredients}
-                              recipeIngredient={recipeIngredient}
-                              control={control}
                             />
                           </TableCell>
                           <TableCell sx={Styles.centerAlign}>
-                            <AmountElement index={index} control={control} />
+                            <AmountElement index={index} />
                           </TableCell>
                           <TableCell sx={Styles.centerAlign}>
-                            <MeasurementUnitElement
-                              index={index}
-                              recipeIngredient={recipeIngredient}
-                              control={control}
-                            />
+                            <MeasurementUnitElement index={index} />
                           </TableCell>
                           <TableCell>
                             <IconButton onClick={() => remove(index)}>

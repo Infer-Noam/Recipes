@@ -5,12 +5,12 @@ import Styles from "./chefTableRow.style";
 import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
 import { z } from "zod";
 import type { ChefTableRowProps } from "./chefTableRow.type";
 import ControlledTextField from "../../../components/controlledTextField/ControlledTextField";
+import { FormProvider, useForm } from "react-hook-form";
 
 const ChefTableRow: FC<ChefTableRowProps> = ({
   chef,
@@ -19,15 +19,16 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
 }) => {
   type ChefFormData = z.infer<typeof ChefDetailsSchema>;
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isDirty },
-    reset,
-  } = useForm<ChefFormData>({
+  const methods = useForm<ChefFormData>({
     defaultValues: chef,
     resolver: zodResolver(ChefDetailsSchema),
   });
+
+  const {
+    handleSubmit,
+    formState: { isDirty },
+    reset,
+  } = methods;
 
   const onSubmit = (chef: ChefDetails) => {
     saveChef(chef);
@@ -35,54 +36,52 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
   };
 
   return (
-    <TableRow sx={Styles.chefTableRow}>
-      <TableCell sx={Styles.centerAlign}>
-        <IconButton onClick={deleteChef}>
-          <RemoveIcon />
-        </IconButton>
-      </TableCell>
-      <TableCell sx={Styles.centerAlign}>
-        <ControlledTextField
-          name="firstName"
-          control={control}
-          sx={Styles.firstNameTextField}
-          variant="outlined"
-        />
-      </TableCell>
-      <TableCell sx={Styles.centerAlign}>
-        <ControlledTextField
-          name="lastName"
-          control={control}
-          sx={Styles.lastNameTextField}
-          variant="outlined"
-        />
-      </TableCell>
-      <TableCell sx={Styles.centerAlign}>
-        <ControlledTextField
-          name="email"
-          control={control}
-          sx={Styles.emailTextField}
-          variant="outlined"
-        />
-      </TableCell>
-      <TableCell sx={Styles.centerAlign}>
-        <ControlledTextField
-          name="phone"
-          control={control}
-          sx={Styles.phoneTextField}
-          variant="outlined"
-        />
-      </TableCell>
+    <FormProvider {...methods}>
+      <TableRow sx={Styles.chefTableRow}>
+        <TableCell sx={Styles.centerAlign}>
+          <IconButton onClick={deleteChef}>
+            <RemoveIcon />
+          </IconButton>
+        </TableCell>
+        <TableCell sx={Styles.centerAlign}>
+          <ControlledTextField
+            name="firstName"
+            sx={Styles.firstNameTextField}
+            variant="outlined"
+          />
+        </TableCell>
+        <TableCell sx={Styles.centerAlign}>
+          <ControlledTextField
+            name="lastName"
+            sx={Styles.lastNameTextField}
+            variant="outlined"
+          />
+        </TableCell>
+        <TableCell sx={Styles.centerAlign}>
+          <ControlledTextField
+            name="email"
+            sx={Styles.emailTextField}
+            variant="outlined"
+          />
+        </TableCell>
+        <TableCell sx={Styles.centerAlign}>
+          <ControlledTextField
+            name="phone"
+            sx={Styles.phoneTextField}
+            variant="outlined"
+          />
+        </TableCell>
 
-      <TableCell>
-        <IconButton
-          onClick={() => handleSubmit(onSubmit)()}
-          disabled={!isDirty}
-        >
-          {chef.uuid ? <CheckIcon /> : <AddIcon />}
-        </IconButton>
-      </TableCell>
-    </TableRow>
+        <TableCell>
+          <IconButton
+            onClick={() => handleSubmit(onSubmit)()}
+            disabled={!isDirty}
+          >
+            {chef.uuid ? <CheckIcon /> : <AddIcon />}
+          </IconButton>
+        </TableCell>
+      </TableRow>
+    </FormProvider>
   );
 };
 

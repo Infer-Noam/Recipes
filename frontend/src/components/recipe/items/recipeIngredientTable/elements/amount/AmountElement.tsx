@@ -1,18 +1,14 @@
 import type { FC } from "react";
 import Styles from "./amountElement.style";
-import type { RecipeFormData } from "../../../../Recipe.type";
-import { type Control } from "react-hook-form";
 import ControlledTextField from "../../../../../../components/controlledTextField/ControlledTextField";
 
 type AmountElementProps = {
   index: number;
-  control: Control<RecipeFormData, unknown, RecipeFormData>;
 };
 
-const AmountElement: FC<AmountElementProps> = ({ index, control }) => (
+const AmountElement: FC<AmountElementProps> = ({ index }) => (
   <ControlledTextField
     name={`ingredients.${index}.amount`}
-    control={control}
     type="number"
     transformValue={(value) => parseInt(value, 10)}
     slotProps={{

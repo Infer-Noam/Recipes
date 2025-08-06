@@ -32,12 +32,7 @@ export const Recipe: FC<RecipeProps> = ({
     resolver: zodResolver(RecipeDetailsSchema),
   });
 
-  const {
-    handleSubmit,
-    watch,
-    control,
-    formState: { errors, isSubmitted },
-  } = methods;
+  const { handleSubmit, watch } = methods;
 
   const [chef, imageUrl] = watch(["chef", "imageUrl"]);
 
@@ -60,33 +55,20 @@ export const Recipe: FC<RecipeProps> = ({
   return (
     <FormProvider {...methods}>
       <Grid container spacing={2} sx={Styles.gridContainer}>
-        <NameItem control={control} />
-        <ChefItem
-          chef={chef}
-          chefs={chefs}
-          control={control}
-          error={errors.chef}
-        />
+        <NameItem />
+        <ChefItem chef={chef} chefs={chefs} />
         <Grid size={Styles.descriptionItemGridSize}>
           <ControlledTextField
             name="description"
-            control={control}
             fullWidth
             multiline
             label="Short description"
             variant="outlined"
           />
         </Grid>
-        <ImageItem
-          imageUrl={imageUrl}
-          control={control}
-        />
-        <StepsItem control={control} />
-        <RecipeIngredientsTableItem
-          ingredients={ingredients}
-          control={control}
-          isSubmitted={isSubmitted}
-        />
+        <ImageItem imageUrl={imageUrl} />
+        <StepsItem />
+        <RecipeIngredientsTableItem ingredients={ingredients} />
         <Grid size={Styles.saveGridItemSize}>
           <Button
             fullWidth

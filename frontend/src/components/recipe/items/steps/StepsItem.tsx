@@ -21,13 +21,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
 import { useTheme } from "@mui/material/styles";
 import Styles from "./stepsItem.style";
-import { Controller, useFormContext, type Control } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import type { RecipeFormData } from "../../Recipe.type";
 
-type StepsItemProps = {
-  control: Control<RecipeFormData, unknown, RecipeFormData>;
-};
-const StepsItem: FC<StepsItemProps> = ({ control }) => {
+const StepsItem: FC = () => {
   const setStep = (
     index: number,
     steps: string[],
@@ -50,8 +47,9 @@ const StepsItem: FC<StepsItemProps> = ({ control }) => {
   };
 
   const {
+    control,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<RecipeFormData>();
 
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));

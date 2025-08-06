@@ -3,19 +3,15 @@ import type { FC } from "react";
 import Styles from "./measurementUnitElement.style";
 import type { RecipeFormData } from "../../../../Recipe.type";
 import { MeasurementUnit } from "../../../../../../../../shared/enums/measurement-unit.enum";
-import { Controller, type Control } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 type MeasurementUnitElementProps = {
   index: number;
-  control: Control<RecipeFormData, unknown, RecipeFormData>;
-  recipeIngredient: RecipeFormData["ingredients"][number];
 };
 
-const MeasurementUnitElement: FC<MeasurementUnitElementProps> = ({
-  index,
-  control,
-  recipeIngredient,
-}) => {
+const MeasurementUnitElement: FC<MeasurementUnitElementProps> = ({ index }) => {
+  const { control } = useFormContext<RecipeFormData>();
+
   return (
     <Controller
       name={`ingredients.${index}.measurementUnit`}
@@ -23,7 +19,7 @@ const MeasurementUnitElement: FC<MeasurementUnitElementProps> = ({
       render={({ field, fieldState: { error } }) => (
         <Select
           sx={Styles.measurementUnitSelect}
-          value={recipeIngredient.measurementUnit}
+          value={field.value}
           onChange={(e) => field.onChange(e.target.value)}
           error={!!error}
         >

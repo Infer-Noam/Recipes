@@ -1,6 +1,4 @@
-import { Controller, type Control } from "react-hook-form";
-import type { RecipeFormData } from "../../Recipe.type";
-import type { FieldError, FieldErrorsImpl, Merge } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { useMemo, type FC } from "react";
 import {
   Autocomplete,
@@ -18,18 +16,10 @@ type ChefItemProps = {
     uuid: string;
   };
   chefs: ChefModel[];
-  control: Control<RecipeFormData, unknown, RecipeFormData>;
-  error:
-    | Merge<
-        FieldError,
-        FieldErrorsImpl<{
-          uuid: string;
-        }>
-      >
-    | undefined;
 };
 
-const ChefItem: FC<ChefItemProps> = ({ chefs, chef, control, error }) => {
+const ChefItem: FC<ChefItemProps> = ({ chefs, chef }) => {
+  const { control } = useFormContext();
   
   const chefMap = useMemo(
     () => Object.fromEntries(chefs.map((chef) => [chef.uuid, chef])),
@@ -43,7 +33,7 @@ const ChefItem: FC<ChefItemProps> = ({ chefs, chef, control, error }) => {
       <Controller
         name="chef"
         control={control}
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value }, fieldState: { error } }) => (
           <Tooltip
             arrow
             placement="right"
