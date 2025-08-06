@@ -47,29 +47,16 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           <ControlledTextField
             name="firstName"
             sx={Styles.firstNameTextField}
-            variant="outlined"
           />
         </TableCell>
         <TableCell sx={Styles.centerAlign}>
-          <ControlledTextField
-            name="lastName"
-            sx={Styles.lastNameTextField}
-            variant="outlined"
-          />
+          <ControlledTextField name="lastName" sx={Styles.lastNameTextField} />
         </TableCell>
         <TableCell sx={Styles.centerAlign}>
-          <ControlledTextField
-            name="email"
-            sx={Styles.emailTextField}
-            variant="outlined"
-          />
+          <ControlledTextField name="email" sx={Styles.emailTextField} />
         </TableCell>
         <TableCell sx={Styles.centerAlign}>
-          <ControlledTextField
-            name="phone"
-            sx={Styles.phoneTextField}
-            variant="outlined"
-          />
+          <ControlledTextField name="phone" sx={Styles.phoneTextField} />
         </TableCell>
 
         <TableCell>

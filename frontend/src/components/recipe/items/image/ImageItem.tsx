@@ -8,13 +8,12 @@ type ImageItemProps = {
   imageUrl: string;
 };
 
-const ImageItem: FC<ImageItemProps> = ({ imageUrl}) => (
+const ImageItem: FC<ImageItemProps> = ({ imageUrl }) => (
   <Grid size={Styles.gridItemSize}>
     <ControlledTextField
       name="imageUrl"
       fullWidth
       label="Image url"
-      variant="outlined"
       slotProps={{
         input: {
           endAdornment: (

@@ -24,6 +24,9 @@ const ControlledTextField = <T extends FieldValues>({
       control={control}
       render={({ field, fieldState: { error } }) => (
         <TextField
+          variant="outlined"
+          error={!!error}
+          helperText={error?.message}
           {...field}
           {...rest}
           onChange={(e) => {
@@ -31,8 +34,6 @@ const ControlledTextField = <T extends FieldValues>({
             const transformedValue = transformValue?.(value) ?? value;
             field.onChange(transformedValue);
           }}
-          error={!!error}
-          helperText={error?.message}
         />
       )}
     />

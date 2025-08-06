@@ -56,14 +56,13 @@ export const Recipe: FC<RecipeProps> = ({
     <FormProvider {...methods}>
       <Grid container spacing={2} sx={Styles.gridContainer}>
         <NameItem />
-        <ChefItem chef={chef} chefs={chefs} />
+        <ChefItem chefUuid={chef?.uuid} chefs={chefs} />
         <Grid size={Styles.descriptionItemGridSize}>
           <ControlledTextField
             name="description"
             fullWidth
             multiline
             label="Short description"
-            variant="outlined"
           />
         </Grid>
         <ImageItem imageUrl={imageUrl} />

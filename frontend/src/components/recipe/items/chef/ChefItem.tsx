@@ -12,21 +12,19 @@ import Styles from "./chefItem.style";
 import type { Chef as ChefModel } from "../../../../../../shared/types/chef.type";
 
 type ChefItemProps = {
-  chef: {
-    uuid: string;
-  };
+  chefUuid: string;
   chefs: ChefModel[];
 };
 
-const ChefItem: FC<ChefItemProps> = ({ chefs, chef }) => {
+const ChefItem: FC<ChefItemProps> = ({ chefs, chefUuid }) => {
   const { control } = useFormContext();
-  
+
   const chefMap = useMemo(
     () => Object.fromEntries(chefs.map((chef) => [chef.uuid, chef])),
     [chefs]
   );
 
-  const chefModel = useMemo(() => chefMap[chef?.uuid], [chef]);
+  const chef = useMemo(() => chefMap[chefUuid], [chefUuid]);
 
   return (
     <Grid size={Styles.gridItemSize}>
@@ -38,11 +36,11 @@ const ChefItem: FC<ChefItemProps> = ({ chefs, chef }) => {
             arrow
             placement="right"
             title={
-              chefModel && (
+              chef && (
                 <Box component="span">
-                  <Typography>{`Email: ${chefModel?.email || ""}`}</Typography>
+                  <Typography>{`Email: ${chef?.email || ""}`}</Typography>
                   <Typography>{`Phone number: ${
-                    chefModel?.phone || ""
+                    chef?.phone || ""
                   }`}</Typography>
                 </Box>
               )

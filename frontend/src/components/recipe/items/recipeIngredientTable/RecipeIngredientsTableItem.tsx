@@ -30,7 +30,10 @@ import IngredientElement from "./elements/ingredient/IngredientElement";
 import AmountElement from "./elements/amount/AmountElement";
 import MeasurementUnitElement from "./elements/measurementUnit/MeasurementUnitElement";
 import type { RecipeFormData } from "../../Recipe.type";
-import DEFAULT_RECIPE_INGREDIENT_DETAILS from "./defaultRecipeIngredientDetails.const";
+import {
+  DEFAULT_RECIPE_INGREDIENT_DETAILS,
+  HEADER_LABELS,
+} from "./recipeIngredientsTableItem.const";
 import ErrorElement from "./elements/error/ErrorElement";
 
 export const RecipeIngredientsTableItem: FC<
@@ -52,7 +55,7 @@ export const RecipeIngredientsTableItem: FC<
     name: "ingredients",
   });
 
-  const recipeIngredients: RecipeFormData["ingredients"][0][] = fields;
+  const recipeIngredients: RecipeFormData["ingredients"][number][] = fields;
 
   return (
     <Grid size={Styles.gridItemSize}>
@@ -67,9 +70,9 @@ export const RecipeIngredientsTableItem: FC<
                 <Table sx={Styles.container} aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <CustomTableCell label="Ingredient" />
-                      <CustomTableCell label="Amount" />
-                      <CustomTableCell label="Measurement unit" />
+                      {HEADER_LABELS.map((label) => (
+                        <CustomTableCell label={label} />
+                      ))}
                       <TableCell />
                     </TableRow>
                   </TableHead>

@@ -5,12 +5,7 @@ import Styles from "./name.style";
 
 const NameItem: FC = () => (
   <Grid size={Styles.gridItemSize}>
-    <ControlledTextField
-      name="name"
-      fullWidth
-      label="Recipe name"
-      variant="outlined"
-    />
+    <ControlledTextField name="name" fullWidth label="Recipe name" />
   </Grid>
 );
 

@@ -20,7 +20,6 @@ const AmountElement: FC<AmountElementProps> = ({ index }) => (
         },
       },
     }}
-    variant="outlined"
   />
 );
 

@@ -80,9 +80,7 @@ const StepsItem: FC = () => {
                           <TextField
                             multiline
                             fullWidth
-                            id="outlined-basic"
                             label={`Step ${index + 1}`}
-                            variant="outlined"
                             value={step}
                             onChange={(e) =>
                               setStep(index, steps, e.target.value, onChange)

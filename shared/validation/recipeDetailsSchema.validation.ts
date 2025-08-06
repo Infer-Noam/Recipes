@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { MeasurementUnit } from "../enums/measurement-unit.enum";
 import { IMAGE_URL_REGEX } from "../consts/regex.const";
+import { UuidSchema } from "./uuidSchema.validation";
 
 export const RecipeDetailsSchema = z.object({
   uuid: z.string().optional(),
@@ -22,23 +23,11 @@ export const RecipeDetailsSchema = z.object({
     .array(
       z.object({
         uuid: z.string().optional(),
-
-        recipe: z.union([
-          z.object({
-            uuid: z.string(),
-          }),
-          z.undefined(),
-        ]),
-
-        ingredient: z.object(
-          {
-            uuid: z.string(),
-          },
-          "Ingredient is required"
-        ),
-
+        recipe: UuidSchema.optional(),
+        ingredient: UuidSchema.refine((val) => val, {
+          message: "Ingredient is required",
+        }),
         amount: z.number().min(1, "Amount must be at least 1"),
-
         measurementUnit: z.enum(
           MeasurementUnit,
           "Measurement unit is required"
@@ -47,8 +36,6 @@ export const RecipeDetailsSchema = z.object({
     )
     .min(1, "At least one ingredient is required")
     .max(50, "You can add up to 50 ingredients only"),
-
   description: z.string(),
-
   imageUrl: z.string().regex(IMAGE_URL_REGEX, "Image URL must be valid"),
 });
