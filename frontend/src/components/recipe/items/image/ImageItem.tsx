@@ -1,6 +1,5 @@
 import type { Control } from "react-hook-form";
 import type { RecipeFormData } from "../../Recipe.type";
-import type { FieldError } from "react-hook-form";
 import type { FC } from "react";
 import { Grid, IconButton, InputAdornment } from "@mui/material";
 import ControlledTextField from "../../../controlledTextField/ControlledTextField";
@@ -10,10 +9,9 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 type ImageItemProps = {
   imageUrl: string;
   control: Control<RecipeFormData, unknown, RecipeFormData>;
-  error: FieldError | undefined;
 };
 
-const ImageItem: FC<ImageItemProps> = ({ imageUrl, control, error }) => (
+const ImageItem: FC<ImageItemProps> = ({ imageUrl, control}) => (
   <Grid size={Styles.gridItemSize}>
     <ControlledTextField
       name="imageUrl"
@@ -36,7 +34,6 @@ const ImageItem: FC<ImageItemProps> = ({ imageUrl, control, error }) => (
           ),
         },
       }}
-      fieldError={error}
     />
   </Grid>
 );

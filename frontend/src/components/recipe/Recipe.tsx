@@ -36,7 +36,7 @@ export const Recipe: FC<RecipeProps> = ({
     handleSubmit,
     watch,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitted },
   } = methods;
 
   const [chef, imageUrl] = watch(["chef", "imageUrl"]);
@@ -60,7 +60,7 @@ export const Recipe: FC<RecipeProps> = ({
   return (
     <FormProvider {...methods}>
       <Grid container spacing={2} sx={Styles.gridContainer}>
-        <NameItem control={control} error={errors.name} />
+        <NameItem control={control} />
         <ChefItem
           chef={chef}
           chefs={chefs}
@@ -80,12 +80,12 @@ export const Recipe: FC<RecipeProps> = ({
         <ImageItem
           imageUrl={imageUrl}
           control={control}
-          error={errors.imageUrl}
         />
         <StepsItem control={control} />
         <RecipeIngredientsTableItem
           ingredients={ingredients}
           control={control}
+          isSubmitted={isSubmitted}
         />
         <Grid size={Styles.saveGridItemSize}>
           <Button

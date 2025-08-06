@@ -22,7 +22,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty },
+    formState: { isDirty },
     reset,
   } = useForm<ChefFormData>({
     defaultValues: chef,
@@ -45,7 +45,6 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
         <ControlledTextField
           name="firstName"
           control={control}
-          fieldError={errors.firstName}
           sx={Styles.firstNameTextField}
           variant="outlined"
         />
@@ -56,7 +55,6 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           control={control}
           sx={Styles.lastNameTextField}
           variant="outlined"
-          fieldError={errors.lastName}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
@@ -65,7 +63,6 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           control={control}
           sx={Styles.emailTextField}
           variant="outlined"
-          fieldError={errors.email}
         />
       </TableCell>
       <TableCell sx={Styles.centerAlign}>
@@ -74,7 +71,6 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           control={control}
           sx={Styles.phoneTextField}
           variant="outlined"
-          fieldError={errors.phone}
         />
       </TableCell>
 
