@@ -23,6 +23,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
     control,
     handleSubmit,
     formState: { errors, isDirty },
+    reset,
   } = useForm<ChefFormData>({
     defaultValues: chef,
     resolver: zodResolver(ChefDetailsSchema),
@@ -30,6 +31,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
 
   const onSubmit = (chef: ChefDetails) => {
     saveChef(chef);
+    reset(chef);
   };
 
   return (
