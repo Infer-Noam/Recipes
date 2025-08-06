@@ -48,7 +48,7 @@ export const RecipeDetailsSchema = z.object({
     .min(1, "At least one ingredient is required")
     .max(50, "You can add up to 50 ingredients only"),
 
-  description: z.string().min(1, "Description is required"),
+  description: z.string(),
 
   imageUrl: z.string().regex(IMAGE_URL_REGEX, "Image URL must be valid"),
 });
