@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Request, Response } from "express";
 import service from "./recipe.service";
 import {
   SaveRecipeReq,
@@ -52,10 +52,6 @@ router.delete(
 
 router.get("/", async (_: Request, res: Response<GetAllRecipesRes>) => {
   const recipes = await service.getAllRecipes();
-
-  if (!recipes.length) {
-    throw new NotFoundError("Recipes");
-  }
 
   res.status(200).json({ recipes });
 });
