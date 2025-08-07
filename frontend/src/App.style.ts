@@ -1,5 +1,5 @@
 import type { SxProps, Theme } from "@mui/material";
-import { drawerWidth } from "./components/sideDrawer/sideDrawer.const";
+import { DRAWER_WIDTH } from "./components/sideDrawer/sideDrawer.const";
 import { ColorMode } from "./theme/colorMode.enum";
 
 const rootLayout: SxProps<Theme> = (theme) => ({
@@ -12,7 +12,7 @@ const rootLayout: SxProps<Theme> = (theme) => ({
 });
 const contentArea: SxProps<Theme> = (theme) => ({
   position: "fixed",
-  left: { xs: 0, sm: drawerWidth },
+  left: { xs: 0, sm: DRAWER_WIDTH },
   right: 0,
   top: {
     xs: "56px",

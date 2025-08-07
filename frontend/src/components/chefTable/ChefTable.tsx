@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import ChefTableRow from "./chefTableRow/ChefTableRow";
 import AddIcon from "@mui/icons-material/Add";
-import defaultChefDetails from "./defaultChefDetails.const";
+import DEFAULT_CHEF_DETAILS from "./defaultChefDetails.const";
 import CustomTableCell from "../customTableCell/CustomTableCell";
 
 type ChefTableProps = {
@@ -59,15 +59,15 @@ const ChefTable: FC<ChefTableProps> = ({
             <TableCell sx={Styles.centerAlign}>
               <Button
                 onClick={() => {
-                  setChefs((prev) => [...prev, defaultChefDetails]);
+                  setChefs((prev) => [...prev, DEFAULT_CHEF_DETAILS]);
                 }}
                 startIcon={<AddIcon />}
               >
                 Add chef
               </Button>
             </TableCell>
-            {Array.from({ length: cellCount }, (_, i) => (
-              <TableCell key={i} />
+            {Array.from({ length: cellCount }, (_, index) => (
+              <TableCell key={index} />
             ))}
           </TableRow>
         </TableBody>

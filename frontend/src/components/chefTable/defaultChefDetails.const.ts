@@ -1,7 +1,7 @@
 import type { ChefDetails } from "@shared/types/chef.type";
 import { v4 as uuidv4 } from "uuid";
 
-const defaultChefDetails: ChefDetails = {
+const DEFAULT_CHEF_DETAILS: ChefDetails = {
   uuid: uuidv4(),
   firstName: "",
   lastName: "",
@@ -9,4 +9,4 @@ const defaultChefDetails: ChefDetails = {
   phone: "",
 };
 
-export default defaultChefDetails;
+export default DEFAULT_CHEF_DETAILS;
