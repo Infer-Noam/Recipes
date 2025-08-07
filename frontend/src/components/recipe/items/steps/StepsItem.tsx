@@ -23,29 +23,9 @@ import { useTheme } from "@mui/material/styles";
 import Styles from "./stepsItem.style";
 import { Controller, useFormContext } from "react-hook-form";
 import type { RecipeFormData } from "../../Recipe.type";
+import useSteps from "./useSteps";
 
 const StepsItem: FC = () => {
-  const setStep = (
-    index: number,
-    steps: string[],
-    newStep: string,
-    onChange: (...event: any[]) => void
-  ) => {
-    onChange(steps.map((step, i) => (index === i ? newStep : step)));
-  };
-
-  const addStep = (steps: string[], onChange: (...event: any[]) => void) => {
-    onChange([...steps, ""]);
-  };
-
-  const removeStep = (
-    index: number,
-    steps: string[],
-    onChange: (...event: any[]) => void
-  ) => {
-    onChange(steps.filter((_, i) => index !== i));
-  };
-
   const {
     control,
     formState: { errors },
@@ -62,65 +42,62 @@ const StepsItem: FC = () => {
         render={({
           field: { value: steps, onChange },
           fieldState: { error },
-        }) => (
-          <Box>
-            <Accordion defaultExpanded={!isXs}>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography component="span">Steps</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <List>
-                  {steps.map((step, index) => {
-                    const stepError =
-                      Array.isArray(errors.steps) && errors.steps[index];
+        }) => {
+          const { setStep, addStep, removeStep } = useSteps(steps, onChange);
 
-                    return (
-                      <ListItem key={index}>
-                        <ListItemText sx={Styles.textField}>
-                          <TextField
-                            multiline
-                            fullWidth
-                            label={`Step ${index + 1}`}
-                            value={step}
-                            onChange={(e) =>
-                              setStep(index, steps, e.target.value, onChange)
-                            }
-                            error={!!stepError}
-                            helperText={stepError?.message}
-                          />
-                        </ListItemText>
-                        <ListItemIcon>
-                          <IconButton
-                            onClick={() => removeStep(index, steps, onChange)}
-                          >
-                            <RemoveIcon />
-                          </IconButton>
-                        </ListItemIcon>
-                      </ListItem>
-                    );
-                  })}
-                </List>
-              </AccordionDetails>
-              <AccordionActions>
-                <Button
-                  onClick={() => addStep(steps, onChange)}
-                  startIcon={<AddIcon />}
+          return (
+            <Box>
+              <Accordion defaultExpanded={!isXs}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography component="span">Steps</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List>
+                    {steps.map((step, index) => {
+                      const stepError =
+                        Array.isArray(errors.steps) && errors.steps[index];
+
+                      return (
+                        <ListItem key={index}>
+                          <ListItemText sx={Styles.textField}>
+                            <TextField
+                              multiline
+                              fullWidth
+                              label={`Step ${index + 1}`}
+                              value={step}
+                              onChange={(e) => setStep(index, e.target.value)}
+                              error={!!stepError}
+                              helperText={stepError?.message}
+                            />
+                          </ListItemText>
+                          <ListItemIcon>
+                            <IconButton onClick={() => removeStep(index)}>
+                              <RemoveIcon />
+                            </IconButton>
+                          </ListItemIcon>
+                        </ListItem>
+                      );
+                    })}
+                  </List>
+                </AccordionDetails>
+                <AccordionActions>
+                  <Button onClick={addStep} startIcon={<AddIcon />}>
+                    Add step
+                  </Button>
+                </AccordionActions>
+              </Accordion>
+              {error && (
+                <Typography
+                  color="error"
+                  variant="caption"
+                  sx={Styles.errorTypography}
                 >
-                  Add step
-                </Button>
-              </AccordionActions>
-            </Accordion>
-            {error && (
-              <Typography
-                color="error"
-                variant="caption"
-                sx={Styles.errorTypography}
-              >
-                {error.message}
-              </Typography>
-            )}
-          </Box>
-        )}
+                  {error.message}
+                </Typography>
+              )}
+            </Box>
+          );
+        }}
       />
     </Grid>
   );
