@@ -1,6 +1,6 @@
-import type { ChefDetails } from "@shared/types/chef.type";
+import type { ChefDetails } from "../../../../shared/types/chef.type";
 import Styles from "./chefTable.style";
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import {
   Button,
   Paper,
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import ChefTableRow from "./chefTableRow/ChefTableRow";
 import AddIcon from "@mui/icons-material/Add";
-import DEFAULT_CHEF_DETAILS from "./defaultChefDetails.const";
+import { DEFAULT_CHEF_DETAILS } from "./defaultChefDetails.const";
 import CustomTableCell from "../customTableCell/CustomTableCell";
 
 type ChefTableProps = {
@@ -27,8 +27,20 @@ const ChefTable: FC<ChefTableProps> = ({
   saveChef,
   deleteChef,
 }) => {
-  const cellCount = 5;
+  const [newChef, setNewChef] = useState<ChefDetails | undefined>(undefined);
   const [chefs, setChefs] = useState(defaultChefs);
+
+  useEffect(() => {
+    if (!newChef) {
+      const existingUUIDs = chefs.map((c) => c.uuid);
+      const newChefs = defaultChefs.filter(
+        (c) => !existingUUIDs.includes(c.uuid)
+      );
+      setChefs((prev) => [...prev, ...newChefs]);
+    }
+  }, [newChef, defaultChefs]);
+
+  const addNewChef = () => setNewChef(DEFAULT_CHEF_DETAILS);
 
   return (
     <TableContainer component={Paper}>
@@ -49,24 +61,33 @@ const ChefTable: FC<ChefTableProps> = ({
               key={chef.uuid}
               chef={chef}
               deleteChef={() => {
-                deleteChef(chef.uuid);
+                chef.uuid && deleteChef(chef.uuid);
                 setChefs((prev) => prev.filter((p) => p.uuid !== chef.uuid));
               }}
               saveChef={saveChef}
             />
           ))}
+          {newChef && (
+            <ChefTableRow
+              chef={newChef}
+              deleteChef={() => setNewChef(undefined)}
+              saveChef={(chefDetails) => {
+                saveChef(chefDetails);
+                setNewChef(undefined);
+              }}
+            />
+          )}
           <TableRow>
             <TableCell sx={Styles.centerAlign}>
               <Button
-                onClick={() => {
-                  setChefs((prev) => [...prev, DEFAULT_CHEF_DETAILS]);
-                }}
+                onClick={addNewChef}
                 startIcon={<AddIcon />}
+                disabled={!!newChef}
               >
                 Add chef
               </Button>
             </TableCell>
-            {Array.from({ length: cellCount }, (_, index) => (
+            {Array.from({ length: Styles.CELL_COUNT }, (_, index) => (
               <TableCell key={index} />
             ))}
           </TableRow>
