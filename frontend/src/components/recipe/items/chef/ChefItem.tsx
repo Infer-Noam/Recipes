@@ -1,15 +1,9 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { useMemo, type FC } from "react";
-import {
-  Autocomplete,
-  Box,
-  Grid,
-  TextField,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import { Autocomplete, Grid, TextField } from "@mui/material";
 import Styles from "./chefItem.style";
 import type { Chef as ChefModel } from "../../../../../../shared/types/chef.type";
+import ChefTooltip from "./ChefTooltip";
 
 type ChefItemProps = {
   chefUuid: string;
@@ -24,28 +18,13 @@ const ChefItem: FC<ChefItemProps> = ({ chefs, chefUuid }) => {
     [chefs]
   );
 
-  const chef = useMemo(() => chefMap[chefUuid], [chefUuid]);
-
   return (
     <Grid size={Styles.gridItemSize}>
       <Controller
         name="chef"
         control={control}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <Tooltip
-            arrow
-            placement="right"
-            title={
-              chef && (
-                <Box component="span">
-                  <Typography>{`Email: ${chef?.email || ""}`}</Typography>
-                  <Typography>{`Phone number: ${
-                    chef?.phone || ""
-                  }`}</Typography>
-                </Box>
-              )
-            }
-          >
+          <ChefTooltip chefMap={chefMap} chefUuid={chefUuid}>
             <Autocomplete
               options={chefs}
               getOptionLabel={(option) => {
@@ -66,7 +45,7 @@ const ChefItem: FC<ChefItemProps> = ({ chefs, chefUuid }) => {
                 option.uuid === value.uuid
               }
             />
-          </Tooltip>
+          </ChefTooltip>
         )}
       />
     </Grid>
