@@ -23,7 +23,6 @@ const RecipePage = () => {
 
   return (
     <Recipe
-      uuid={uuid}
       initialRecipe={recipe}
       chefs={chefs}
       ingredients={ingredients}
