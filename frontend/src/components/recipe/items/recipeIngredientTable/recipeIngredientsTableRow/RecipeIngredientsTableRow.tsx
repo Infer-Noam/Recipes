@@ -3,14 +3,14 @@ import type { FC } from "react";
 import AmountElement from "../elements/amount/AmountElement";
 import IngredientElement from "../elements/ingredient/IngredientElement";
 import MeasurementUnitElement from "../elements/measurementUnit/MeasurementUnitElement";
-import type { RecipeFormData } from "../../../Recipe.type";
 import type { Ingredient } from "../../../../../../../shared/types/ingredient.type";
 import type { UseFieldArrayRemove } from "react-hook-form";
 import Styles from "./recipeIngredientsTableRow.style";
 import RemoveIcon from "@mui/icons-material/Remove";
+import type { RecipeIngredientFormData } from "../recipeIngredientsTableItem.type";
 
 type RecipeIngredientTableRowProps = {
-  recipeIngredients: RecipeFormData["ingredients"][number][];
+  recipeIngredients: RecipeIngredientFormData[];
   ingredients: Ingredient[];
   remove: UseFieldArrayRemove;
 };

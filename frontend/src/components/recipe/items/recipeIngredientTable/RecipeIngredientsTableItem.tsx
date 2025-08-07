@@ -23,7 +23,10 @@ import AddIcon from "@mui/icons-material/Add";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomTableCell from "../../../customTableCell/CustomTableCell";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import type { RecipeIngredientsTableItemProps } from "./recipeIngredientsTableItem.type";
+import type {
+  RecipeIngredientFormData,
+  RecipeIngredientsTableItemProps,
+} from "./recipeIngredientsTableItem.type";
 import type { RecipeFormData } from "../../Recipe.type";
 import {
   DEFAULT_RECIPE_INGREDIENT_DETAILS,
@@ -51,7 +54,7 @@ export const RecipeIngredientsTableItem: FC<
     name: "ingredients",
   });
 
-  const recipeIngredients: RecipeFormData["ingredients"][number][] = fields;
+  const recipeIngredients: RecipeIngredientFormData[] = fields;
 
   return (
     <Grid size={Styles.gridItemSize}>
