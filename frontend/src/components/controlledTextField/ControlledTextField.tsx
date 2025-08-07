@@ -8,12 +8,10 @@ import { TextField, type TextFieldProps } from "@mui/material";
 
 type ControlledTextFieldProps<T extends FieldValues> = TextFieldProps & {
   name: Path<T>;
-  transformValue?: (value: string) => any;
 };
 
 const ControlledTextField = <T extends FieldValues>({
   name,
-  transformValue,
   ...rest
 }: ControlledTextFieldProps<T>) => {
   const { control } = useFormContext();
@@ -31,8 +29,15 @@ const ControlledTextField = <T extends FieldValues>({
           {...rest}
           onChange={(e) => {
             const value = e.target.value;
-            const transformedValue = transformValue?.(value) ?? value;
-            field.onChange(transformedValue);
+            const inputType = e.target.type;
+
+            let finalValue: any = value;
+
+            if (inputType === "number") {
+              finalValue = value === "" ? null : parseFloat(value);
+            }
+
+            field.onChange(finalValue);
           }}
         />
       )}
