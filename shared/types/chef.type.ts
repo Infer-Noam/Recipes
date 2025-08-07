@@ -9,7 +9,7 @@ export type Chef = {
 };
 
 export type ChefDetails = {
-  uuid: string;
+  uuid?: string;
   firstName: string;
   lastName: string;
   phone: string;
