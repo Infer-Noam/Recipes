@@ -6,4 +6,5 @@ export const DEFAULT_RECIPE_INGREDIENT_DETAILS = {
   amount: 1,
   measurementUnit: MeasurementUnit.KG,
 };
+
 export const HEADER_LABELS = ["Ingredient", "Amount", "Measurement unit"];

@@ -15,6 +15,7 @@ const IngredientElement: FC<IngredientElementProps> = ({
   ingredients,
 }) => {
   const { control } = useFormContext<RecipeFormData>();
+
   return (
     <Controller
       name={`ingredients.${index}.ingredient`}
@@ -27,21 +28,15 @@ const IngredientElement: FC<IngredientElementProps> = ({
 
         return (
           <Box sx={Styles.ingredientAutocompleteBox}>
-            <Autocomplete
+            <Autocomplete<IngredientModel, false, true, false>
               sx={Styles.ingredientAutocomplete}
-              value={ingredient?.name}
-              onChange={(_: any, newValue: string | null) => {
-                const selectedIngredient = ingredients.find(
-                  (ingredient) => ingredient.name === newValue
-                );
-                field.onChange(
-                  selectedIngredient
-                    ? { uuid: selectedIngredient.uuid }
-                    : undefined
-                );
+              value={ingredient}
+              onChange={(_: any, newValue: IngredientModel | null) => {
+                field.onChange(newValue ? { uuid: newValue.uuid } : undefined);
               }}
               disableClearable={true}
-              options={ingredients.map((ingredient) => ingredient.name)}
+              options={ingredients}
+              getOptionLabel={(option) => option.name}
               renderInput={(params) => (
                 <TextField
                   {...params}

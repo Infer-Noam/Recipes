@@ -10,7 +10,6 @@ import {
   Box,
   Paper,
   Typography,
-  IconButton,
   Button,
   AccordionSummary,
   Accordion,
@@ -21,20 +20,17 @@ import {
   Grid,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CustomTableCell from "../../../customTableCell/CustomTableCell";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import type { RecipeIngredientsTableItemProps } from "./recipeIngredientsTableItem.type";
-import IngredientElement from "./elements/ingredient/IngredientElement";
-import AmountElement from "./elements/amount/AmountElement";
-import MeasurementUnitElement from "./elements/measurementUnit/MeasurementUnitElement";
 import type { RecipeFormData } from "../../Recipe.type";
 import {
   DEFAULT_RECIPE_INGREDIENT_DETAILS,
   HEADER_LABELS,
 } from "./recipeIngredientsTableItem.const";
 import ErrorElement from "./elements/error/ErrorElement";
+import RecipeIngredientsTableRow from "./recipeIngredientsTableRow/RecipeIngredientsTableRow";
 
 export const RecipeIngredientsTableItem: FC<
   RecipeIngredientsTableItemProps
@@ -65,44 +61,23 @@ export const RecipeIngredientsTableItem: FC<
             <Typography component="span">Ingredients</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            {recipeIngredients.length > 0 && (
+            {!!recipeIngredients.length && (
               <TableContainer component={Paper}>
-                <Table sx={Styles.container} aria-label="simple table">
+                <Table sx={Styles.container}>
                   <TableHead>
                     <TableRow>
-                      {HEADER_LABELS.map((label) => (
-                        <CustomTableCell label={label} />
+                      {HEADER_LABELS.map((label, index) => (
+                        <CustomTableCell label={label} key={index} />
                       ))}
                       <TableCell />
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {recipeIngredients.map((recipeIngredient, index) => {
-                      return (
-                        <TableRow
-                          key={recipeIngredient.uuid}
-                          sx={Styles.recipeIngredientTableRow}
-                        >
-                          <TableCell sx={Styles.centerAlign}>
-                            <IngredientElement
-                              index={index}
-                              ingredients={ingredients}
-                            />
-                          </TableCell>
-                          <TableCell sx={Styles.centerAlign}>
-                            <AmountElement index={index} />
-                          </TableCell>
-                          <TableCell sx={Styles.centerAlign}>
-                            <MeasurementUnitElement index={index} />
-                          </TableCell>
-                          <TableCell>
-                            <IconButton onClick={() => remove(index)}>
-                              <RemoveIcon />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
+                    <RecipeIngredientsTableRow
+                      recipeIngredients={recipeIngredients}
+                      ingredients={ingredients}
+                      remove={remove}
+                    />
                   </TableBody>
                 </Table>
               </TableContainer>
