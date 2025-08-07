@@ -1,18 +1,13 @@
 import { Box, Tooltip, Typography } from "@mui/material";
-import type { Chef as ChefModel } from "@shared/types/chef.type";
-import { useMemo, type FC, type ReactElement } from "react";
+import { type FC, type ReactElement } from "react";
+import type { ChefFormData } from "./chefItem.type";
 
 type ChefTooltipProps = {
-  chefMap: {
-    [k: string]: ChefModel;
-  };
-  chefUuid: string;
+  chef: ChefFormData;
   children: ReactElement;
 };
 
-const ChefTooltip: FC<ChefTooltipProps> = ({ chefMap, chefUuid, children }) => {
-  const chef = useMemo(() => chefMap[chefUuid], [chefUuid]);
-
+const ChefTooltip: FC<ChefTooltipProps> = ({ chef, children }) => {
   const ChefTooltipTitle: FC = () =>
     chef && (
       <Box component="span">
