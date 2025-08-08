@@ -3,39 +3,19 @@ import { Box, Grid, Link } from "@mui/material";
 import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
-import { CHEF_SRC_ARRAY } from "../chef/chefSrcArray.const";
-import { useMemo, type FC } from "react";
+import { type FC } from "react";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
 import NotFoundImage from "../../assets/notFound.png";
 import ImageTextDisplay from "../../components/imageTextDisplay/ImageTextDisplay";
+import { getRandomChefSrc, useSortedRecipes } from "./HomePage.utils";
 
 const HomePage: FC = () => {
   const { data: recipes, isLoading } = useGetRecipes();
 
   const { mutate: deleteRecipe } = useDeleteRecipe();
 
-  const getRandomChefSrc = () => {
-    const randomIndex = Math.floor(Math.random() * CHEF_SRC_ARRAY.length);
-    return CHEF_SRC_ARRAY[randomIndex];
-  };
-
-  const sortedRecipes = useMemo(() => {
-    return recipes
-      ?.sort(
-        (a, b) =>
-          new Date(a.createDate).getTime() - new Date(b.createDate).getTime()
-      )
-      ?.map((recipe) => (
-        <Grid key={recipe.uuid}>
-          <RecipeCard
-            recipe={recipe}
-            deleteRecipe={() => deleteRecipe(recipe.uuid)}
-            chefAvatarSrc={getRandomChefSrc()}
-          />
-        </Grid>
-      ));
-  }, [recipes]);
+  const sortedRecipes = useSortedRecipes(recipes);
 
   if (isLoading) return <BackdropLoading />;
 
@@ -57,7 +37,15 @@ const HomePage: FC = () => {
         rowSpacing={2.5}
         columnSpacing={3.5}
       >
-        {sortedRecipes}
+        {sortedRecipes?.map((recipe) => (
+          <Grid key={recipe.uuid}>
+            <RecipeCard
+              recipe={recipe}
+              deleteRecipe={() => deleteRecipe(recipe.uuid)}
+              chefAvatarSrc={getRandomChefSrc()}
+            />
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );
