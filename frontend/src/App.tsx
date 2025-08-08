@@ -4,13 +4,13 @@ import { createAppTheme } from "./theme/theme";
 import { PAGES_ROUTES } from "./router/routes.const";
 import { Box } from "@mui/material";
 import Styles from "./App.style";
-import SideDrawer from "./components/sideDrawer/sideDrawer";
-import AppHeader from "./components/appHeader/appHeader";
+import SideDrawer from "./components/sideDrawer/SideDrawer";
+import AppHeader from "./components/appHeader/AppHeader";
 import useToggle from "./hooks/useToggle";
 import { ColorModeContext } from "./contexts/ColorMode.context";
-import { useContext } from "react";
+import { useContext, type FC } from "react";
 
-const App = () => {
+const App: FC = () => {
   const {
     open: mobileDrawerOpen,
     handleClose: handleMobileDrawerClose,

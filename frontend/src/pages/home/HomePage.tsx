@@ -1,54 +1,66 @@
 import { RecipeCard } from "../../components/recipeCard/RecipeCard";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Link } from "@mui/material";
 import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
-import { chefSrcArray } from "../chef/chefSrcArray.const";
-import type { JSX } from "react";
+import { CHEF_SRC_ARRAY } from "../chef/chefSrcArray.const";
+import { useMemo, type FC } from "react";
+import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
+import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
+import NotFoundImage from "../../assets/notFound.png";
+import ImageTextDisplay from "../../components/imageTextDisplay/ImageTextDisplay";
 
-const HomePage = () => {
-  const { data: recipes } = useGetRecipes();
+const HomePage: FC = () => {
+  const { data: recipes, isLoading } = useGetRecipes();
 
   const { mutate: deleteRecipe } = useDeleteRecipe();
 
   const getRandomChefSrc = () => {
-    const randomIndex = Math.floor(Math.random() * chefSrcArray.length);
-    return chefSrcArray[randomIndex];
+    const randomIndex = Math.floor(Math.random() * CHEF_SRC_ARRAY.length);
+    return CHEF_SRC_ARRAY[randomIndex];
   };
 
-  if (recipes) {
-    return (
-      <Box>
-        <Grid
-          container
-          sx={Styles.gridContainer}
-          rowSpacing={2.5}
-          columnSpacing={3.5}
-        >
-          {recipes
-            .sort(
-              (a, b) =>
-                new Date(a.createDate).getTime() -
-                new Date(b.createDate).getTime()
-            )
-            .reduce<JSX.Element[]>((acc, recipe) => {
-              acc.push(
-                <Grid key={recipe.uuid}>
-                  <RecipeCard
-                    recipe={recipe}
-                    deleteRecipe={() => {
-                      deleteRecipe(recipe.uuid);
-                    }}
-                    chefAvatarSrc={getRandomChefSrc()}
-                  />
-                </Grid>
-              );
-              return acc;
-            }, [])}
+  const sortedRecipes = useMemo(() => {
+    return recipes
+      ?.sort(
+        (a, b) =>
+          new Date(a.createDate).getTime() - new Date(b.createDate).getTime()
+      )
+      ?.map((recipe) => (
+        <Grid key={recipe.uuid}>
+          <RecipeCard
+            recipe={recipe}
+            deleteRecipe={() => deleteRecipe(recipe.uuid)}
+            chefAvatarSrc={getRandomChefSrc()}
+          />
         </Grid>
-      </Box>
+      ));
+  }, [recipes]);
+
+  if (isLoading) return <BackdropLoading />;
+
+  if (!recipes) return <CentralErrorAlert text="Something went wrong..." />;
+
+  if (!recipes.length)
+    return (
+      <ImageTextDisplay src={NotFoundImage}>
+        No recipes found. Click <Link href="/creation">here</Link> to create
+        one!
+      </ImageTextDisplay>
     );
-  } else return null;
+
+  return (
+    <Box>
+      <Grid
+        container
+        sx={Styles.gridContainer}
+        rowSpacing={2.5}
+        columnSpacing={3.5}
+      >
+        {sortedRecipes}
+      </Grid>
+    </Box>
+  );
 };
 
 export default HomePage;
