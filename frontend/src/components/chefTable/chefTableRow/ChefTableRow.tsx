@@ -7,8 +7,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
-import { z } from "zod";
-import type { ChefTableRowProps } from "./chefTableRow.type";
+import type { ChefFormData, ChefTableRowProps } from "./chefTableRow.type";
 import ControlledTextField from "../../../components/controlledTextField/ControlledTextField";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -17,8 +16,6 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
   saveChef,
   deleteChef,
 }) => {
-  type ChefFormData = z.infer<typeof ChefDetailsSchema>;
-
   const methods = useForm<ChefFormData>({
     defaultValues: chef,
     resolver: zodResolver(ChefDetailsSchema),
