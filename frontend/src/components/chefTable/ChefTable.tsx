@@ -15,10 +15,15 @@ import ChefTableRow from "./chefTableRow/ChefTableRow";
 import AddIcon from "@mui/icons-material/Add";
 import { DEFAULT_CHEF_DETAILS } from "./defaultChefDetails.const";
 import CustomTableCell from "../customTableCell/CustomTableCell";
+import { CELL_COUNT } from "./chefTable.const";
+import type { SaveChefRes } from "../../../../shared/api/chef/saveChef.api";
+import type { AxiosResponse } from "axios";
 
 type ChefTableProps = {
   chefs: ChefDetails[];
-  saveChef: (chefDetails: ChefDetails) => void;
+  saveChef: (
+    chefDetails: ChefDetails
+  ) => Promise<AxiosResponse<SaveChefRes, any>>;
   deleteChef: (uuid: string) => void;
 };
 
@@ -72,8 +77,8 @@ const ChefTable: FC<ChefTableProps> = ({
               chef={newChef}
               deleteChef={() => setNewChef(undefined)}
               saveChef={(chefDetails) => {
-                saveChef(chefDetails);
                 setNewChef(undefined);
+                return saveChef(chefDetails);
               }}
             />
           )}
@@ -87,7 +92,7 @@ const ChefTable: FC<ChefTableProps> = ({
                 Add chef
               </Button>
             </TableCell>
-            {Array.from({ length: Styles.CELL_COUNT }, (_, index) => (
+            {Array.from({ length: CELL_COUNT }, (_, index) => (
               <TableCell key={index} />
             ))}
           </TableRow>
