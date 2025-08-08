@@ -5,6 +5,7 @@ import {
   type Path,
 } from "react-hook-form";
 import { TextField, type TextFieldProps } from "@mui/material";
+import type { ChangeEvent } from "react";
 
 type ControlledTextFieldProps<T extends FieldValues> = TextFieldProps & {
   name: Path<T>;
@@ -16,31 +17,36 @@ const ControlledTextField = <T extends FieldValues>({
 }: ControlledTextFieldProps<T>) => {
   const { control } = useFormContext();
 
+  const transformValue = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { value, type } = e.target;
+
+    let finalValue: any = value;
+
+    if (type === "number") {
+      finalValue = value === "" ? null : parseFloat(value);
+    }
+
+    return finalValue;
+  };
+
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => (
-        <TextField
-          variant="outlined"
-          error={!!error}
-          helperText={error?.message}
-          {...field}
-          {...rest}
-          onChange={(e) => {
-            const value = e.target.value;
-            const inputType = e.target.type;
-
-            let finalValue: any = value;
-
-            if (inputType === "number") {
-              finalValue = value === "" ? null : parseFloat(value);
-            }
-
-            field.onChange(finalValue);
-          }}
-        />
-      )}
+      render={({ field, fieldState: { error } }) => {
+        return (
+          <TextField
+            variant="outlined"
+            error={!!error}
+            helperText={error?.message}
+            {...field}
+            {...rest}
+            onChange={(e) => field.onChange(transformValue(e))}
+          />
+        );
+      }}
     />
   );
 };
