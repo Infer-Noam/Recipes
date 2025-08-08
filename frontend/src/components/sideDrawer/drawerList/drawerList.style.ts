@@ -1,8 +1,8 @@
 import { type SxProps } from "@mui/material";
-import { drawerWidth } from "../sideDrawer.const";
+import { DRAWER_WIDTH } from "../sideDrawer.const";
 
 const container: SxProps = {
-  width: drawerWidth,
+  width: DRAWER_WIDTH,
 };
 
 const listItem: SxProps = {

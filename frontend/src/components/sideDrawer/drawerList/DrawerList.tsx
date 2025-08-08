@@ -7,7 +7,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { type FC } from "react";
-import { drawerListItems } from "./drawerListItem/drawerListItems.const";
+import { DRAWER_LIST_ITEMS } from "./drawerListItem/drawerListItems.const";
 import Styles from "./drawerList.style";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -24,7 +24,7 @@ export const DrawerList: FC<DrawerListProps> = ({
   return (
     <Box role="presentation">
       <List>
-        {drawerListItems.map(({ name, path, icon: ItemIcon }) => (
+        {DRAWER_LIST_ITEMS.map(({ name, path, icon: ItemIcon }) => (
           <ListItem key={name} disablePadding>
             <ListItemButton
               sx={Styles.listItem}

@@ -1,15 +1,15 @@
 import { type SxProps, type Theme } from "@mui/material";
-import { drawerWidth } from "./sideDrawer.const";
+import { DRAWER_WIDTH } from "./sideDrawer.const";
 
 const drawer: SxProps = {
-  width: drawerWidth,
+  width: DRAWER_WIDTH,
   flexShrink: 0,
 };
 
 const permanentDrawer: SxProps = {
   ...drawer,
   "& .MuiDrawer-paper": {
-    width: drawerWidth,
+    width: DRAWER_WIDTH,
     boxSizing: "border-box",
   },
   display: { xs: "none", sm: "block" },
@@ -18,7 +18,7 @@ const permanentDrawer: SxProps = {
 const temporaryDrawer: SxProps = {
   ...drawer,
   "& .MuiDrawer-paper": {
-    width: drawerWidth,
+    width: DRAWER_WIDTH,
     boxSizing: "border-box",
   },
   display: { xs: "block", sm: "none" },

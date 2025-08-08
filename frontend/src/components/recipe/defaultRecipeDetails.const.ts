@@ -1,4 +1,4 @@
-const defaultRecipeDetails = {
+export const DEFAULT_RECIPE_DETAILS = {
   name: "",
   chef: undefined,
   description: "",
@@ -6,5 +6,3 @@ const defaultRecipeDetails = {
   steps: [],
   recipeIngredients: [],
 };
-
-export default defaultRecipeDetails;
