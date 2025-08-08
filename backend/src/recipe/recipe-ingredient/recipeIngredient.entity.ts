@@ -12,7 +12,10 @@ export class RecipeIngredient extends AuditEntity {
   @Column({ type: "enum", enum: MeasurementUnit })
   measurementUnit: MeasurementUnit;
 
-  @ManyToOne(() => Recipe, (recipe) => recipe.ingredients)
+  @ManyToOne(() => Recipe, (recipe) => recipe.ingredients, {
+    cascade: ["insert", "update", "soft-remove"],
+    orphanedRowAction: "soft-delete",
+  })
   @JoinColumn({ name: "recipe_uuid" })
   recipe: Recipe;
 

@@ -34,10 +34,7 @@ export class Recipe extends AuditEntity {
   @OneToMany(
     () => RecipeIngredient,
     (recipeIngredient) => recipeIngredient.recipe,
-    {
-      cascade: ["insert", "update", "remove", "soft-remove"],
-      orphanedRowAction: "soft-delete",
-    }
+    { cascade: true }
   )
   ingredients: RecipeIngredient[];
 }
