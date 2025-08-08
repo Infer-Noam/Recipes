@@ -7,20 +7,21 @@ type ChefTooltipProps = {
   children: ReactElement;
 };
 
-const ChefTooltip: FC<ChefTooltipProps> = ({ chef, children }) => {
-  const ChefTooltipTitle: FC = () =>
-    chef && (
-      <Box component="span">
-        <Typography>{`Email: ${chef?.email || ""}`}</Typography>
-        <Typography>{`Phone number: ${chef?.phone || ""}`}</Typography>
-      </Box>
-    );
-
-  return (
-    <Tooltip arrow placement="right" title={<ChefTooltipTitle />}>
-      {children}
-    </Tooltip>
-  );
-};
+const ChefTooltip: FC<ChefTooltipProps> = ({ chef, children }) => (
+  <Tooltip
+    arrow
+    placement="right"
+    title={
+      chef && (
+        <Box component="span">
+          <Typography>{`Email: ${chef?.email || ""}`}</Typography>
+          <Typography>{`Phone number: ${chef?.phone || ""}`}</Typography>
+        </Box>
+      )
+    }
+  >
+    {children}
+  </Tooltip>
+);
 
 export default ChefTooltip;
