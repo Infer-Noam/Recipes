@@ -12,11 +12,8 @@ const centerAlign: SxProps = {
 
 const labelTypography = { fontWeight: "bold" };
 
-const CELL_COUNT = 5;
-
 export default {
   container,
   centerAlign,
   labelTypography,
-  CELL_COUNT,
 };
