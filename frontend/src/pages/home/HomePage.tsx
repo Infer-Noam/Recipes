@@ -3,19 +3,19 @@ import { Box, Grid, Link } from "@mui/material";
 import { useGetRecipes } from "../../hooks/api/useGetRecipes.api";
 import Styles from "./homePage.style";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
-import { type FC } from "react";
+import { useMemo, type FC } from "react";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
 import NotFoundImage from "../../assets/notFound.png";
 import ImageTextDisplay from "../../components/imageTextDisplay/ImageTextDisplay";
-import { getRandomChefSrc, useSortedRecipes } from "./HomePage.utils";
+import { getRandomChefSrc, sortRecipes } from "./HomePage.utils";
 
 const HomePage: FC = () => {
   const { data: recipes, isLoading } = useGetRecipes();
 
   const { mutate: deleteRecipe } = useDeleteRecipe();
-
-  const sortedRecipes = useSortedRecipes(recipes);
+  
+  const sortedRecipes = useMemo(() => sortRecipes(recipes), [recipes]);
 
   if (isLoading) return <BackdropLoading />;
 
