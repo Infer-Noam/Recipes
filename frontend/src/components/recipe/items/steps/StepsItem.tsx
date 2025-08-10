@@ -3,7 +3,6 @@ import Styles from "./stepsItem.style";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import type { RecipeFormData } from "../../Recipe.type";
 import StepsListItem from "./stepListItem/StepsListItem";
-import type { RecipeStepFormData } from "./stepItem.type";
 import {
   Accordion,
   AccordionActions,
@@ -36,7 +35,7 @@ const StepsItem: FC = () => {
     name: "steps",
   });
 
-  const recipeSteps: RecipeStepFormData[] = useSortedSteps(fields);
+  const recipeSteps = useSortedSteps(fields);
 
   return (
     <Grid size={Styles.gridItemSize}>
