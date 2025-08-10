@@ -1,5 +1,5 @@
 import { z } from "zod";
 
 export const UuidSchema = z.object({
-  uuid: z.uuid(),
+  uuid: z.string(),
 });
