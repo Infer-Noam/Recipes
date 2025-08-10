@@ -4,5 +4,5 @@ export const DEFAULT_RECIPE_DETAILS = {
   description: "",
   imageUrl: "",
   steps: [],
-  recipeIngredients: [],
+  ingredients: [],
 };
