@@ -1,6 +1,6 @@
 import type { ChefDetails } from "../../../../shared/types/chef.type";
 import Styles from "./chefTable.style";
-import { useEffect, useState, type FC } from "react";
+import { type FC } from "react";
 import {
   Button,
   Paper,
@@ -18,12 +18,17 @@ import CustomTableCell from "../customTableCell/CustomTableCell";
 import { CELL_COUNT } from "./chefTable.const";
 import type { SaveChefRes } from "../../../../shared/api/chef/saveChef.api";
 import type { AxiosResponse } from "axios";
+import useToggle from "../../hooks/useToggle";
+import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 type ChefTableProps = {
   chefs: ChefDetails[];
-  saveChef: (
-    chefDetails: ChefDetails
-  ) => Promise<AxiosResponse<SaveChefRes, any>>;
+  saveChef: UseMutateAsyncFunction<
+    AxiosResponse<SaveChefRes, any>,
+    unknown,
+    ChefDetails,
+    unknown
+  >;
   deleteChef: (uuid: string) => void;
 };
 
@@ -32,20 +37,11 @@ const ChefTable: FC<ChefTableProps> = ({
   saveChef,
   deleteChef,
 }) => {
-  const [newChef, setNewChef] = useState<ChefDetails | undefined>(undefined);
-  const [chefs, setChefs] = useState(defaultChefs);
-
-  useEffect(() => {
-    if (!newChef) {
-      const existingUUIDs = chefs.map((c) => c.uuid);
-      const newChefs = defaultChefs.filter(
-        (c) => !existingUUIDs.includes(c.uuid)
-      );
-      setChefs((prev) => [...prev, ...newChefs]);
-    }
-  }, [newChef, defaultChefs]);
-
-  const addNewChef = () => setNewChef(DEFAULT_CHEF_DETAILS);
+  const {
+    open: newChef,
+    handleOpen: createNewChef,
+    handleClose: resetNewChef,
+  } = useToggle();
 
   return (
     <TableContainer component={Paper}>
@@ -61,23 +57,22 @@ const ChefTable: FC<ChefTableProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {chefs.map((chef) => (
+          {defaultChefs.map((chef) => (
             <ChefTableRow
               key={chef.uuid}
               chef={chef}
               deleteChef={() => {
                 chef.uuid && deleteChef(chef.uuid);
-                setChefs((prev) => prev.filter((p) => p.uuid !== chef.uuid));
               }}
               saveChef={saveChef}
             />
           ))}
           {newChef && (
             <ChefTableRow
-              chef={newChef}
-              deleteChef={() => setNewChef(undefined)}
+              chef={DEFAULT_CHEF_DETAILS}
+              deleteChef={resetNewChef}
               saveChef={(chefDetails) => {
-                setNewChef(undefined);
+                resetNewChef();
                 return saveChef(chefDetails);
               }}
             />
@@ -85,7 +80,7 @@ const ChefTable: FC<ChefTableProps> = ({
           <TableRow>
             <TableCell sx={Styles.centerAlign}>
               <Button
-                onClick={addNewChef}
+                onClick={createNewChef}
                 startIcon={<AddIcon />}
                 disabled={!!newChef}
               >

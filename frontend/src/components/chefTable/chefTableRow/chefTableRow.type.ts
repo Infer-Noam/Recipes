@@ -3,12 +3,16 @@ import type { ChefDetails } from "../../../../../shared/types/chef.type";
 import { z } from "zod";
 import type { SaveChefRes } from "../../../../../shared/api/chef/saveChef.api";
 import type { AxiosResponse } from "axios";
+import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 export type ChefTableRowProps = {
   chef: ChefDetails;
-  saveChef: (
-    chefDetails: ChefDetails
-  ) => Promise<AxiosResponse<SaveChefRes, any>>;
+  saveChef: UseMutateAsyncFunction<
+    AxiosResponse<SaveChefRes, any>,
+    unknown,
+    ChefDetails,
+    unknown
+  >;
   deleteChef: () => void;
 };
 

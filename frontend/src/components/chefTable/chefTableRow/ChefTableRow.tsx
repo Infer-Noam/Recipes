@@ -28,8 +28,9 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
   } = methods;
 
   const onSubmit = async (chef: ChefDetails) => {
-    await saveChef(chef);
-    reset(chef);
+    await saveChef(chef, {
+      onSuccess: () => reset(chef),
+    });
   };
 
   return (
