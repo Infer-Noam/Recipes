@@ -46,10 +46,7 @@ export const RecipeIngredientsTableItem: FC<
     formState: { isSubmitted },
   } = useFormContext<RecipeFormData>();
 
-  const { fields, append, remove } = useFieldArray<
-    RecipeFormData,
-    "ingredients"
-  >({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "ingredients",
   });
