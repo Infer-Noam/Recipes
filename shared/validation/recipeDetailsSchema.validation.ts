@@ -10,7 +10,15 @@ export const RecipeDetailsSchema = z.object({
     .min(1, "Recipe name is required")
     .max(20, "Recipe name must be at most 20 characters"),
   steps: z
-    .array(z.string().min(1, "Each step must have content"))
+
+    .array(
+      z.object({
+        uuid: z.string().optional(),
+        recipe: UuidSchema.optional(),
+        placement: z.number(),
+        text: z.string().min(1, "Each step must have content"),
+      })
+    )
     .min(1, "At least one step is required")
     .max(20, "You can add up to 20 steps only"),
   chef: z.object(

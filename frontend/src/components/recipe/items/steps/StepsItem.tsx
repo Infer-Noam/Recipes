@@ -3,7 +3,7 @@ import type { FC } from "react";
 import Styles from "./stepsItem.style";
 import { Controller, useFormContext } from "react-hook-form";
 import type { RecipeFormData } from "../../Recipe.type";
-import StepItemLayout from "./stepsItemLayout/StepsItemLayout";
+import StepsItemLayout from "./stepsItemLayout/StepsItemLayout";
 
 const StepsItem: FC = () => {
   const { control } = useFormContext<RecipeFormData>();
@@ -17,7 +17,7 @@ const StepsItem: FC = () => {
           field: { value: steps, onChange },
           fieldState: { error },
         }) => (
-          <StepItemLayout steps={steps} updateSteps={onChange} error={error} />
+          <StepsItemLayout steps={steps} updateSteps={onChange} error={error} />
         )}
       />
     </Grid>
