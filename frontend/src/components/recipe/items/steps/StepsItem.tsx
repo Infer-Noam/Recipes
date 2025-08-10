@@ -31,7 +31,7 @@ const StepsItem: FC = () => {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { fields, append, remove } = useFieldArray<RecipeFormData, "steps">({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "steps",
   });
