@@ -11,7 +11,7 @@ import type { StepsListItemProps } from "./stepsListItem.type";
 import ControlledTextField from "src/components/controlledTextField/ControlledTextField";
 
 const StepsListItem: FC<StepsListItemProps> = ({ step, remove }) => (
-  <ListItem key={step.uuid}>
+  <ListItem>
     <ListItemText sx={Styles.textField}>
       <ControlledTextField
         name={`steps.${step.placement}.text`}

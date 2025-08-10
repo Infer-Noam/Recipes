@@ -48,7 +48,7 @@ const StepsItem: FC = () => {
           <AccordionDetails>
             <List>
               {recipeSteps.map((step) => (
-                <StepsListItem step={step} remove={remove} />
+                <StepsListItem key={step.uuid} step={step} remove={remove} />
               ))}
             </List>
           </AccordionDetails>
