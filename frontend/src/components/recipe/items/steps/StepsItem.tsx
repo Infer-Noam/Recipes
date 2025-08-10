@@ -54,7 +54,12 @@ const StepsItem: FC = () => {
           </AccordionDetails>
           <AccordionActions>
             <Button
-              onClick={() => append(DEFAULT_RECIPE_STEP_DETAILS)}
+              onClick={() =>
+                append({
+                  ...DEFAULT_RECIPE_STEP_DETAILS,
+                  placement: recipeSteps.length + 1,
+                })
+              }
               startIcon={<AddIcon />}
             >
               Add step
