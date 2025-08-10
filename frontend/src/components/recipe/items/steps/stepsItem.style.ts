@@ -6,4 +6,6 @@ const gridItemSize: ResponsiveStyleValue<GridSize> = {
   xl: 6,
 };
 
-export default { gridItemSize };
+const errorTypography = { mt: 1, display: "block" };
+
+export default { errorTypography, gridItemSize };
