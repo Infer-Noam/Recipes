@@ -13,7 +13,7 @@ const ChefTooltip: FC<ChefTooltipProps> = ({ chef, children }) => (
     placement="right"
     title={
       chef && (
-        <Box component="span">
+        <Box>
           <Typography>{`Email: ${chef?.email || ""}`}</Typography>
           <Typography>{`Phone number: ${chef?.phone || ""}`}</Typography>
         </Box>

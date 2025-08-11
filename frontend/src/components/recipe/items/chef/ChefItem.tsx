@@ -22,9 +22,7 @@ const ChefItem: FC<ChefItemProps> = ({ chefs }) => {
           <ChefTooltip chef={value}>
             <Autocomplete
               options={chefs}
-              getOptionLabel={(chef) =>
-                chef?.uuid ? `${chef?.firstName} ${chef?.lastName}` : ""
-              }
+              getOptionLabel={(chef) => `${chef?.firstName} ${chef?.lastName}`}
               value={value || null}
               onChange={(_, newValue) => onChange(newValue)}
               renderInput={(params) => (
