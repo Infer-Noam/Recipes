@@ -4,4 +4,6 @@ const textField: SxProps = {
   mr: 5,
 };
 
-export default { textField };
+const moveIconsBox: SxProps = { display: "flex", flexDirection: "column" };
+
+export default { textField, moveIconsBox };

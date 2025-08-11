@@ -30,7 +30,7 @@ const StepsItem: FC = () => {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, move } = useFieldArray({
     control,
     name: "steps",
   });
@@ -46,8 +46,14 @@ const StepsItem: FC = () => {
           </AccordionSummary>
           <AccordionDetails>
             <List>
-              {recipeSteps.map((_step, index) => (
-                <StepsListItem key={index} index={index} remove={remove} />
+              {recipeSteps.map((step, index) => (
+                <StepsListItem
+                  key={step.id}
+                  index={index}
+                  remove={remove}
+                  move={move}
+                  stepsSize={recipeSteps.length}
+                />
               ))}
             </List>
           </AccordionDetails>

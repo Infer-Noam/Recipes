@@ -9,7 +9,7 @@ import type { GenericUuid } from "./generic/genericUuid.type";
 export type Recipe = {
   uuid: string;
   name: string;
-  steps: RecipeStep;
+  steps: RecipeStep[];
   chef: Chef;
   ingredients: RecipeIngredient[];
   description: string;
