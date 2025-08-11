@@ -14,51 +14,58 @@ import type { FC } from "react";
 import Styles from "./stepListItem.style";
 import type { StepsListItemProps } from "./stepsListItem.type";
 import ControlledTextField from "../../../../../components/controlledTextField/ControlledTextField";
+import { useDroppable } from "@dnd-kit/core";
 
 const StepsListItem: FC<StepsListItemProps> = ({
   index,
   remove,
   move,
   stepsSize,
-}) => (
-  <ListItem>
-    <ListItemIcon>
-      <Box sx={Styles.moveIconsBox}>
-        <Tooltip title="Move up">
-          <IconButton
-            size="small"
-            onClick={() => move(index, index - 1)}
-            disabled={index === 0}
-          >
-            <KeyboardArrowUpIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Move down">
-          <IconButton
-            size="small"
-            onClick={() => move(index, index + 1)}
-            disabled={index === stepsSize - 1}
-          >
-            <KeyboardArrowDownIcon />
-          </IconButton>
-        </Tooltip>
-      </Box>
-    </ListItemIcon>
-    <ListItemText sx={Styles.textField}>
-      <ControlledTextField
-        name={`steps.${index}.text`}
-        fullWidth
-        multiline
-        label={`Step ${index + 1}`}
-      />
-    </ListItemText>
+}) => {
+  const { isOver, setNodeRef } = useDroppable({
+    id: index,
+  });
 
-    <ListItemIcon>
-      <IconButton onClick={() => remove(index)} color="error">
-        <RemoveIcon />
-      </IconButton>
-    </ListItemIcon>
-  </ListItem>
-);
+  return (
+    <ListItem ref={setNodeRef}>
+      <ListItemIcon>
+        <Box sx={Styles.moveIconsBox}>
+          <Tooltip title="Move up">
+            <IconButton
+              size="small"
+              onClick={() => move(index, index - 1)}
+              disabled={index === 0}
+            >
+              <KeyboardArrowUpIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Move down">
+            <IconButton
+              size="small"
+              onClick={() => move(index, index + 1)}
+              disabled={index === stepsSize - 1}
+            >
+              <KeyboardArrowDownIcon />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </ListItemIcon>
+      <ListItemText sx={Styles.textField}>
+        <ControlledTextField
+          name={`steps.${index}.text`}
+          fullWidth
+          multiline
+          label={`Step ${index + 1}`}
+        />
+      </ListItemText>
+
+      <ListItemIcon>
+        <IconButton onClick={() => remove(index)} color="error">
+          <RemoveIcon />
+        </IconButton>
+      </ListItemIcon>
+    </ListItem>
+  );
+};
 
 export default StepsListItem;
