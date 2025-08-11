@@ -2,13 +2,14 @@ import type {
   RecipeIngredient,
   RecipeIngredientDetails,
 } from "./recipeIngredient.type";
+import type { RecipeStep, RecipeStepDetails } from "./recipeStep.type";
 import { type Chef } from "../types/chef.type";
 import type { GenericUuid } from "./generic/genericUuid.type";
 
 export type Recipe = {
   uuid: string;
   name: string;
-  steps: string[];
+  steps: RecipeStep;
   chef: Chef;
   ingredients: RecipeIngredient[];
   description: string;
@@ -20,7 +21,7 @@ export type Recipe = {
 export type RecipeDetails = {
   uuid?: string;
   name: string;
-  steps: string[];
+  steps: RecipeStepDetails[];
   chef: GenericUuid;
   ingredients: RecipeIngredientDetails[];
   description: string;

@@ -46,8 +46,8 @@ const StepsItem: FC = () => {
           </AccordionSummary>
           <AccordionDetails>
             <List>
-              {recipeSteps.map((step) => (
-                <StepsListItem key={step.uuid} step={step} remove={remove} />
+              {recipeSteps.map((_step, index) => (
+                <StepsListItem key={index} index={index} remove={remove} />
               ))}
             </List>
           </AccordionDetails>
@@ -56,7 +56,6 @@ const StepsItem: FC = () => {
               onClick={() =>
                 append({
                   ...DEFAULT_RECIPE_STEP_DETAILS,
-                  placement: recipeSteps.length + 1,
                 })
               }
               startIcon={<AddIcon />}
@@ -65,7 +64,7 @@ const StepsItem: FC = () => {
             </Button>
           </AccordionActions>
         </Accordion>
-        {isSubmitted && !recipeSteps && (
+        {isSubmitted && recipeSteps.length === 0 && (
           <Typography
             color="error"
             variant="caption"

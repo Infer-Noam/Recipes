@@ -10,18 +10,18 @@ import Styles from "./stepListItem.style";
 import type { StepsListItemProps } from "./stepsListItem.type";
 import ControlledTextField from "src/components/controlledTextField/ControlledTextField";
 
-const StepsListItem: FC<StepsListItemProps> = ({ step, remove }) => (
+const StepsListItem: FC<StepsListItemProps> = ({ index, remove }) => (
   <ListItem>
     <ListItemText sx={Styles.textField}>
       <ControlledTextField
-        name={`steps.${step.placement}.text`}
+        name={`steps.${index}.text`}
         fullWidth
         multiline
-        label={`Step ${step.placement}`}
+        label={`Step ${index + 1}`}
       />
     </ListItemText>
     <ListItemIcon>
-      <IconButton onClick={() => remove(step.placement)}>
+      <IconButton onClick={() => remove(index)}>
         <RemoveIcon />
       </IconButton>
     </ListItemIcon>
