@@ -1,4 +1,4 @@
-import { MeasurementUnit } from "../../../../../../shared/enums/measurement-unit.enum";
+import { MeasurementUnit } from "@shared/enums/measurement-unit.enum";
 
 export const DEFAULT_RECIPE_INGREDIENT_DETAILS = {
   recipe: undefined,

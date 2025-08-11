@@ -1,5 +1,5 @@
 import { type FC } from "react";
-import { type RecipeDetails } from "../../../../shared/types/recipe.type";
+import { type RecipeDetails } from "@shared/types/recipe.type";
 import { RecipeIngredientsTableItem } from "./items/recipeIngredientTable/RecipeIngredientsTableItem";
 import { Grid, Button } from "@mui/material";
 import Styles from "./recipe.style";
@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RecipeDetailsSchema } from "../../../../shared/validation/recipeDetailsSchema.validation";
+import { RecipeDetailsSchema } from "@shared/validation/recipeDetailsSchema.validation";
 import { DEFAULT_RECIPE_DETAILS } from "./defaultRecipeDetails.const";
 import { useSwal } from "../../hooks/useSwal";
 import type { RecipeFormData, RecipeProps } from "./Recipe.type";

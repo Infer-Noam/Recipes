@@ -1,12 +1,12 @@
 import { IconButton, TableCell, TableRow } from "@mui/material";
-import type { ChefDetails } from "../../../../../shared/types/chef.type";
+import type { ChefDetails } from "@shared/types/chef.type";
 import { type FC } from "react";
 import Styles from "./chefTableRow.style";
 import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
+import { ChefDetailsSchema } from "@shared/validation/chefDetailsSchema.validation";
 import { z } from "zod";
 import type { ChefTableRowProps } from "./chefTableRow.type";
 import ControlledTextField from "../../../components/controlledTextField/ControlledTextField";

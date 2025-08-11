@@ -14,8 +14,8 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import Styles from "./recipeCard.style";
-import { type Recipe as RecipeModel } from "../../../../shared/types/recipe.type";
-import { type RecipeIngredient as RecipeIngredientModel } from "../../../../shared/types/recipeIngredient.type";
+import { type Recipe as RecipeModel } from "@shared/types/recipe.type";
+import { type RecipeIngredient as RecipeIngredientModel } from "@shared/types/recipeIngredient.type";
 import { useNavigate } from "react-router-dom";
 import { RecipeMenu } from "./recipeCardMenu/RecipeCardMenu";
 

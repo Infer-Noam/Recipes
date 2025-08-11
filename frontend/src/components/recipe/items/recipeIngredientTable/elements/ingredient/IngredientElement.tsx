@@ -1,7 +1,7 @@
 import { Autocomplete, Box, TextField } from "@mui/material";
 import type { FC } from "react";
 import Styles from "./ingredientElement.style";
-import type { Ingredient as IngredientModel } from "../../../../../../../../shared/types/ingredient.type";
+import type { Ingredient as IngredientModel } from "@shared/types/ingredient.type";
 import type { RecipeFormData } from "../../../../Recipe.type";
 import { Controller, useFormContext } from "react-hook-form";
 

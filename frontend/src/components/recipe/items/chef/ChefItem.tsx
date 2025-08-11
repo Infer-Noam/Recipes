@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Styles from "./chefItem.style";
-import type { Chef as ChefModel } from "../../../../../../shared/types/chef.type";
+import type { Chef as ChefModel } from "@shared/types/chef.type";
 
 type ChefItemProps = {
   chefUuid: string;
