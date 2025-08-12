@@ -12,7 +12,7 @@ import {
   Box,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Styles from "./recipeCard.style";
 import { type Recipe as RecipeModel } from "@shared/types/recipe.type";
 import { type RecipeIngredient as RecipeIngredientModel } from "@shared/types/recipeIngredient.type";
@@ -92,9 +92,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
             }
             arrow
           >
-            <IconButton aria-label="ingredients">
-              <FormatListBulletedIcon />
-            </IconButton>
+            <InfoOutlinedIcon />
           </Tooltip>
         </CardActions>
       </Card>
