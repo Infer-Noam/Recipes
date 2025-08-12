@@ -2,6 +2,7 @@ import { z } from "zod";
 import { IMAGE_URL_REGEX } from "../consts/regex.const";
 import { RecipeIngredientSchema } from "./recipeIngredientSchema.validation";
 import { ChefDetailsSchema } from "./chefDetailsSchema.validation";
+import { RecipeStepSchema } from "./recipeStepSchema.validation";
 
 export const RecipeDetailsSchema = z.object({
   uuid: z.uuid().optional(),
@@ -10,7 +11,7 @@ export const RecipeDetailsSchema = z.object({
     .min(1, "Recipe name is required")
     .max(20, "Recipe name must be at most 20 characters"),
   steps: z
-    .array(z.string().min(1, "Each step must have content"))
+    .array(RecipeStepSchema)
     .min(1, "At least one step is required")
     .max(20, "You can add up to 20 steps only"),
   chef: ChefDetailsSchema,

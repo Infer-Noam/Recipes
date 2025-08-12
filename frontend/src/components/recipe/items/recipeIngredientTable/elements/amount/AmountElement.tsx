@@ -10,7 +10,6 @@ const AmountElement: FC<AmountElementProps> = ({ index }) => (
   <ControlledTextField
     name={`ingredients.${index}.amount`}
     type="number"
-    transformValue={(value) => parseInt(value, 10)}
     slotProps={{
       input: {
         sx: Styles.amountTextFieldInput,

@@ -5,6 +5,7 @@ import { Chef } from "./chef/chef.entity";
 import { Ingredient } from "./ingredient/ingredient.entity";
 import { RecipeIngredient } from "./recipe/recipe-ingredient/recipeIngredient.entity";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { RecipeStep } from "./recipe/recipe-step/recipeStep.entity";
 
 const migrations = process.env.NODE_ENV !== "prod" ? ["migrations/**/*"] : [];
 
@@ -22,7 +23,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   schema: process.env.DB_SCHEMA,
-  entities: [Recipe, Chef, Ingredient, RecipeIngredient],
+  entities: [Recipe, Chef, Ingredient, RecipeIngredient, RecipeStep],
   migrations,
   synchronize: false,
   logging: false,
