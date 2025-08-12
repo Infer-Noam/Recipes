@@ -11,6 +11,9 @@ const relations: FindOptionsRelations<Recipe> = {
     ingredient: true,
     recipe: true,
   },
+  steps: {
+    recipe: true,
+  },
   chef: true,
 };
 
