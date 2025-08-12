@@ -49,7 +49,13 @@ export const Recipe: FC<RecipeProps> = ({
   );
 
   const onSubmit = async (recipeDetails: RecipeDetails) => {
-    await saveRecipe(recipeDetails);
+    await saveRecipe({
+      ...recipeDetails,
+      steps: recipeDetails.steps.map((step, index) => ({
+        ...step,
+        placement: index + 1,
+      })),
+    });
   };
 
   return (

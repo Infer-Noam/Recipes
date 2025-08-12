@@ -1,8 +1,7 @@
 import { type SxProps } from "@mui/material";
 
-const container: SxProps = {
-  minWidth: "550px",
-  overflow: "auto",
+const recipeIngredientTableRow: SxProps = {
+  "&:last-child td, &:last-child th": { border: 0 },
 };
 
 const centerAlign: SxProps = {
@@ -10,10 +9,7 @@ const centerAlign: SxProps = {
   verticalAlign: "top",
 };
 
-const labelTypography = { fontWeight: "bold" };
-
 export default {
-  container,
+  recipeIngredientTableRow,
   centerAlign,
-  labelTypography,
 };

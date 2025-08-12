@@ -6,9 +6,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChefDetailsSchema } from "@shared/validation/chefDetailsSchema.validation";
-import { z } from "zod";
-import type { ChefTableRowProps } from "./chefTableRow.type";
+import { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
+import type { ChefFormData, ChefTableRowProps } from "./chefTableRow.type";
 import ControlledTextField from "../../../components/controlledTextField/ControlledTextField";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -17,8 +16,6 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
   saveChef,
   deleteChef,
 }) => {
-  type ChefFormData = z.infer<typeof ChefDetailsSchema>;
-
   const methods = useForm<ChefFormData>({
     defaultValues: chef,
     resolver: zodResolver(ChefDetailsSchema),
@@ -30,9 +27,10 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
     reset,
   } = methods;
 
-  const onSubmit = (chef: ChefDetails) => {
-    saveChef(chef);
-    reset(chef);
+  const onSubmit = async (chef: ChefDetails) => {
+    await saveChef(chef, {
+      onSuccess: () => reset(chef),
+    });
   };
 
   return (
@@ -60,10 +58,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
         </TableCell>
 
         <TableCell>
-          <IconButton
-            onClick={() => handleSubmit(onSubmit)()}
-            disabled={!isDirty}
-          >
+          <IconButton onClick={handleSubmit(onSubmit)} disabled={!isDirty}>
             {chef.uuid ? <CheckIcon /> : <AddIcon />}
           </IconButton>
         </TableCell>
