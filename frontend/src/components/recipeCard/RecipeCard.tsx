@@ -69,6 +69,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
           subheader={`By ${chef.firstName} ${chef.lastName}`}
         />
         <CardMedia
+          sx={Styles.image}
           component="img"
           image={imageUrl}
           alt={`An image of ${name}`}
