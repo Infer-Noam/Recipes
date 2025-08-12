@@ -20,6 +20,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
 import { DEFAULT_RECIPE_STEP_DETAILS } from "./stepsItem.const";
 import { closestCenter, DndContext } from "@dnd-kit/core";
+import { onDragEnd } from "./stepItem.util";
 
 const StepsItem: FC = () => {
   const {
@@ -49,18 +50,7 @@ const StepsItem: FC = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DndContext
-              onDragEnd={(event) => {
-                const { over, active } = event;
-
-                if (!over) return;
-
-                const fromIndex = active.data.current?.index;
-                const toIndex = over.data.current?.index;
-
-                if (fromIndex === undefined || toIndex === undefined) return;
-
-                move(fromIndex, toIndex);
-              }}
+              onDragEnd={(event) => onDragEnd(event, move)}
               collisionDetection={closestCenter}
             >
               <List>
@@ -77,11 +67,7 @@ const StepsItem: FC = () => {
           </AccordionDetails>
           <AccordionActions>
             <Button
-              onClick={() =>
-                append({
-                  ...DEFAULT_RECIPE_STEP_DETAILS,
-                })
-              }
+              onClick={() => append(DEFAULT_RECIPE_STEP_DETAILS)}
               startIcon={<AddIcon />}
             >
               Add step
