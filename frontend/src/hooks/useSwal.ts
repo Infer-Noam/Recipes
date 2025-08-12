@@ -6,8 +6,9 @@ export const useSwal = () => {
     err: unknown,
     fallbackMessage = "Something went wrong"
   ) => {
-    const message: string =
-      (isAxiosError(err) && err.response?.data?.message) || fallbackMessage;
+    const message = isAxiosError(err)
+      ? err.response?.data?.message || err.message
+      : fallbackMessage;
 
     swal("Error", message, "error");
   };
