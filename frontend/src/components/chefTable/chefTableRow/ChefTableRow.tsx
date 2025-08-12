@@ -6,7 +6,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
+import { ChefDetailsSchema } from "@shared/validation/chefDetailsSchema.validation";
 import type { ChefFormData, ChefTableRowProps } from "./chefTableRow.type";
 import ControlledTextField from "../../../components/controlledTextField/ControlledTextField";
 import { FormProvider, useForm } from "react-hook-form";

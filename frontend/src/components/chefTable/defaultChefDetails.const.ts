@@ -1,4 +1,4 @@
-import type { ChefDetails } from "../../../../shared/types/chef.type";
+import type { ChefDetails } from "@shared/types/chef.type";
 
 export const DEFAULT_CHEF_DETAILS: ChefDetails = {
   firstName: "",
