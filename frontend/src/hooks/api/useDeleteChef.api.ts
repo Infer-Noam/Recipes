@@ -4,7 +4,7 @@ import { USE_GET_CHEFS_KEY } from "./useGetChefs.api";
 import type {
   DeleteChefReq,
   DeleteChefRes,
-} from "../../../../shared/api/chef/deleteChef.api";
+} from "@shared/api/chef/deleteChef.api";
 
 const deleteChef = async (uuid: string) => {
   const data: DeleteChefReq = { uuid };

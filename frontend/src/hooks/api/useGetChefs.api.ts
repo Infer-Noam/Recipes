@@ -1,4 +1,4 @@
-import { type GetAllChefsRes } from "../../../../shared/api/chef/getAllChefs.api";
+import { type GetAllChefsRes } from "@shared/api/chef/getAllChefs.api";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../api";
 

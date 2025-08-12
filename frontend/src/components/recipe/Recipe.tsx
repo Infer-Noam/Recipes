@@ -1,5 +1,4 @@
 import { type FC } from "react";
-import { type RecipeDetails } from "../../../../shared/types/recipe.type";
 import { RecipeIngredientsTableItem } from "./items/recipeIngredientTable/RecipeIngredientsTableItem";
 import { Grid, Button } from "@mui/material";
 import Styles from "./recipe.style";
@@ -9,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useSaveRecipe } from "../../hooks/api/useSaveRecipe.api";
 import { useDeleteRecipe } from "../../hooks/api/useDeleteRecipe.api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RecipeDetailsSchema } from "../../../../shared/validation/recipeDetailsSchema.validation";
+import { RecipeDetailsSchema } from "@shared/validation/recipeDetailsSchema.validation";
 import { DEFAULT_RECIPE_DETAILS } from "./defaultRecipeDetails.const";
 import { useSwal } from "../../hooks/useSwal";
 import type { RecipeFormData, RecipeProps } from "./Recipe.type";
@@ -34,7 +33,7 @@ export const Recipe: FC<RecipeProps> = ({
 
   const { handleSubmit, watch } = methods;
 
-  const [chef, imageUrl] = watch(["chef", "imageUrl"]);
+  const [imageUrl] = watch("imageUrl");
 
   const onSuccess = () => navigate(-1);
 
@@ -48,10 +47,10 @@ export const Recipe: FC<RecipeProps> = ({
     onSuccess
   );
 
-  const onSubmit = async (recipeDetails: RecipeDetails) => {
+  const onSubmit = async (data: RecipeFormData) => {
     await saveRecipe({
-      ...recipeDetails,
-      steps: recipeDetails.steps.map((step, index) => ({
+      ...data,
+      steps: data.steps.map((step, index) => ({
         ...step,
         placement: index + 1,
       })),
@@ -62,7 +61,7 @@ export const Recipe: FC<RecipeProps> = ({
     <FormProvider {...methods}>
       <Grid container spacing={2} sx={Styles.gridContainer}>
         <NameItem />
-        <ChefItem chefUuid={chef?.uuid} chefs={chefs} />
+        <ChefItem chefs={chefs} />
         <Grid size={Styles.descriptionItemGridSize}>
           <ControlledTextField
             name="description"

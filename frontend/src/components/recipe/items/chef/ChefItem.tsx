@@ -2,7 +2,7 @@ import { Controller, useFormContext } from "react-hook-form";
 import { type FC } from "react";
 import { Autocomplete, Grid, TextField } from "@mui/material";
 import Styles from "./chefItem.style";
-import type { Chef as ChefModel } from "../../../../../../shared/types/chef.type";
+import type { Chef as ChefModel } from "@shared/types/chef.type";
 import ChefTooltip from "./ChefTooltip";
 import type { RecipeFormData } from "../../Recipe.type";
 

@@ -1,5 +1,5 @@
 import { CHEF_SRC_ARRAY } from "../chef/chefSrcArray.const";
-import type { Recipe } from "../../../../shared/types/recipe.type";
+import type { Recipe } from "@shared/types/recipe.type";
 
 export const getRandomChefSrc = () => {
   const randomIndex = Math.floor(Math.random() * CHEF_SRC_ARRAY.length);

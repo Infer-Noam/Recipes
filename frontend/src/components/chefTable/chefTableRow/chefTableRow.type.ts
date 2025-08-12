@@ -1,7 +1,7 @@
-import type { ChefDetailsSchema } from "../../../../../shared/validation/chefDetailsSchema.validation";
-import type { ChefDetails } from "../../../../../shared/types/chef.type";
+import type { ChefDetailsSchema } from "@shared/validation/chefDetailsSchema.validation";
+import type { ChefDetails } from "@shared/types/chef.type";
 import { z } from "zod";
-import type { SaveChefRes } from "../../../../../shared/api/chef/saveChef.api";
+import type { SaveChefRes } from "@shared/api/chef/saveChef.api";
 import type { AxiosResponse } from "axios";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 

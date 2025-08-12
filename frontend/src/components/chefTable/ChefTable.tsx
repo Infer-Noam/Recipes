@@ -1,4 +1,4 @@
-import type { ChefDetails } from "../../../../shared/types/chef.type";
+import type { ChefDetails } from "@shared/types/chef.type";
 import Styles from "./chefTable.style";
 import { type FC } from "react";
 import {
@@ -16,7 +16,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { DEFAULT_CHEF_DETAILS } from "./defaultChefDetails.const";
 import CustomTableCell from "../customTableCell/CustomTableCell";
 import { CELL_COUNT } from "./chefTable.const";
-import type { SaveChefRes } from "../../../../shared/api/chef/saveChef.api";
+import type { SaveChefRes } from "@shared/api/chef/saveChef.api";
 import type { AxiosResponse } from "axios";
 import useToggle from "../../hooks/useToggle";
 import type { UseMutateAsyncFunction } from "@tanstack/react-query";
