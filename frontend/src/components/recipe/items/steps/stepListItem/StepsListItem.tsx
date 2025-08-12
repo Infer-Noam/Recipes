@@ -3,53 +3,55 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Box,
   Tooltip,
 } from "@mui/material";
 ``;
 import RemoveIcon from "@mui/icons-material/Remove";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import type { FC } from "react";
 import Styles from "./stepListItem.style";
 import type { StepsListItemProps } from "./stepsListItem.type";
 import ControlledTextField from "../../../../../components/controlledTextField/ControlledTextField";
-import { useDroppable } from "@dnd-kit/core";
+import { useDraggable, useDroppable } from "@dnd-kit/core";
 
-const StepsListItem: FC<StepsListItemProps> = ({
-  index,
-  remove,
-  move,
-  stepsSize,
-}) => {
-  const { isOver, setNodeRef } = useDroppable({
-    id: index,
+const StepsListItem: FC<StepsListItemProps> = ({ id, index, remove }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef: dragRef,
+    transform,
+  } = useDraggable({
+    id: `draggable-${id}`,
+    data: { index },
   });
 
+  const { setNodeRef: dropRef } = useDroppable({
+    id: `droppable-${id}`,
+    data: { index },
+  });
+
+  const style = transform
+    ? {
+        transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+      }
+    : undefined;
+
   return (
-    <ListItem ref={setNodeRef}>
+    <ListItem ref={dropRef} style={style}>
       <ListItemIcon>
-        <Box sx={Styles.moveIconsBox}>
-          <Tooltip title="Move up">
-            <IconButton
-              size="small"
-              onClick={() => move(index, index - 1)}
-              disabled={index === 0}
-            >
-              <KeyboardArrowUpIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Move down">
-            <IconButton
-              size="small"
-              onClick={() => move(index, index + 1)}
-              disabled={index === stepsSize - 1}
-            >
-              <KeyboardArrowDownIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
+        <Tooltip
+          title="Drag to reorder"
+          sx={Styles.moveIconsBox}
+          ref={dragRef}
+          {...listeners}
+          {...attributes}
+        >
+          <IconButton size="small">
+            <DragIndicatorIcon />
+          </IconButton>
+        </Tooltip>
       </ListItemIcon>
+
       <ListItemText sx={Styles.textField}>
         <ControlledTextField
           name={`steps.${index}.text`}

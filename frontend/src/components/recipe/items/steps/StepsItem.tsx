@@ -19,8 +19,7 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
 import { DEFAULT_RECIPE_STEP_DETAILS } from "./stepsItem.const";
-import { useSortedSteps } from "./useSortedSteps";
-import { DndContext } from "@dnd-kit/core";
+import { closestCenter, DndContext } from "@dnd-kit/core";
 
 const StepsItem: FC = () => {
   const {
@@ -31,59 +30,75 @@ const StepsItem: FC = () => {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const { fields, append, remove, move } = useFieldArray({
+  const {
+    fields: recipeSteps,
+    append,
+    remove,
+    move,
+  } = useFieldArray({
     control,
     name: "steps",
   });
 
-  const recipeSteps = useSortedSteps(fields);
-
   return (
-    <DndContext>
-      <Grid size={Styles.gridItemSize}>
-        <Box>
-          <Accordion defaultExpanded={!isXs}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography component="span">Steps</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
+    <Grid size={Styles.gridItemSize}>
+      <Box>
+        <Accordion defaultExpanded={!isXs}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography component="span">Steps</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <DndContext
+              onDragEnd={(event) => {
+                const { over, active } = event;
+
+                if (!over) return;
+
+                const fromIndex = active.data.current?.index;
+                const toIndex = over.data.current?.index;
+
+                if (fromIndex === undefined || toIndex === undefined) return;
+
+                move(fromIndex, toIndex);
+              }}
+              collisionDetection={closestCenter}
+            >
               <List>
                 {recipeSteps.map((step, index) => (
                   <StepsListItem
+                    id={step.id}
                     key={step.id}
                     index={index}
                     remove={remove}
-                    move={move}
-                    stepsSize={recipeSteps.length}
                   />
                 ))}
               </List>
-            </AccordionDetails>
-            <AccordionActions>
-              <Button
-                onClick={() =>
-                  append({
-                    ...DEFAULT_RECIPE_STEP_DETAILS,
-                  })
-                }
-                startIcon={<AddIcon />}
-              >
-                Add step
-              </Button>
-            </AccordionActions>
-          </Accordion>
-          {isSubmitted && recipeSteps.length === 0 && (
-            <Typography
-              color="error"
-              variant="caption"
-              sx={Styles.errorTypography}
+            </DndContext>
+          </AccordionDetails>
+          <AccordionActions>
+            <Button
+              onClick={() =>
+                append({
+                  ...DEFAULT_RECIPE_STEP_DETAILS,
+                })
+              }
+              startIcon={<AddIcon />}
             >
-              At least one step is required
-            </Typography>
-          )}
-        </Box>
-      </Grid>
-    </DndContext>
+              Add step
+            </Button>
+          </AccordionActions>
+        </Accordion>
+        {isSubmitted && recipeSteps.length === 0 && (
+          <Typography
+            color="error"
+            variant="caption"
+            sx={Styles.errorTypography}
+          >
+            At least one step is required
+          </Typography>
+        )}
+      </Box>
+    </Grid>
   );
 };
 
