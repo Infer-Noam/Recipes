@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const ChefDetailsSchema = z.object(
   {
+    uuid: z.uuid().optional(),
     firstName: z
       .string()
       .min(1, "First name is required")
