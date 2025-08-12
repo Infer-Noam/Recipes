@@ -7,7 +7,7 @@ const appHeader: SxProps<Theme> = (theme) => ({
   },
   borderBottomLeftRadius: 4,
   borderBottomRightRadius: 4,
-  position: "static",
+  position: "fixed",
 });
 
 const typography: SxProps = {
