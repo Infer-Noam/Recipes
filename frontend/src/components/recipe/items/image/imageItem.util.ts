@@ -1,3 +1,7 @@
+import { useSwal } from "../../../../hooks/useSwal";
+
+const { showError } = useSwal();
+
 export const openImageWithFallback = (imageUrl: string) => {
   const img = new Image();
 
@@ -6,7 +10,7 @@ export const openImageWithFallback = (imageUrl: string) => {
   };
 
   img.onerror = () => {
-    window.open("https://www.bing.com/images/search?q=recipe", "_blank");
+    showError(undefined, "Failed to load image");
   };
 
   img.src = imageUrl;
