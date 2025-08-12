@@ -20,7 +20,12 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
 import { DEFAULT_RECIPE_STEP_DETAILS } from "./stepsItem.const";
 import { closestCenter, DndContext } from "@dnd-kit/core";
-import { onDragEnd, sensors } from "./stepItem.util";
+import { onDragEnd } from "./stepItem.util";
+import { useDragSensors } from "./useDragSensors";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 const StepsItem: FC = () => {
   const {
@@ -41,6 +46,8 @@ const StepsItem: FC = () => {
     name: "steps",
   });
 
+  const sensors = useDragSensors();
+
   return (
     <Grid size={Styles.gridItemSize}>
       <Box>
@@ -54,16 +61,21 @@ const StepsItem: FC = () => {
               onDragEnd={(event) => onDragEnd(event, move)}
               collisionDetection={closestCenter}
             >
-              <List>
-                {recipeSteps.map((step, index) => (
-                  <StepsListItem
-                    id={step.id}
-                    key={step.id}
-                    index={index}
-                    remove={remove}
-                  />
-                ))}
-              </List>
+              <SortableContext
+                items={recipeSteps.map((step) => step.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <List>
+                  {recipeSteps.map((step, index) => (
+                    <StepsListItem
+                      id={step.id}
+                      key={step.id}
+                      index={index}
+                      remove={remove}
+                    />
+                  ))}
+                </List>
+              </SortableContext>
             </DndContext>
           </AccordionDetails>
           <AccordionActions>
