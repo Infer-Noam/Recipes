@@ -3,7 +3,7 @@ import swal from "sweetalert";
 
 export const useSwal = () => {
   const showError = (
-    err: unknown,
+    err?: unknown,
     fallbackMessage = "Something went wrong"
   ) => {
     const message: string =
