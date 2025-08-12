@@ -10,6 +10,7 @@ const rootLayout: SxProps<Theme> = (theme) => ({
   alignItems: "flex-start",
   backgroundColor: theme.palette.background.default,
 });
+
 const contentArea: SxProps<Theme> = (theme) => ({
   position: "fixed",
   left: { xs: 0, sm: DRAWER_WIDTH },
