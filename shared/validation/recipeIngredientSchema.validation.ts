@@ -7,6 +7,9 @@ export const RecipeIngredientSchema = z.object({
   uuid: z.string().optional(),
   recipe: UuidSchema.optional(),
   ingredient: IngredientDetailsSchema,
-  amount: z.number().min(1, "Amount must be at least 1"),
+  amount: z
+    .number()
+    .gt(0, "Amount must be greater than zero")
+    .max(100, "Amount must be less than 100"),
   measurementUnit: z.enum(MeasurementUnit, "Measurement unit is required"),
 });
