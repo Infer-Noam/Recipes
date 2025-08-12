@@ -14,7 +14,9 @@ export const RecipeDetailsSchema = z.object({
     .array(RecipeStepSchema)
     .min(1, "At least one step is required")
     .max(20, "You can add up to 20 steps only"),
-  chef: ChefDetailsSchema,
+  chef: ChefDetailsSchema.extend({
+    uuid: z.uuid(),
+  }),
   ingredients: z
     .array(RecipeIngredientSchema)
     .min(1, "At least one ingredient is required")
