@@ -71,10 +71,9 @@ const ChefTable: FC<ChefTableProps> = ({
             <ChefTableRow
               chef={DEFAULT_CHEF_DETAILS}
               deleteChef={resetNewChef}
-              saveChef={(chefDetails) => {
-                resetNewChef();
-                return saveChef(chefDetails);
-              }}
+              saveChef={(chefDetails) =>
+                saveChef(chefDetails, { onSuccess: resetNewChef })
+              }
             />
           )}
           <TableRow>
