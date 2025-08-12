@@ -58,10 +58,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
         </TableCell>
 
         <TableCell>
-          <IconButton
-            onClick={() => handleSubmit(onSubmit)()}
-            disabled={!isDirty}
-          >
+          <IconButton onClick={handleSubmit(onSubmit)} disabled={!isDirty}>
             {chef.uuid ? <CheckIcon /> : <AddIcon />}
           </IconButton>
         </TableCell>
