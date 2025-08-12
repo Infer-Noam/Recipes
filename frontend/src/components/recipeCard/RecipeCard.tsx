@@ -31,9 +31,9 @@ export const RecipeCard: FC<RecipeCardProps> = ({
   chefAvatarSrc,
 }) => {
   const formatIngredients = (ingredients: RecipeIngredientModel[]) =>
-    ingredients.map((ri, index) => (
+    ingredients.map((recipeIngredient, index) => (
       <Typography variant="body2" key={index}>
-        {`${ri.amount} ${ri.measurementUnit} of ${ri.ingredient.name}`}
+        {`${recipeIngredient.amount} ${recipeIngredient.measurementUnit} of ${recipeIngredient.ingredient.name}`}
       </Typography>
     ));
 
@@ -61,7 +61,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
             />
           }
           action={
-            <IconButton aria-label="more" onClick={handleClick}>
+            <IconButton onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
           }
