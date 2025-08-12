@@ -6,4 +6,7 @@ const textField: SxProps = {
 
 const moveIconsBox: SxProps = { display: "flex", flexDirection: "column" };
 
-export default { textField, moveIconsBox };
+const listItem: SxProps = {
+  touchAction: "none",
+};
+export default { textField, moveIconsBox, listItem };

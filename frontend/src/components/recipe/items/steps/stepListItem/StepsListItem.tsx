@@ -37,7 +37,7 @@ const StepsListItem: FC<StepsListItemProps> = ({ id, index, remove }) => {
     : undefined;
 
   return (
-    <ListItem ref={dropRef} style={style}>
+    <ListItem ref={dropRef} style={style} sx={Styles.listItem}>
       <ListItemIcon>
         <Tooltip
           title="Drag to reorder"

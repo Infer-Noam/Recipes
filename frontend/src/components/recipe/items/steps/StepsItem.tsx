@@ -20,7 +20,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
 import { DEFAULT_RECIPE_STEP_DETAILS } from "./stepsItem.const";
 import { closestCenter, DndContext } from "@dnd-kit/core";
-import { onDragEnd } from "./stepItem.util";
+import { onDragEnd, sensors } from "./stepItem.util";
 
 const StepsItem: FC = () => {
   const {
@@ -50,6 +50,7 @@ const StepsItem: FC = () => {
           </AccordionSummary>
           <AccordionDetails>
             <DndContext
+              sensors={sensors}
               onDragEnd={(event) => onDragEnd(event, move)}
               collisionDetection={closestCenter}
             >
