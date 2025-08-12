@@ -33,7 +33,7 @@ export const Recipe: FC<RecipeProps> = ({
 
   const { handleSubmit, watch } = methods;
 
-  const [imageUrl] = watch("imageUrl");
+  const imageUrl = watch("imageUrl");
 
   const onSuccess = () => navigate(-1);
 
