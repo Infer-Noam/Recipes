@@ -1,6 +1,6 @@
-import type { ChefDetails } from "@shared/types/chef.type";
+import type { ChefDetails } from "../../../../shared/types/chef.type";
 import Styles from "./chefTable.style";
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import {
   Button,
   Paper,
@@ -15,10 +15,20 @@ import ChefTableRow from "./chefTableRow/ChefTableRow";
 import AddIcon from "@mui/icons-material/Add";
 import { DEFAULT_CHEF_DETAILS } from "./defaultChefDetails.const";
 import CustomTableCell from "../customTableCell/CustomTableCell";
+import { CELL_COUNT } from "./chefTable.const";
+import type { SaveChefRes } from "../../../../shared/api/chef/saveChef.api";
+import type { AxiosResponse } from "axios";
+import useToggle from "../../hooks/useToggle";
+import type { UseMutateAsyncFunction } from "@tanstack/react-query";
 
 type ChefTableProps = {
   chefs: ChefDetails[];
-  saveChef: (chefDetails: ChefDetails) => void;
+  saveChef: UseMutateAsyncFunction<
+    AxiosResponse<SaveChefRes, any>,
+    unknown,
+    ChefDetails,
+    unknown
+  >;
   deleteChef: (uuid: string) => void;
 };
 
@@ -27,8 +37,11 @@ const ChefTable: FC<ChefTableProps> = ({
   saveChef,
   deleteChef,
 }) => {
-  const cellCount = 5;
-  const [chefs, setChefs] = useState(defaultChefs);
+  const {
+    open: newChef,
+    handleOpen: createNewChef,
+    handleClose: resetNewChef,
+  } = useToggle();
 
   return (
     <TableContainer component={Paper}>
@@ -44,29 +57,36 @@ const ChefTable: FC<ChefTableProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {chefs.map((chef) => (
+          {defaultChefs.map((chef) => (
             <ChefTableRow
               key={chef.uuid}
               chef={chef}
               deleteChef={() => {
-                deleteChef(chef.uuid);
-                setChefs((prev) => prev.filter((p) => p.uuid !== chef.uuid));
+                chef.uuid && deleteChef(chef.uuid);
               }}
               saveChef={saveChef}
             />
           ))}
+          {newChef && (
+            <ChefTableRow
+              chef={DEFAULT_CHEF_DETAILS}
+              deleteChef={resetNewChef}
+              saveChef={(chefDetails) =>
+                saveChef(chefDetails, { onSuccess: resetNewChef })
+              }
+            />
+          )}
           <TableRow>
             <TableCell sx={Styles.centerAlign}>
               <Button
-                onClick={() => {
-                  setChefs((prev) => [...prev, DEFAULT_CHEF_DETAILS]);
-                }}
+                onClick={createNewChef}
                 startIcon={<AddIcon />}
+                disabled={!!newChef}
               >
                 Add chef
               </Button>
             </TableCell>
-            {Array.from({ length: cellCount }, (_, index) => (
+            {Array.from({ length: CELL_COUNT }, (_, index) => (
               <TableCell key={index} />
             ))}
           </TableRow>
