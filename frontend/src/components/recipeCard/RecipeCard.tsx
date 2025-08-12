@@ -18,6 +18,7 @@ import { type Recipe as RecipeModel } from "@shared/types/recipe.type";
 import { type RecipeIngredient as RecipeIngredientModel } from "@shared/types/recipeIngredient.type";
 import { useNavigate } from "react-router-dom";
 import { RecipeMenu } from "./recipeCardMenu/RecipeCardMenu";
+import ImagePlaceholder from "../../assets/image_placeholder.webp";
 
 type RecipeCardProps = {
   recipe: RecipeModel;
@@ -73,18 +74,28 @@ export const RecipeCard: FC<RecipeCardProps> = ({
           component="img"
           image={imageUrl}
           alt={`An image of ${name}`}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = ImagePlaceholder;
+          }}
         />
         <CardContent>
-          <Typography variant="body2" sx={Styles.descriptionTypography}>
-            {description}
-          </Typography>
+          <Tooltip title={description} placement={"right"} arrow>
+            <Typography
+              noWrap
+              variant="body2"
+              sx={Styles.descriptionTypography}
+            >
+              {description || "\u00A0"}
+            </Typography>
+          </Tooltip>
         </CardContent>
         <CardActions disableSpacing>
           <Typography variant="body2">
             {new Date(createDate).toDateString()}
           </Typography>
           <Tooltip
-            sx={Styles.tooltip}
+            sx={Styles.ingredientsTooltip}
             title={
               <Box component="span">
                 <Typography variant="subtitle1">Ingredients</Typography>
