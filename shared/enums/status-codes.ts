@@ -5,11 +5,10 @@ export enum StatusCode {
   NOT_FOUND = 404,
 }
 
-export const getStatusEntry = (code: number): StatusCode | undefined => {
-  const numericStatusCodes = Object.values(StatusCode).filter(
-    (value): value is StatusCode => typeof value === "number"
-  );
-  return numericStatusCodes.includes(code)
-    ? numericStatusCodes.find((value) => value === code)
-    : undefined;
-};
+export const getStatusEntry = (code: number): StatusCode | undefined =>
+  Object.entries(StatusCode)
+    .map(([, value]) => value)
+    .find(
+      (value): value is StatusCode =>
+        typeof value === "number" && value === code
+    );
