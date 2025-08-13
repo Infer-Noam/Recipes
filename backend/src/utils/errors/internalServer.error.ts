@@ -1,7 +1,7 @@
 import { HttpError } from "../../../../shared/types/httpError.type";
 
-export class NotFoundError extends HttpError {
+export class InternalServerError extends HttpError {
   constructor() {
-    super(`Not found`, 404);
+    super(`Internal server error`);
   }
 }
