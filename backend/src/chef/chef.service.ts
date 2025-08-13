@@ -11,7 +11,7 @@ const saveChef = async (details: ChefDetails) => {
   const { uuid, ...rest } = details;
 
   try {
-    return AppDataSource.transaction(async (transaction) =>
+    return await AppDataSource.transaction(async (transaction) =>
       transaction.save(Chef, {
         ...rest,
         ...(uuid !== undefined && { uuid }),
