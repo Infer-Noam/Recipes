@@ -12,12 +12,13 @@ import {
   Box,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import Styles from "./recipeCard.style";
 import { type Recipe as RecipeModel } from "@shared/types/recipe.type";
 import { type RecipeIngredient as RecipeIngredientModel } from "@shared/types/recipeIngredient.type";
 import { useNavigate } from "react-router-dom";
 import { RecipeMenu } from "./recipeCardMenu/RecipeCardMenu";
+import ImagePlaceholder from "../../assets/image_placeholder.webp";
 
 type RecipeCardProps = {
   recipe: RecipeModel;
@@ -31,11 +32,13 @@ export const RecipeCard: FC<RecipeCardProps> = ({
   chefAvatarSrc,
 }) => {
   const formatIngredients = (ingredients: RecipeIngredientModel[]) =>
-    ingredients.map((ri, index) => (
-      <Typography variant="body2" key={index}>
-        {`${ri.amount} ${ri.measurementUnit} of ${ri.ingredient.name}`}
-      </Typography>
-    ));
+    ingredients.map(
+      ({ amount, measurementUnit, ingredient: { name } }, index) => (
+        <Typography variant="body2" key={index}>
+          {`${amount} ${measurementUnit} of ${name}`}
+        </Typography>
+      )
+    );
 
   const navigate = useNavigate();
 
@@ -61,7 +64,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
             />
           }
           action={
-            <IconButton aria-label="more" onClick={handleClick}>
+            <IconButton onClick={handleClick}>
               <MoreVertIcon />
             </IconButton>
           }
@@ -69,21 +72,33 @@ export const RecipeCard: FC<RecipeCardProps> = ({
           subheader={`By ${chef.firstName} ${chef.lastName}`}
         />
         <CardMedia
+          sx={Styles.image}
           component="img"
           image={imageUrl}
           alt={`An image of ${name}`}
+          onError={(e) => {
+            if (e.target instanceof HTMLImageElement) {
+              e.target.src = ImagePlaceholder;
+            }
+          }}
         />
         <CardContent>
-          <Typography variant="body2" sx={Styles.descriptionTypography}>
-            {description}
-          </Typography>
+          <Tooltip title={description} placement="right" arrow>
+            <Typography
+              noWrap
+              variant="body2"
+              sx={Styles.descriptionTypography}
+            >
+              {description || "\u00A0"}
+            </Typography>
+          </Tooltip>
         </CardContent>
         <CardActions disableSpacing>
           <Typography variant="body2">
             {new Date(createDate).toDateString()}
           </Typography>
           <Tooltip
-            sx={Styles.tooltip}
+            sx={Styles.ingredientsTooltip}
             title={
               <Box component="span">
                 <Typography variant="subtitle1">Ingredients</Typography>
@@ -92,9 +107,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
             }
             arrow
           >
-            <IconButton aria-label="ingredients">
-              <FormatListBulletedIcon />
-            </IconButton>
+            <InfoOutlinedIcon />
           </Tooltip>
         </CardActions>
       </Card>
