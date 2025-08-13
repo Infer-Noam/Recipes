@@ -6,6 +6,7 @@ import errorLogger from "./middleware/logger/error-logger.middleware";
 import requestLogger from "./middleware/logger/request-logger.middleware";
 import apiRouter from "./api.route";
 import errorHandler from "./middleware/errorHandler.middleware";
+import typeormErrorHandler from "./middleware/typeormErrorHandler.middleware";
 
 const app = express();
 
@@ -29,6 +30,9 @@ app.use("/api", apiRouter);
 
 // Error logger should be after all middleware and routers
 app.use(errorLogger);
+
+// This error handler transform typeorm errors into http erros
+app.use(typeormErrorHandler);
 
 // Error handler should be after all middleware and routers
 app.use(errorHandler);
