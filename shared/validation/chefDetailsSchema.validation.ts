@@ -14,8 +14,9 @@ export const ChefDetailsSchema = z.object(
       .max(20, "Last name must be at most 20 characters"),
     phone: z
       .string()
-      .regex(PHONE_REGEX, "Phone number must be valid")
-      .length(10, "Phone number must be 10 digits"),
+      .nonempty("Phone number is required")
+      .length(10, "Phone number must be 10 digits")
+      .regex(PHONE_REGEX),
     email: z.string().regex(EMAIL_REGEX, "Email must be valid"),
   },
   "Chef is required"
