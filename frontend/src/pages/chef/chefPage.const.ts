@@ -4,6 +4,10 @@ export const CHEF_SRC_ARRAY = [
   return `https://www.svgrepo.com/show/${n}/chef.svg`;
 });
 
-export const DUPLICATE_VALUES_MAP = new Map([
-  [409, "Chef contain duplicate fields"],
-]);
+enum StatusCode {
+  DUPLICATE_FIELD = 409,
+}
+
+export const HTTP_STATUS_MESSAGES: Record<number, string> = {
+  [StatusCode.DUPLICATE_FIELD]: "Chef contain duplicate fields",
+};
