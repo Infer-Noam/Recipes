@@ -6,7 +6,7 @@ export const useSwal = () => {
   const showError = (
     err: unknown,
     fallbackMessage = "Something went wrong",
-    httpStatusMessages?: Record<number, string>,
+    httpStatusMessages?: Partial<Record<number, string>>,
     options?: Partial<SwalOptions>
   ) => {
     let message = fallbackMessage;
