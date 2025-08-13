@@ -3,3 +3,7 @@ export const CHEF_SRC_ARRAY = [
 ].map((n) => {
   return `https://www.svgrepo.com/show/${n}/chef.svg`;
 });
+
+export const DUPLICATE_VALUES_MAP = new Map([
+  [409, "Chef contain duplicate fields"],
+]);
