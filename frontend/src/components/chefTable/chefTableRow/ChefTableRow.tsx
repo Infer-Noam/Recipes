@@ -11,6 +11,8 @@ import type { ChefFormData, ChefTableRowProps } from "./chefTableRow.type";
 import ControlledTextField from "../../../components/controlledTextField/ControlledTextField";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSwal } from "../../../hooks/useSwal";
+import { getOnInput } from "./chefTableRow.util";
+import { LETTERS_REGEX, NUMBER_REGEX } from "@shared/consts/regex.const";
 
 const ChefTableRow: FC<ChefTableRowProps> = ({
   chef,
@@ -60,14 +62,26 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           <ControlledTextField
             name="firstName"
             sx={Styles.firstNameTextField}
-            slotProps={Styles.nameSlotProps}
+            slotProps={{
+              input: {
+                inputProps: {
+                  onInput: getOnInput(LETTERS_REGEX),
+                },
+              },
+            }}
           />
         </TableCell>
         <TableCell sx={Styles.centerAlign}>
           <ControlledTextField
             name="lastName"
             sx={Styles.lastNameTextField}
-            slotProps={Styles.nameSlotProps}
+            slotProps={{
+              input: {
+                inputProps: {
+                  onInput: getOnInput(LETTERS_REGEX),
+                },
+              },
+            }}
           />
         </TableCell>
         <TableCell sx={Styles.centerAlign}>
@@ -77,7 +91,14 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           <ControlledTextField
             name="phone"
             sx={Styles.phoneTextField}
-            slotProps={Styles.phoneSlotProps}
+            slotProps={{
+              input: {
+                inputProps: {
+                  maxLength: 10,
+                  onInput: getOnInput(NUMBER_REGEX),
+                },
+              },
+            }}
           />
         </TableCell>
         <TableCell>
