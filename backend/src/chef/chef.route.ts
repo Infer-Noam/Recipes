@@ -18,10 +18,7 @@ router.post(
     req: Request<unknown, SaveChefRes, SaveChefReq>,
     res: Response<SaveChefRes>
   ) => {
-    const chef = await service.saveChef(req.body.chefDetails);
-    if (!chef) {
-      throw new InternalServerError();
-    }
+    await service.saveChef(req.body.chefDetails);
     res.status(200).json({ message: "Chef saved successfully" });
   }
 );
@@ -42,7 +39,9 @@ router.delete(
 
     const exist = await service.deleteChef(uuid);
 
-    if (!exist) throw new NotFoundError();
+    if (!exist) {
+      throw new NotFoundError();
+    }
 
     res.status(200).json({
       message: "Chef deleted successfully",
