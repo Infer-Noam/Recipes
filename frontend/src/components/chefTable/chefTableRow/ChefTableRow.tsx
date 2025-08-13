@@ -11,8 +11,9 @@ import type { ChefFormData, ChefTableRowProps } from "./chefTableRow.type";
 import ControlledTextField from "../../../components/controlledTextField/ControlledTextField";
 import { FormProvider, useForm } from "react-hook-form";
 import { useSwal } from "../../../hooks/useSwal";
-import { getOnInput } from "./chefTableRow.util";
+import { getInputValidator as getInputValidator } from "./chefTableRow.util";
 import { LETTERS_REGEX, NUMBER_REGEX } from "@shared/consts/regex.const";
+import { DELETE_CHEF_WARNING_TEXT } from "./chefTableRow.const";
 
 const ChefTableRow: FC<ChefTableRowProps> = ({
   chef,
@@ -45,13 +46,10 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           <IconButton
             onClick={() =>
               chef.uuid
-                ? showWarning(
-                    `Deleting this chef will permanently remove all recipes associated with them. This action cannot be undone. Are you sure you want to proceed?`,
-                    {
-                      dangerMode: true,
-                      buttons: ["No", "Yes"],
-                    }
-                  ).then((willDelete) => willDelete && deleteChef())
+                ? showWarning(DELETE_CHEF_WARNING_TEXT, {
+                    dangerMode: true,
+                    buttons: ["No", "Yes"],
+                  }).then((willDelete) => willDelete && deleteChef())
                 : deleteChef()
             }
           >
@@ -65,7 +63,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
             slotProps={{
               input: {
                 inputProps: {
-                  onInput: getOnInput(LETTERS_REGEX),
+                  onInput: getInputValidator(LETTERS_REGEX),
                 },
               },
             }}
@@ -78,7 +76,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
             slotProps={{
               input: {
                 inputProps: {
-                  onInput: getOnInput(LETTERS_REGEX),
+                  onInput: getInputValidator(LETTERS_REGEX),
                 },
               },
             }}
@@ -95,7 +93,7 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
               input: {
                 inputProps: {
                   maxLength: 10,
-                  onInput: getOnInput(NUMBER_REGEX),
+                  onInput: getInputValidator(NUMBER_REGEX),
                 },
               },
             }}
