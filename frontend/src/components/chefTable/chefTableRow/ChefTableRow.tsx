@@ -10,6 +10,10 @@ import { ChefDetailsSchema } from "@shared/validation/chefDetailsSchema.validati
 import type { ChefFormData, ChefTableRowProps } from "./chefTableRow.type";
 import ControlledTextField from "../../../components/controlledTextField/ControlledTextField";
 import { FormProvider, useForm } from "react-hook-form";
+import { useSwal } from "../../../hooks/useSwal";
+import { getInputValidator as getInputValidator } from "./chefTableRow.util";
+import { LETTERS_REGEX, NUMBER_REGEX } from "@shared/consts/regex.const";
+import { DELETE_CHEF_WARNING_TEXT } from "./chefTableRow.const";
 
 const ChefTableRow: FC<ChefTableRowProps> = ({
   chef,
@@ -27,6 +31,8 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
     reset,
   } = methods;
 
+  const { showWarning } = useSwal();
+
   const onSubmit = async (chef: ChefDetails) => {
     await saveChef(chef, {
       onSuccess: () => reset(chef),
@@ -37,7 +43,16 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
     <FormProvider {...methods}>
       <TableRow sx={Styles.chefTableRow}>
         <TableCell sx={Styles.centerAlign}>
-          <IconButton onClick={deleteChef}>
+          <IconButton
+            onClick={() =>
+              chef.uuid
+                ? showWarning(DELETE_CHEF_WARNING_TEXT, {
+                    dangerMode: true,
+                    buttons: ["No", "Yes"],
+                  }).then((willDelete) => willDelete && deleteChef())
+                : deleteChef()
+            }
+          >
             <RemoveIcon />
           </IconButton>
         </TableCell>
@@ -45,18 +60,45 @@ const ChefTableRow: FC<ChefTableRowProps> = ({
           <ControlledTextField
             name="firstName"
             sx={Styles.firstNameTextField}
+            slotProps={{
+              input: {
+                inputProps: {
+                  onInput: getInputValidator(LETTERS_REGEX),
+                },
+              },
+            }}
           />
         </TableCell>
         <TableCell sx={Styles.centerAlign}>
-          <ControlledTextField name="lastName" sx={Styles.lastNameTextField} />
+          <ControlledTextField
+            name="lastName"
+            sx={Styles.lastNameTextField}
+            slotProps={{
+              input: {
+                inputProps: {
+                  onInput: getInputValidator(LETTERS_REGEX),
+                },
+              },
+            }}
+          />
         </TableCell>
         <TableCell sx={Styles.centerAlign}>
           <ControlledTextField name="email" sx={Styles.emailTextField} />
         </TableCell>
         <TableCell sx={Styles.centerAlign}>
-          <ControlledTextField name="phone" sx={Styles.phoneTextField} />
+          <ControlledTextField
+            name="phone"
+            sx={Styles.phoneTextField}
+            slotProps={{
+              input: {
+                inputProps: {
+                  maxLength: 10,
+                  onInput: getInputValidator(NUMBER_REGEX),
+                },
+              },
+            }}
+          />
         </TableCell>
-
         <TableCell>
           <IconButton onClick={handleSubmit(onSubmit)} disabled={!isDirty}>
             {chef.uuid ? <CheckIcon /> : <AddIcon />}
