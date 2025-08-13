@@ -1,6 +1,7 @@
+import "module-alias/register";
 import "dotenv/config"; // Loads environment variables
 import app from "./app";
-import { AppDataSource } from "./data-source"; //
+import { AppDataSource } from "./data-source";
 
 const serverPort =
   process.env.SERVER_PORT ??
@@ -31,4 +32,3 @@ const main = async () => {
 };
 
 main();
-
