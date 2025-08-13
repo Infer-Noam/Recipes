@@ -4,7 +4,7 @@ import type { SwalOptions } from "sweetalert/typings/modules/options";
 
 export const useSwal = () => {
   const showError = (
-    err: unknown,
+    err?: unknown,
     fallbackMessage = "Something went wrong",
     options?: Partial<SwalOptions>
   ) => {

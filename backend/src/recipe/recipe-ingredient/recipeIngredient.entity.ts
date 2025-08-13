@@ -6,7 +6,7 @@ import { MeasurementUnit } from "@shared/enums/measurement-unit.enum";
 
 @Entity()
 export class RecipeIngredient extends AuditEntity {
-  @Column({ type: "integer" })
+  @Column({ type: "float" })
   amount: number;
 
   @Column({ type: "enum", enum: MeasurementUnit })
