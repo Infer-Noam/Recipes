@@ -32,11 +32,13 @@ export const RecipeCard: FC<RecipeCardProps> = ({
   chefAvatarSrc,
 }) => {
   const formatIngredients = (ingredients: RecipeIngredientModel[]) =>
-    ingredients.map((recipeIngredient, index) => (
-      <Typography variant="body2" key={index}>
-        {`${recipeIngredient.amount} ${recipeIngredient.measurementUnit} of ${recipeIngredient.ingredient.name}`}
-      </Typography>
-    ));
+    ingredients.map(
+      ({ amount, measurementUnit, ingredient: { name } }, index) => (
+        <Typography variant="body2" key={index}>
+          {`${amount} ${measurementUnit} of ${name}`}
+        </Typography>
+      )
+    );
 
   const navigate = useNavigate();
 
@@ -81,7 +83,7 @@ export const RecipeCard: FC<RecipeCardProps> = ({
           }}
         />
         <CardContent>
-          <Tooltip title={description} placement={"right"} arrow>
+          <Tooltip title={description} placement="right" arrow>
             <Typography
               noWrap
               variant="body2"
