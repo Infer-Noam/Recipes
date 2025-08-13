@@ -25,12 +25,7 @@ router.post(
     req: Request<unknown, SaveRecipeRes, SaveRecipeReq>,
     res: Response<SaveRecipeRes>
   ) => {
-    const recipe = await service.saveRecipe(req.body.recipeDetails);
-
-    if (!recipe) {
-      throw new InternalServerError();
-    }
-
+    await service.saveRecipe(req.body.recipeDetails);
     res.status(200).json({ message: "Recipe saved successfully" });
   }
 );

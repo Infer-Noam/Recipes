@@ -6,10 +6,10 @@ export enum StatusCode {
 }
 
 export const getStatusEntry = (code: number): StatusCode | undefined => {
-  for (const key of Object.keys(StatusCode) as Array<keyof typeof StatusCode>) {
-    if (StatusCode[key] === code) {
-      return StatusCode[key];
-    }
-  }
-  return undefined;
+  const numericStatusCodes = Object.values(StatusCode).filter(
+    (value): value is StatusCode => typeof value === "number"
+  );
+  return numericStatusCodes.includes(code)
+    ? numericStatusCodes.find((value) => value === code)
+    : undefined;
 };
