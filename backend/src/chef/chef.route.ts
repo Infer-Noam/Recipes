@@ -1,13 +1,13 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Request, Response } from "express";
 import service from "./chef.service";
 import { SaveChefReq, SaveChefRes } from "@shared/api/chef/saveChef.api";
 import { GetAllChefsRes } from "@shared/api/chef/getAllChefs.api";
 import { DeleteChefReq, DeleteChefRes } from "@shared/api/chef/deleteChef.api";
-import { HttpError } from "@shared/types/httpError.type";
 import { NotFoundError } from "src/utils/errors/notFound.error";
 import { ChefDetailsSchema } from "@shared/validation/chefDetailsSchema.validation";
 import { validateZodSchema } from "../middleware/validation.middleware";
 import { UuidSchema } from "@shared/validation/uuidSchema.validation";
+import { InternalServerError } from "src/utils/errors/internalServer.error";
 
 const router = Router();
 
@@ -20,7 +20,7 @@ router.post(
   ) => {
     const chef = await service.saveChef(req.body.chefDetails);
     if (!chef) {
-      new HttpError("Something went wrong");
+      throw new InternalServerError();
     }
     res.status(200).json({ message: "Chef saved successfully" });
   }
@@ -42,7 +42,7 @@ router.delete(
 
     const exist = await service.deleteChef(uuid);
 
-    if (!exist) throw new NotFoundError("Chef");
+    if (!exist) throw new NotFoundError();
 
     res.status(200).json({
       message: "Chef deleted successfully",
