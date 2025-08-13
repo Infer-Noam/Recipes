@@ -4,7 +4,10 @@ import { BadRequestError } from "../utils/errors/badRequest.error";
 import { DuplicateError } from "../utils/errors/duplicate.error";
 import { InternalServerError } from "../utils/errors/internalServer.error";
 import { NotFoundError } from "../utils/errors/notFound.error";
-import { getStatusEntry, StatusCode } from "@shared/enums/status-codes";
+import {
+  getHttpStatusEntry,
+  HttpStatusCode,
+} from "@shared/enums/statusCodes/http-status-codes";
 
 const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
   if (res.headersSent) {
@@ -12,13 +15,13 @@ const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
   }
 
   const statusCode =
-    getStatusEntry(err?.status) ?? StatusCode.INTERNAL_SERVER_ERROR;
+    getHttpStatusEntry(err?.status) ?? HttpStatusCode.INTERNAL_SERVER_ERROR;
 
-  const httpErrors: Record<StatusCode, HttpError> = {
-    [StatusCode.BAD_REQUEST]: new BadRequestError(),
-    [StatusCode.NOT_FOUND]: new NotFoundError(),
-    [StatusCode.DUPLICATE]: new DuplicateError(),
-    [StatusCode.INTERNAL_SERVER_ERROR]: new InternalServerError(),
+  const httpErrors: Record<HttpStatusCode, HttpError> = {
+    [HttpStatusCode.BAD_REQUEST]: new BadRequestError(),
+    [HttpStatusCode.NOT_FOUND]: new NotFoundError(),
+    [HttpStatusCode.DUPLICATE]: new DuplicateError(),
+    [HttpStatusCode.INTERNAL_SERVER_ERROR]: new InternalServerError(),
   };
 
   const httpError = err instanceof HttpError ? err : httpErrors[statusCode];

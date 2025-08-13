@@ -1,4 +1,4 @@
-import { HttpError } from "../../../../shared/types/httpError.type";
+import { HttpError } from "@shared/types/httpError.type";
 
 export class InternalServerError extends HttpError {
   constructor() {
