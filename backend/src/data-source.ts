@@ -9,16 +9,21 @@ import { RecipeStep } from "./recipe/recipe-step/recipeStep.entity";
 
 const migrations = process.env.NODE_ENV !== "prod" ? ["migrations/**/*"] : [];
 
-const databasePort =
+const DATABASE_PORT =
   process.env.DB_PORT ??
   (() => {
     throw new Error("Missing database port"); // Throws an error if no database port number is configured
   })();
 
+const isDocker = process.env.IS_DOCKER === "true";
+const DB_HOST = isDocker
+  ? process.env.DOCKER_DB_HOST
+  : process.env.LOCAL_DB_HOST;
+
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: process.env.DB_HOST,
-  port: parseInt(databasePort),
+  host: DB_HOST,
+  port: parseInt(DATABASE_PORT),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
