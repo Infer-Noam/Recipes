@@ -1,5 +1,6 @@
 import { isAxiosError } from "axios";
 import swal from "sweetalert";
+import type { SwalOptions } from "sweetalert/typings/modules/options";
 
 export const useSwal = () => {
   const showError = (
@@ -10,12 +11,14 @@ export const useSwal = () => {
       ? err.response?.data?.message || err.message
       : fallbackMessage;
 
-    swal("Error", message, "error");
+    return swal("Error", message, "error");
   };
 
-  const showSuccess = (message: string = "Operation successful") => {
+  const showSuccess = (message: string = "Operation successful") =>
     swal("Success", message, "success");
-  };
 
-  return { showError, showSuccess };
+  const showWarning = (message: string, options?: Partial<SwalOptions>) =>
+    swal("Warning", message, "warning", { ...options });
+
+  return { showError, showSuccess, showWarning };
 };
