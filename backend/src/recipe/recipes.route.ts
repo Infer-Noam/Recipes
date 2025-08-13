@@ -27,7 +27,9 @@ router.post(
   ) => {
     const recipe = await service.saveRecipe(req.body.recipeDetails);
 
-    if (!recipe) throw new InternalServerError();
+    if (!recipe) {
+      throw new InternalServerError();
+    }
 
     res.status(200).json({ message: "Recipe saved successfully" });
   }
@@ -44,7 +46,9 @@ router.delete(
 
     const exist = await service.deleteRecipe(uuid);
 
-    if (!exist) throw new NotFoundError();
+    if (!exist) {
+      throw new NotFoundError();
+    }
 
     res.status(200).json({ message: "Recipe deleted successfully" });
   }
