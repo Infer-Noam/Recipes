@@ -75,8 +75,9 @@ export const RecipeCard: FC<RecipeCardProps> = ({
           image={imageUrl}
           alt={`An image of ${name}`}
           onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = ImagePlaceholder;
+            if (e.target instanceof HTMLImageElement) {
+              e.target.src = ImagePlaceholder;
+            }
           }}
         />
         <CardContent>
