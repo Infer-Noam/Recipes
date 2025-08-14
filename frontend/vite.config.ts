@@ -6,15 +6,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const VITE_DEV_PORT =
-  process.env.VITE_DEV_PORT ??
+  process.env.VITE_PORT ??
   (() => {
-    throw new Error("Missing vite development port"); // Throws an error if no vite port number is configured
-  })();
-
-const VITE_PREVIEW_PORT =
-  process.env.VITE_PREVIEW_PORT ??
-  (() => {
-    throw new Error("Missing vite preview port"); // Throws an error if no vite port number is configured
+    throw new Error("Missing vite port"); // Throws an error if no vite port number is configured
   })();
 
 export default defineConfig({
@@ -23,7 +17,7 @@ export default defineConfig({
     port: parseInt(VITE_DEV_PORT),
   },
   preview: {
-    port: parseInt(VITE_PREVIEW_PORT),
+    port: parseInt(VITE_DEV_PORT),
   },
   resolve: {
     alias: {
