@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../base
+  - db-deployment.prod.yaml
+  - db-pvc.prod.yaml
+  - server-configmap.prod.yaml
+  - server-deployment.prod.yaml
+
+namespace: team-tikchalal
+
+labels:
+  - pairs:
+      env: prod

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recipes-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recipes-server
+  template:
+    metadata:
+      labels:
+        app: recipes-server
+    spec:
+      containers:
+        - name: recipes-server
+          image: recipes:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: IS_DOCKER
+              value: "true"
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: recipes-server-config
+                  key: SERVER_PORT
