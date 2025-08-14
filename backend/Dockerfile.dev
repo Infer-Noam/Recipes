@@ -1,8 +1,10 @@
 FROM node:18
 WORKDIR /app
-COPY package*.json ./
+COPY backend/package*.json ./
 RUN npm install
-COPY . .
+COPY backend ./backend
+COPY shared ./shared
+WORKDIR /app/backend
 ENV IS_DOCKER=true
 EXPOSE 8080
 CMD ["npm", "run", "dev"]
