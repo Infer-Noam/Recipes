@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: recipes-server-service
+  namespace: team-tikchalal
 spec:
   selector:
     app: recipes-server

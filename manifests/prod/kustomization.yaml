@@ -7,6 +7,7 @@ resources:
   - db-pvc.prod.yaml
   - server-configmap.prod.yaml
   - server-deployment.prod.yaml
+  - ingress.prod.yaml
 
 namespace: team-tikchalal
 

@@ -6,4 +6,4 @@ resources:
   - db-service.yaml
   - server-service.yaml
 
-namespace: recipes
+namespace: team-tikchalal
