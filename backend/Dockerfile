@@ -10,7 +10,6 @@ RUN npm run build
 
 FROM node:18-alpine
 WORKDIR /app
-ENV IS_DOCKER=true
 COPY --from=builder /app/backend/package*.json ./
 RUN npm install --production
 COPY --from=builder /app/backend/dist ./dist

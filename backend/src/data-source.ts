@@ -15,14 +15,9 @@ const DATABASE_PORT =
     throw new Error("Missing database port"); // Throws an error if no database port number is configured
   })();
 
-const isDocker = process.env.IS_DOCKER === "true";
-const DB_HOST = isDocker
-  ? process.env.DOCKER_DB_HOST
-  : process.env.LOCAL_DB_HOST;
-
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: DB_HOST,
+  host: process.env.DB_HOST,
   port: parseInt(DATABASE_PORT),
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
