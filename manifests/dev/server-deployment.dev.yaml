@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: recipes-server
   namespace: team-tikchalal
+  labels:
+    app: recipes-server
 spec:
   replicas: 1
   selector:
@@ -20,8 +22,6 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: IS_DOCKER
-              value: "true"
             - name: SERVER_PORT
               valueFrom:
                 configMapKeyRef:

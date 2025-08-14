@@ -3,5 +3,7 @@ kind: ConfigMap
 metadata:
   name: recipes-server-config
   namespace: team-tikchalal
+  labels:
+    app: recipes-server
 data:
   SERVER_PORT: "8080"
