@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: recipes-ingress
+  namespace: team-tikchalal
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  tls:
+    - hosts:
+        - recipes.dev.digital.idf.il
+      secretName: recipes-tls-secret
+  rules:
+    - host: recipes.dev.digital.idf.il
+      http:
+        paths:
+          - path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: recipes-server-service
+                port:
+                  number: 8080
+          # - path: /
+          #   pathType: Prefix
+          #   backend:
+          #     service:
+          #       name: recipes-frontend-service
+          #       port:
+          #         number: 5173
