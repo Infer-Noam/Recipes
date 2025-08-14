@@ -60,7 +60,9 @@ router.get("/:uuid", async (req: Request, res: Response<GetRecipeByIdRes>) => {
 
   const recipe = await service.getRecipeByUuid(uuid);
 
-  if (!recipe) throw new NotFoundError();
+  if (!recipe) {
+    throw new NotFoundError();
+  }
 
   res.status(200).json({ recipe });
 });
