@@ -1,4 +1,4 @@
-import { Recipe } from "../../types/recipe.type";
+import type { Recipe } from "../../types/recipe.type";
 
 export type GetAllRecipesRes = {
   recipes: Recipe[];

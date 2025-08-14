@@ -21,7 +21,7 @@ export class RemovedRecipeIngredientUnique1752569980037
       `ALTER TABLE "${DB_SCHEMA}"."recipe_ingredient" DROP CONSTRAINT "FK_04dfc797701695aee82d7193e0b"`
     );
     await queryRunner.query(
-      `ALTER TABLE ""${DB_SCHEMA}".recipe_ingredient" ALTER COLUMN "recipe_uuid" DROP NOT NULL`
+      `ALTER TABLE "${DB_SCHEMA}"."recipe_ingredient" ALTER COLUMN "recipe_uuid" DROP NOT NULL`
     );
     await queryRunner.query(
       `ALTER TABLE "${DB_SCHEMA}"."recipe_ingredient" ALTER COLUMN "ingredient_uuid" DROP NOT NULL`

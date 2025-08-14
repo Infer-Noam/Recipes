@@ -1,10 +1,12 @@
 import axios from "axios";
+import { getServerUrl } from "./utils/getServerUrl.util";
 
-const api = axios.create({
-  baseURL: "http://localhost:8080/api",
+const VITE_BASE_URL = getServerUrl();
+
+const Api = axios.create({
+  baseURL: VITE_BASE_URL,
   timeout: 5000,
-  headers: {
-  },
+  headers: {},
 });
 
-export default api;
+export default Api;

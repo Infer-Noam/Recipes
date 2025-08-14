@@ -1,9 +1,9 @@
-import { Recipe } from "src/recipe/recipe.entity";
+import { Recipe } from "../recipe/recipe.entity";
 import { Chef } from "../chef/chef.entity";
 import { AppDataSource } from "../data-source";
 import { ChefDetails } from "@shared/types/chef.type";
 import { QueryFailedError } from "typeorm";
-import { DuplicateError } from "src/utils/errors/duplicateError.";
+import { DuplicateError } from "../utils/errors/duplicateError.";
 
 const chefRepository = AppDataSource.getRepository(Chef);
 

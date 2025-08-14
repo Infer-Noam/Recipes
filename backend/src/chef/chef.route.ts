@@ -4,7 +4,7 @@ import { SaveChefReq, SaveChefRes } from "@shared/api/chef/saveChef.api";
 import { GetAllChefsRes } from "@shared/api/chef/getAllChefs.api";
 import { DeleteChefReq, DeleteChefRes } from "@shared/api/chef/deleteChef.api";
 import { HttpError } from "@shared/types/httpError.type";
-import { NotFoundError } from "src/utils/errors/notFound.error";
+import { NotFoundError } from "../utils/errors/notFound.error";
 import { ChefDetailsSchema } from "@shared/validation/chefDetailsSchema.validation";
 import { validateZodSchema } from "../middleware/validation.middleware";
 import { UuidSchema } from "@shared/validation/uuidSchema.validation";
