@@ -6,11 +6,16 @@ export const useSwal = () => {
   const showError = (
     err?: unknown,
     fallbackMessage = "Something went wrong",
+    httpStatusMessages?: Partial<Record<number, string>>,
     options?: Partial<SwalOptions>
   ) => {
-    const message = isAxiosError(err)
-      ? err.response?.data?.message || err.message
-      : fallbackMessage;
+    let message = fallbackMessage;
+
+    if (isAxiosError(err)) {
+      const status = err.response?.status;
+      const mappedMessage = status ? httpStatusMessages?.[status] : undefined;
+      message = mappedMessage || err.response?.data?.message || err.message;
+    }
 
     return swal("Error", message, "error", { ...options });
   };

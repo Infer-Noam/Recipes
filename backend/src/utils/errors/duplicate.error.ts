@@ -1,8 +1,8 @@
 import { HttpStatusCode } from "@shared/enums/statusCodes/http-status-codes";
 import { HttpError } from "@shared/types/httpError.type";
 
-export class NotFoundError extends HttpError {
+export class DuplicateError extends HttpError {
   constructor() {
-    super(`Not found`, HttpStatusCode.NOT_FOUND);
+    super("Please check for duplicate values.", HttpStatusCode.DUPLICATE);
   }
 }

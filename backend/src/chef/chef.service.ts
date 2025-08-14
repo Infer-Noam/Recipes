@@ -2,27 +2,18 @@ import { Recipe } from "src/recipe/recipe.entity";
 import { Chef } from "../chef/chef.entity";
 import { AppDataSource } from "../data-source";
 import { ChefDetails } from "@shared/types/chef.type";
-import { QueryFailedError } from "typeorm";
-import { DuplicateError } from "src/utils/errors/duplicateError.";
 
 const chefRepository = AppDataSource.getRepository(Chef);
 
 const saveChef = async (details: ChefDetails) => {
   const { uuid, ...rest } = details;
 
-  try {
-    return await AppDataSource.transaction(async (transaction) =>
-      transaction.save(Chef, {
-        ...rest,
-        ...(uuid !== undefined && { uuid }),
-      })
-    );
-  } catch (error) {
-    if (error instanceof QueryFailedError && (error as any).code === "23505")
-      throw new DuplicateError();
-
-    throw error;
-  }
+  return AppDataSource.transaction(async (transaction) =>
+    transaction.save(Chef, {
+      ...rest,
+      uuid,
+    })
+  );
 };
 
 const getAllChefs = async () => chefRepository.find({});

@@ -16,9 +16,7 @@ const phoneTextField: SxProps = { width: "120px" };
 
 const centerAlign: SxProps = {
   textAlign: "center",
-  verticalAlign: "top",
 };
-
 
 export default {
   chefTableRow,

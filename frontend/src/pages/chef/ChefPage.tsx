@@ -6,6 +6,7 @@ import { type FC } from "react";
 import BackdropLoading from "../../components/backdropLoading/BackdropLoading";
 import CentralErrorAlert from "../../components/centralErrorAlert/CentralErrorAlert";
 import { useSwal } from "../../hooks/useSwal";
+import { CHEF_HTTP_STATUS_MESSAGES } from "./chefPage.const";
 
 const ChefPage: FC = () => {
   const { data: chefs, isLoading } = useGetChefs();
@@ -15,9 +16,12 @@ const ChefPage: FC = () => {
   const { mutateAsync: deleteChef } = useDeleteChef(showError, (data) => {
     showSuccess(data.message);
   });
-  const { mutateAsync: saveChef } = useSaveChef(showError, (data) => {
-    showSuccess(data.message);
-  });
+  const { mutateAsync: saveChef } = useSaveChef(
+    (err) => showError(err, undefined, CHEF_HTTP_STATUS_MESSAGES),
+    (data) => {
+      showSuccess(data.message);
+    }
+  );
 
   if (isLoading) return <BackdropLoading />;
 

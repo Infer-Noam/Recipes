@@ -1,4 +1,4 @@
-import { CHEF_SRC_ARRAY } from "../chef/chefSrcArray.const";
+import { CHEF_SRC_ARRAY } from "../chef/chefPage.const";
 import type { Recipe } from "@shared/types/recipe.type";
 
 export const getRandomChefSrc = () => {

@@ -10,11 +10,11 @@ import {
 } from "@shared/api/recipe/deleteRecipe.http-type";
 import { GetRecipeByIdRes } from "@shared/api/recipe/getRecipeByUuid.http-type";
 import { GetAllRecipesRes } from "@shared/api/recipe/getAllRecipes.http-type";
-import { HttpError } from "@shared/types/httpError.type";
 import { validateZodSchema } from "../middleware/validation.middleware";
 import { RecipeDetailsSchema } from "@shared/validation/recipeDetailsSchema.validation";
 import { UuidSchema } from "@shared/validation/uuidSchema.validation";
 import { NotFoundError } from "../utils/errors/notFound.error";
+import { InternalServerError } from "../utils/errors/internalServer.error";
 
 const router = Router();
 
@@ -25,10 +25,7 @@ router.post(
     req: Request<unknown, SaveRecipeRes, SaveRecipeReq>,
     res: Response<SaveRecipeRes>
   ) => {
-    const recipe = await service.saveRecipe(req.body.recipeDetails);
-
-    if (!recipe) throw new HttpError("Recipe creation failed", 500);
-
+    await service.saveRecipe(req.body.recipeDetails);
     res.status(200).json({ message: "Recipe saved successfully" });
   }
 );
@@ -44,7 +41,9 @@ router.delete(
 
     const exist = await service.deleteRecipe(uuid);
 
-    if (!exist) throw new NotFoundError("Recipe");
+    if (!exist) {
+      throw new NotFoundError();
+    }
 
     res.status(200).json({ message: "Recipe deleted successfully" });
   }
@@ -61,7 +60,9 @@ router.get("/:uuid", async (req: Request, res: Response<GetRecipeByIdRes>) => {
 
   const recipe = await service.getRecipeByUuid(uuid);
 
-  if (!recipe) throw new NotFoundError("Recipe");
+  if (!recipe) {
+    throw new NotFoundError();
+  }
 
   res.status(200).json({ recipe });
 });
