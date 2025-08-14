@@ -1,9 +1,12 @@
 import axios from "axios";
+import { getServerUrl } from "./utils/getServerUrl.util";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+const VITE_BASE_URL = getServerUrl();
+
+const Api = axios.create({
+  baseURL: VITE_BASE_URL,
   timeout: 5000,
   headers: {},
 });
 
-export default api;
+export default Api;
