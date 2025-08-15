@@ -5,22 +5,28 @@ metadata:
   namespace: team-tikchalal
   labels:
     app: recipes-server
+    env: prod
 spec:
   replicas: 3
   selector:
     matchLabels:
       app: recipes-server
+      env: prod
   template:
     metadata:
       labels:
         app: recipes-server
+        env: prod
     spec:
       containers:
         - name: recipes-server
-          image: recipes:v1.0.0
+          image: infernoam1/recipes:v1.0.0
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: recipes-server-secret
           env:
             - name: SERVER_PORT
               valueFrom:

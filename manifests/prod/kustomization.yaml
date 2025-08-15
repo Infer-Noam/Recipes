@@ -3,8 +3,6 @@ kind: Kustomization
 
 resources:
   - ../base
-  - db-deployment.prod.yaml
-  - db-pvc.prod.yaml
   - server-configmap.prod.yaml
   - server-deployment.prod.yaml
   - ingress.prod.yaml
