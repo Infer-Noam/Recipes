@@ -8,6 +8,6 @@ frontend/.env
 
 shared/node_modules/
 
-manifests/base/db-secret.yaml
+manifests/base/server-secret.yaml
 
 eksctl.exe
