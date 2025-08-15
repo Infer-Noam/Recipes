@@ -3,9 +3,10 @@ WORKDIR /app
 
 COPY frontend/package*.json ./frontend/
 WORKDIR /app/frontend
-RUN npm ci --only=production
+RUN npm install
 
 COPY frontend/ ./
+COPY shared/ ../shared/
 
 RUN npm run build
 
