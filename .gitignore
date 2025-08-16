@@ -8,6 +8,6 @@ frontend/.env
 
 shared/node_modules/
 
-manifests/base/server-secret.yaml
+manifests/base/recipes-secrets.yaml
 
 eksctl.exe
