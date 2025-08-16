@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recipes-client
+  namespace: team-tikchalal
+  labels:
+    app: recipes-client
+    env: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recipes-client
+      env: dev
+  template:
+    metadata:
+      labels:
+        app: recipes-client
+        env: dev
+    spec:
+      containers:
+        - name: recipes-client
+          image: ghcr.io/infer-noam/recipes/recipes-client:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5173
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+            - name: nginx-run
+              mountPath: /run
+      volumes:
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-run
+          emptyDir: {}
+      imagePullSecrets:
+        - name: recipes-pull-secret
