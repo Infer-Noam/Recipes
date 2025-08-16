@@ -20,13 +20,15 @@ spec:
     spec:
       containers:
         - name: recipes-server
-          image: infernoam1/recipes:v1.0.0
+          image: ghcr.io/infer-noam/recipes/recipes-server:v1.0.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
           envFrom:
             - secretRef:
-                name: recipes-server-secret
+                name: portal-nifgaim-secrets
+            - secretRef:
+                name: recipes-secrets
           env:
             - name: SERVER_PORT
               valueFrom:
@@ -45,3 +47,11 @@ spec:
             limits:
               memory: 512Mi
               cpu: 250m
+          volumeMounts:
+            - name: log-volume
+              mountPath: /tmp/logs
+      volumes:
+        - name: log-volume
+          emptyDir: {}
+      imagePullSecrets:
+        - name: recipes-pull-secret

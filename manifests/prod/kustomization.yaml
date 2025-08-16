@@ -3,9 +3,11 @@ kind: Kustomization
 
 resources:
   - ../base
-  - server-configmap.prod.yaml
-  - server-deployment.prod.yaml
-  - ingress.prod.yaml
+  - server-configmap.yaml
+  - server-deployment.yaml
+  - ingress.yaml
+  - client-deployment.yaml
+  - client-service.yaml
 
 namespace: team-tikchalal
 
