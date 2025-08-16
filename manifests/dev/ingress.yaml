@@ -4,20 +4,28 @@ metadata:
   name: recipes-ingress
   namespace: team-tikchalal
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/group.name: dev-hr-2-ingress-group
+    alb.ingress.kubernetes.io/load-balancer-name: dev-hr-2-alb
+    alb.ingress.kubernetes.io/group.order: "2"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/security-groups: dev-alb-sg
+    alb.ingress.kubernetes.io/manage-backend-security-group-rules: "true"
+    alb.ingress.kubernetes.io/target-type: ip
 spec:
+  ingressClassName: alb
   rules:
     - host: portal-nifgaim.dev.digital.idf.il
       http:
         paths:
-          - path: /recipes(/|$)(.*)
-            pathType: ImplementationSpecific
+          - path: /
+            pathType: Prefix
             backend:
               service:
                 name: recipes-server-service
                 port:
                   number: 8080
-          - path: /
+          - path: /api/
             pathType: Prefix
             backend:
               service:
