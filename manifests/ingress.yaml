@@ -18,17 +18,17 @@ spec:
     - host: portal-nifgaim.dev.digital.idf.il
       http:
         paths:
-          - path: /
+          - path: /recipes
             pathType: Prefix
             backend:
               service:
                 name: recipes-server-service
                 port:
-                  number: 8080
-          - path: /api/
+                  number: 5000
+          - path: /recipes/api/
             pathType: Prefix
             backend:
               service:
                 name: recipes-client-service
                 port:
-                  number: 80
+                  number: 3000

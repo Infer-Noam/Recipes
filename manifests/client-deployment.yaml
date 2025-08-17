@@ -5,25 +5,25 @@ metadata:
   namespace: team-tikchalal
   labels:
     app: recipes-client
-    env: prod
+    env: dev
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: recipes-client
-      env: prod
+      env: dev
   template:
     metadata:
       labels:
         app: recipes-client
-        env: prod
+        env: dev
     spec:
       containers:
         - name: recipes-client
-          image: ghcr.io/infer-noam/recipes/recipes-client:v1.0.0
-          imagePullPolicy: Always
+          image: ghcr.io/infer-noam/recipes/recipes-client:latest
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 5173
+            - containerPort: 3000
           volumeMounts:
             - name: nginx-cache
               mountPath: /var/cache/nginx
