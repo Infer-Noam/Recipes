@@ -12,12 +12,6 @@ This file outlines the core functionality, interface structure, and feature expe
 
 ---
 
-## 🌐 Live Website
-
-[Visit the Website](https://portal-nifgaim.dev.digital.idf.il/recipes)
-
----
-
 ## 🖼️ Screenshots
 
 ### 🏠 Homepage
